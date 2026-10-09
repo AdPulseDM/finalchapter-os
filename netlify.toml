@@ -1,3 +1,29 @@
 [build]
   publish = "."
-  command = "echo static"
+  command = "npm install"
+
+[functions]
+  directory = "netlify/functions"
+
+[[redirects]]
+  from = "/api/estate"
+  to = "/.netlify/functions/estate"
+  status = 200
+
+[[redirects]]
+  from = "/api/checkout"
+  to = "/.netlify/functions/checkout"
+  status = 200
+
+[[redirects]]
+  from = "/api/crawl"
+  to = "/.netlify/functions/crawl"
+  status = 200
+
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Frame-Options = "DENY"
+    X-Content-Type-Options = "nosniff"
+    Referrer-Policy = "strict-origin-when-cross-origin"
+    Content-Security-Policy = "default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self'; frame-src 'none'; frame-ancestors 'none'; base-uri 'self'; form-action 'self' https://checkout.stripe.com"

@@ -96,7 +96,7 @@
     <article><div class="mark">02</div><h3>Forms on the path</h3><p class="lede">74A, ISP1200, TX19, T1, and T3 are named on the step. This desk does not file them for you.</p></article>
     <article><div class="mark">03</div><h3>Circle, not chaos</h3><p class="lede">Family and counsel share a feed. Liability stays with the estate trustee.</p></article>
   </div></section>
-  <section class="wrap" id="pricing" style="padding:24px 24px 64px;text-align:center"><h2 class="display" style="font-size:36px;margin:0">One-time. No subscription grief.</h2><p class="lede" style="margin:8px auto 24px">Demo pricing. Not a checkout and not legal advice.</p>
+  <section class="wrap" id="pricing" style="padding:24px 24px 64px;text-align:center"><h2 class="display" style="font-size:36px;margin:0">One-time. No subscription grief.</h2><p class="lede" style="margin:8px auto 24px">One-time CAD checkout. Sign in with email first. Not legal advice. No YouTube.</p>
     <div class="prices" style="text-align:left">
       <div class="price"><div class="label">Executor</div><div class="amt">$49 once</div><ul><li>60-step timeline</li><li>CRA deadline engine</li><li>Letter drafts</li></ul></div>
       <div class="price pop"><span class="tag">MOST POPULAR</span><div class="label">Family</div><div class="amt">$89 once</div><ul><li>Everything in Executor</li><li>Circle</li><li>Cost tracker</li></ul></div>
@@ -122,9 +122,9 @@ function render(){
   $("#heroEat").textContent=money(eat(state.value));
   const t1=deadlines()[1]; $("#heroDeadline").textContent=t1.days>0?t1.days+" days left":Math.abs(t1.days)+" days past";
   $("#heroTasks").innerHTML=state.tasks.slice(0,4).map(t=>`<div class="row-mini"><div class="tick ${t.status}">${t.status==="done"?"✓":t.id}</div><div><div style="font-size:13px;font-weight:600">${t.title}</div><div class="mini">${t.due}</div></div></div>`).join("");
-  const tabs=[["timeline","Timeline"],["vault","Vault"],["cra","CRA"],["letters","Letters"],["costs","Costs"],["circle","Circle"]];
+  const tabs=[["timeline","Timeline"],["vault","Vault"],["cra","CRA"],["letters","Letters"],["costs","Costs"],["circle","Circle"],["videos","Videos"]];
   $("#tabs").innerHTML=tabs.map(([id,l])=>`<button class="tab ${state.tab===id?"on":""}" data-tab="${id}" type="button">${l}</button>`).join("");
-  const map={timeline:timelineHTML,vault:vaultHTML,cra:craHTML,letters:lettersHTML,costs:costsHTML,circle:circleHTML};
+  const map={timeline:timelineHTML,vault:vaultHTML,cra:craHTML,letters:lettersHTML,costs:costsHTML,circle:circleHTML,videos:videosHTML};
   $("#pane").innerHTML=map[state.tab]();
   bind();
 }
@@ -138,6 +138,21 @@ function craHTML(){return `<div class="two"><div class="card"><label class="labe
 function lettersHTML(){const L=state.letter;return `<div class="letters"><div class="card"><label class="label">Recipient</label><select id="rec">${["Bank","Utility","Landlord","Insurance","Employer"].map(r=>`<option ${L.recipient===r?"selected":""}>${r}</option>`).join("")}</select><div class="field" style="margin-top:10px"><label class="label">Estate</label><input id="est" value="${L.estate.replace(/"/g,""")}"></div><div class="field"><label class="label">Deceased</label><input id="dec" value="${L.name}"></div><div class="field"><label class="label">Note</label><textarea id="nt" rows="4">${L.note}</textarea></div></div><div><button class="btn" id="copy" type="button">Copy</button> <button class="btn btn-grad" id="dl" type="button">Download .txt</button><div class="preview-letter" id="letter" style="margin-top:10px">${letterText()}</div></div></div>`}
 function costsHTML(){const fee=eat(state.value);state.costs[0].est=Math.round(fee);return `<div class="two"><div class="card"><label class="label">Estate value</label><input id="val" type="number" value="${state.value}"><p class="display">${money(fee)}</p><p class="mini">$0 on the first $50,000, then 1.5%.</p></div><div>${state.costs.map(c=>`<div class="card" style="margin-bottom:8px"><button class="btn" data-pay="${c.id}" type="button">${c.paid?"Paid":"Unpaid"}</button> ${c.name} · est ${money(c.est)}</div>`).join("")}</div></div>`}
 function circleHTML(){return `<div class="card">${state.circle.map(m=>`<div style="margin:8px 0"><strong>${m.name}</strong> <span class="mini">${m.relation} · ${m.role}</span></div>`).join("")}<div class="filters"><input id="mem" placeholder="Add a name"><button class="btn btn-grad" id="addMem" type="button">Add</button></div><p class="mini">Kids Help Phone 1-800-668-6868 · CMHA Ontario</p></div>`}
+
+function videosHTML(){
+  const clips=[
+    ["Death certificate","What to ask the funeral home for, and why banks want originals."],
+    ["Will search","Where Ontario wills are usually found, and when to call the lawyer."],
+    ["Estate account","Open it before money moves. Do not use a personal account."],
+    ["Clearance","TX19 sits before the last cheque. This desk does not file it."]
+  ];
+  return `<h3 class="display">Desk videos</h3><p class="mini">No YouTube on this desk. Walkthroughs stay here. Not legal advice.</p>${clips.map(c=>`<article class="card" style="margin-bottom:8px"><strong>${c[0]}</strong><div class="mini">${c[1]}</div></article>`).join("")}`;
+}
+function persistDesk(){
+  const token=sessionStorage.getItem("fc.token");
+  if(!token) return;
+  fetch("/api/estate",{method:"POST",headers:{"content-type":"application/json"},body:JSON.stringify({action:"save",token,desk:{tab:state.tab,dod:state.dod,value:state.value,letter:state.letter,tasks:state.tasks.map(t=>({id:t.id,status:t.status}))}})}).catch(()=>{});
+}
 function bind(){
   document.querySelectorAll("[data-tab]").forEach(b=>b.onclick=()=>{state.tab=b.dataset.tab;render();document.getElementById("os").scrollIntoView({behavior:"smooth"})});
   const q=$("#q"); if(q) q.oninput=e=>{state.q=e.target.value;render();const n=$("#q"); if(n){n.focus();n.setSelectionRange(n.value.length,n.value.length)}};
@@ -154,10 +169,31 @@ function bind(){
   document.querySelectorAll("[data-pay]").forEach(b=>b.onclick=()=>{const c=state.costs.find(x=>x.id===+b.dataset.pay); c.paid=!c.paid; render()});
   const add=$("#addMem"); if(add) add.onclick=()=>{const name=$("#mem").value.trim(); if(!name)return; state.circle.push({name,relation:"Family",role:"Family"}); render()};
 }
-function openOs(){state.tab="timeline";render();document.getElementById("os").scrollIntoView({behavior:"smooth"})}
+function openOs(){state.tab="timeline";render();persistDesk();document.getElementById("os").scrollIntoView({behavior:"smooth"})}
 $("#enterOs").onclick=openOs; $("#openOs").onclick=openOs; $("#viewTimeline").onclick=openOs;
 document.querySelectorAll("[data-jump]").forEach(a=>a.onclick=e=>{e.preventDefault();state.tab=a.dataset.jump;render();document.getElementById("os").scrollIntoView({behavior:"smooth"})});
 render();
+
+document.querySelectorAll(".price").forEach((card,i)=>{
+  const plan=["executor","family","professional"][i]||"executor";
+  const btn=document.createElement("button");
+  btn.className="btn btn-grad";
+  btn.type="button";
+  btn.textContent="Checkout";
+  btn.style.marginTop="12px";
+  btn.onclick=async()=>{
+    const email=prompt("Email for this estate desk");
+    if(!email) return;
+    const made=await fetch("/api/estate",{method:"POST",headers:{"content-type":"application/json"},body:JSON.stringify({action:"create",email})}).then(r=>r.json());
+    if(!made.estate){ alert(made.error||"Could not open estate"); return; }
+    sessionStorage.setItem("fc.token", made.estate.token);
+    const pay=await fetch("/api/checkout",{method:"POST",headers:{"content-type":"application/json"},body:JSON.stringify({plan,estateId:made.estate.id})}).then(r=>r.json());
+    if(!pay.url){ alert(pay.error||"Stripe checkout failed"); return; }
+    location.href=pay.url;
+  };
+  card.appendChild(btn);
+});
+
 </script>
 </body>
 </html>
