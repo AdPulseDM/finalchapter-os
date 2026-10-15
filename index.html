@@ -134,7 +134,46 @@ function timelineHTML(){
   return `<div class="filters"><input id="q" placeholder="Search 74A, T1, ISP1200" value="${state.q.replace(/"/g,""")}"/><select id="st">${["all","todo","doing","done","blocked"].map(s=>`<option ${state.status===s?"selected":""}>${s}</option>`).join("")}</select><select id="ph"><option value="all">all phases</option>${PHASES.map(p=>`<option value="${p.id}" ${state.phase===p.id?"selected":""}>${p.name}</option>`).join("")}</select></div><div class="phases">${phases}</div>`+rows.map(t=>{const open=state.open===t.id;return `<article class="task"><button class="task-h" data-open="${t.id}" type="button"><div class="tick ${t.status}">${t.status==="done"?"✓":t.id}</div><div style="flex:1"><div>${t.title}</div><div class="mini">${t.note}</div></div><span class="badge">${t.status}</span></button>${open?`<div class="detail">${t.desc}<div style="margin-top:8px">${(t.forms.length?t.forms:["No form"]).map(f=>`<span class="badge">${f}</span>`).join(" ")}</div><div style="margin-top:8px">${["todo","doing","done","blocked"].map(s=>`<button class="btn" data-set="${t.id}" data-status="${s}" type="button" style="margin-right:6px">${s}</button>`).join("")}</div></div>`:""}</article>`}).join("");
 }
 function vaultHTML(){const docs=[["Last will","Uploaded"],["Death certificates","Uploaded"],["Certificate of Appointment","Missing"],["Insurance","Uploaded"],["Bank statements","Uploaded"],["Deed and mortgage","Missing"],["SIN and ID","Uploaded"],["Tax papers","Uploaded"]];return `<h3 class="display">Document vault</h3><p class="mini">Sample list only. Keep the original will safe.</p><div class="phases" style="grid-template-columns:repeat(4,1fr)">${docs.map(d=>`<div class="card"><strong>${d[0]}</strong><div class="mini">${d[1]}</div></div>`).join("")}</div>`}
-function craHTML(){return `<div class="two"><div class="card"><label class="label">Date of death</label><input id="dod" type="date" value="${state.dod}"></div><div>${deadlines().map(d=>`<div class="card" style="margin-bottom:8px"><strong>${d.name}</strong><div class="mini">${d.note} · ${d.due.toLocaleDateString("en-CA")}</div><div>${d.days>0?d.days+"d left":Math.abs(d.days)+"d past"}</div></div>`).join("")}<p class="mini">Do not pay out until a clearance certificate is in hand, unless counsel accepts the risk.</p></div></div>`}
+function tx19Letter(){
+  const L=state.letter;
+  const today=new Date().toISOString().slice(0,10);
+  return `FORM TX19 — Asking for a Clearance Certificate
+Cover letter draft · checked ${today}
+Source: https://www.canada.ca/en/revenue-agency/services/tax/individuals/life-events/doing-taxes-someone-died/clearance-certificate.html
+
+To: CRA — Audit, Clearance Certificates
+GTA East Tax Services Office
+Post Office Box 20000, Station A
+Sudbury ON P3A 5C1
+
+Re: Estate of ${L.name}
+Date of death: ${state.dod}
+Estate: ${L.estate}
+
+I am the estate trustee. I request a clearance certificate under section 159 of the Income Tax Act.
+
+Attached or previously filed:
+- Final T1 (terminal return)
+- T3 returns if the estate earned income
+- Notice of Assessment
+- Will and Certificate of Appointment (if obtained)
+- Statement of assets and distribution plan
+
+Holdback note (IC82-6R13, paragraph 2):
+A clearance certificate is not required before every interim distribution, provided enough property is retained to pay any amount the estate may owe the CRA. Final distribution should wait for the certificate. Distributing without a holdback or a certificate can leave the trustee personally liable.
+
+This is a working draft. Not tax or legal advice. Verify with CRA before you mail or fax.
+
+${L.estate}
+Estate trustee
+Date: ${today}`;
+}
+function craHTML(){
+  const today=new Date().toISOString().slice(0,10);
+  return `<div class="two"><div class="card"><label class="label">Date of death</label><input id="dod" type="date" value="${state.dod}"></div><div>${deadlines().map(d=>`<div class="card" style="margin-bottom:8px"><strong>${d.name}</strong><div class="mini">${d.note} · ${d.due.toLocaleDateString("en-CA")}</div><div>${d.days>0?d.days+"d left":Math.abs(d.days)+"d past"}</div><div class="mini">Form checked ${today} · <a href="https://www.canada.ca/en/revenue-agency/services/tax/individuals/life-events/doing-taxes-someone-died/clearance-certificate.html" target="_blank" rel="noopener">CRA clearance source</a></div></div>`).join("")}</div></div>
+  <div class="card" style="margin-top:14px"><strong>Holdback note</strong><p class="mini" style="margin:6px 0 0">Under CRA Information Circular IC82-6R13, paragraph 2, you do not need a clearance certificate before every distribution if you hold back enough to cover any amount the estate may still owe. Final distribution should wait for TX19. Distributing without a holdback or the certificate can make the trustee personally liable.</p></div>
+  <div class="card" style="margin-top:14px"><div class="label">TX19 cover letter · checked ${today}</div><button class="btn" id="copyTx" type="button">Copy TX19 letter</button> <button class="btn btn-grad" id="dlTx" type="button">Download TX19.txt</button><div class="preview-letter" id="tx19" style="margin-top:10px">${tx19Letter()}</div></div>`;
+}
 function lettersHTML(){const L=state.letter;return `<div class="letters"><div class="card"><label class="label">Recipient</label><select id="rec">${["Bank","Utility","Landlord","Insurance","Employer"].map(r=>`<option ${L.recipient===r?"selected":""}>${r}</option>`).join("")}</select><div class="field" style="margin-top:10px"><label class="label">Estate</label><input id="est" value="${L.estate.replace(/"/g,""")}"></div><div class="field"><label class="label">Deceased</label><input id="dec" value="${L.name}"></div><div class="field"><label class="label">Note</label><textarea id="nt" rows="4">${L.note}</textarea></div></div><div><button class="btn" id="copy" type="button">Copy</button> <button class="btn btn-grad" id="dl" type="button">Download .txt</button><div class="preview-letter" id="letter" style="margin-top:10px">${letterText()}</div></div></div>`}
 function costsHTML(){const fee=eat(state.value);state.costs[0].est=Math.round(fee);return `<div class="two"><div class="card"><label class="label">Estate value</label><input id="val" type="number" value="${state.value}"><p class="display">${money(fee)}</p><p class="mini">$0 on the first $50,000, then 1.5%.</p></div><div>${state.costs.map(c=>`<div class="card" style="margin-bottom:8px"><button class="btn" data-pay="${c.id}" type="button">${c.paid?"Paid":"Unpaid"}</button> ${c.name} · est ${money(c.est)}</div>`).join("")}</div></div>`}
 function circleHTML(){return `<div class="card">${state.circle.map(m=>`<div style="margin:8px 0"><strong>${m.name}</strong> <span class="mini">${m.relation} · ${m.role}</span></div>`).join("")}<div class="filters"><input id="mem" placeholder="Add a name"><button class="btn btn-grad" id="addMem" type="button">Add</button></div><p class="mini">Kids Help Phone 1-800-668-6868 · CMHA Ontario</p></div>`}
@@ -164,6 +203,8 @@ function bind(){
   const dod=$("#dod"); if(dod) dod.onchange=e=>{state.dod=e.target.value;render()};
   ["rec","est","dec","nt"].forEach(id=>{const el=$("#"+id); if(!el)return; const key={rec:"recipient",est:"estate",dec:"name",nt:"note"}[id]; el.oninput=e=>{state.letter[key]=e.target.value; $("#letter").textContent=letterText()}});
   const copy=$("#copy"); if(copy) copy.onclick=async()=>{await navigator.clipboard.writeText(letterText()); copy.textContent="Copied"};
+  const copyTx=$("#copyTx"); if(copyTx) copyTx.onclick=async()=>{await navigator.clipboard.writeText(tx19Letter()); copyTx.textContent="Copied"};
+  const dlTx=$("#dlTx"); if(dlTx) dlTx.onclick=()=>{const a=document.createElement("a"); a.href=URL.createObjectURL(new Blob([tx19Letter()],{type:"text/plain"})); a.download="TX19-cover-letter.txt"; a.click()};
   const dl=$("#dl"); if(dl) dl.onclick=()=>{const a=document.createElement("a"); a.href=URL.createObjectURL(new Blob([letterText()],{type:"text/plain"})); a.download="estate-letter.txt"; a.click()};
   const val=$("#val"); if(val) val.onchange=e=>{state.value=Number(e.target.value)||0;render()};
   document.querySelectorAll("[data-pay]").forEach(b=>b.onclick=()=>{const c=state.costs.find(x=>x.id===+b.dataset.pay); c.paid=!c.paid; render()});
