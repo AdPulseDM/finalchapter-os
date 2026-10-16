@@ -81,6 +81,13 @@
 .bubbles { display:flex; gap:8px; }
 .bubbles button { border:1px solid rgba(255,255,255,.15); background:transparent; color:#fff; border-radius:999px; padding:6px 12px; font-size:12px; }
 
+
+body.preview-mode .pane input,
+body.preview-mode .pane textarea,
+body.preview-mode .pane select,
+body.preview-mode .pane button.btn { pointer-events:none; opacity:.7; }
+body.preview-mode .pane .tab, body.preview-mode .tabs { pointer-events:auto; opacity:1; }
+.preview-banner { background:#fbbf24; color:#1c1402; padding:8px 12px; border-radius:10px; font-size:13px; font-weight:600; margin-bottom:12px; }
 </style>
 </head>
 <body>
@@ -128,6 +135,8 @@ function eat(v){const r=Math.ceil(Math.max(0,v)/1000)*1000;return r<=50000?0:(r-
 function addDays(b,d){const x=new Date(b);x.setDate(x.getDate()+d);return x}
 function deadlines(){const dod=new Date(state.dod+"T12:00:00");const april=new Date(dod.getFullYear()+1,3,30);const six=addDays(dod,183);const t1=six>april?six:april;return[{name:"CPP death benefit",due:addDays(dod,60),note:"Cap $2,500"},{name:"Final T1",due:t1,note:"Later of six months and 30 April"},{name:"T3",due:addDays(dod,90),note:"90 days after a short first year"},{name:"Estate Information Return",due:addDays(dod,210),note:"180 days after the certificate — estimate"},{name:"TX19",due:addDays(dod,240),note:"Before final distribution"}].map(d=>({...d,days:Math.ceil((d.due-new Date())/86400000)}))}
 function letterText(){const L=state.letter;return `RE: Estate notification — ${L.name}\n\n${L.date}\n\nTo: ${L.recipient}\nAccount: ${L.account}\n\nI write as estate trustee of ${L.name}, who died on ${state.dod}.\n\n${L.note}\n\nPlease send the final statement as of the date of death and confirm the account is frozen.\n\n${L.estate}\nEstate trustee\n\nWorking draft. Not legal advice.`}
+window.state = state;
+window.render = render;
 function render(){
   const done=state.tasks.filter(t=>t.status==="done").length;
   $("#heroPct").textContent=Math.round(done/60*100)+"%";
@@ -138,7 +147,10 @@ function render(){
   $("#tabs").innerHTML=tabs.map(([id,l])=>`<button class="tab ${state.tab===id?"on":""}" data-tab="${id}" type="button">${l}</button>`).join("");
   const map={timeline:timelineHTML,vault:vaultHTML,cra:craHTML,letters:lettersHTML,costs:costsHTML,circle:circleHTML,videos:videosHTML};
   if (!isPaid()) { $("#pane").innerHTML = paywall(); $("#tabs").innerHTML = ""; }
-  else { $("#pane").innerHTML=map[state.tab](); }
+  else {
+    const banner = window.fcPreview ? '<div class="preview-banner">Sneak peek · read only · pay to edit and save</div>' : '';
+    $("#pane").innerHTML = banner + map[state.tab]();
+  }
   bind();
 }
 function timelineHTML(){
@@ -281,11 +293,17 @@ function bind(){
 }
 
 function isPaid(){
+  if (window.fcPreview) return true;
   if (sessionStorage.getItem("fc.paid") === "1") return true;
   const q = new URLSearchParams(location.search);
   const c = q.get("checkout");
   if (c && c !== "cancel") { sessionStorage.setItem("fc.paid","1"); return true; }
   return false;
+}
+function setPreview(on){
+  window.fcPreview = !!on;
+  if (on) document.body.classList.add("preview-mode");
+  else document.body.classList.remove("preview-mode");
 }
 function paywall(){
   return `<div class="card" style="text-align:center;padding:28px">
