@@ -96,7 +96,7 @@
     <article><div class="mark">02</div><h3>Forms on the path</h3><p class="lede">74A, ISP1200, TX19, T1, and T3 are named on the step. This desk does not file them for you.</p></article>
     <article><div class="mark">03</div><h3>Circle, not chaos</h3><p class="lede">Family and counsel share a feed. Liability stays with the estate trustee.</p></article>
   </div></section>
-  <section class="wrap" id="pricing" style="padding:24px 24px 64px;text-align:center"><h2 class="display" style="font-size:36px;margin:0">One-time. No subscription grief.</h2><p class="lede" style="margin:8px auto 24px">One-time CAD checkout. Sign in with email first. Not legal advice. No YouTube.</p>
+  <section class="wrap" id="pricing" style="padding:24px 24px 64px;text-align:center"><h2 class="display" style="font-size:36px;margin:0">One-time. No subscription grief.</h2><p class="lede" style="margin:8px auto 24px">One-time CAD checkout. After payment you return here unlocked. You can also paste your workspace code. Not legal advice.</p>
     <div class="prices" style="text-align:left">
       <div class="price"><div class="label">Executor</div><div class="amt">$49 once</div><ul><li>60-step timeline</li><li>CRA deadline engine</li><li>Letter drafts</li></ul></div>
       <div class="price pop"><span class="tag">MOST POPULAR</span><div class="label">Family</div><div class="amt">$89 once</div><ul><li>Everything in Executor</li><li>Circle</li><li>Cost tracker</li></ul></div>
@@ -125,7 +125,8 @@ function render(){
   const tabs=[["timeline","Timeline"],["vault","Vault"],["cra","CRA"],["letters","Letters"],["costs","Costs"],["circle","Circle"],["videos","Videos"]];
   $("#tabs").innerHTML=tabs.map(([id,l])=>`<button class="tab ${state.tab===id?"on":""}" data-tab="${id}" type="button">${l}</button>`).join("");
   const map={timeline:timelineHTML,vault:vaultHTML,cra:craHTML,letters:lettersHTML,costs:costsHTML,circle:circleHTML,videos:videosHTML};
-  $("#pane").innerHTML=map[state.tab]();
+  if (!isPaid()) { $("#pane").innerHTML = paywall(); $("#tabs").innerHTML = ""; }
+  else { $("#pane").innerHTML=map[state.tab](); }
   bind();
 }
 function timelineHTML(){
@@ -209,8 +210,40 @@ function bind(){
   const val=$("#val"); if(val) val.onchange=e=>{state.value=Number(e.target.value)||0;render()};
   document.querySelectorAll("[data-pay]").forEach(b=>b.onclick=()=>{const c=state.costs.find(x=>x.id===+b.dataset.pay); c.paid=!c.paid; render()});
   const add=$("#addMem"); if(add) add.onclick=()=>{const name=$("#mem").value.trim(); if(!name)return; state.circle.push({name,relation:"Family",role:"Family"}); render()};
+  const unlock=$("#unlockCode"); if(unlock) unlock.onclick=()=>{
+    const code=($("#accessCode").value||"").trim();
+    if(code.length < 4){ alert("Enter the code from your receipt"); return; }
+    sessionStorage.setItem("fc.paid","1");
+    sessionStorage.setItem("fc.code", code);
+    state.locked=false; openOs();
+  };
 }
-function openOs(){state.tab="timeline";render();persistDesk();document.getElementById("os").scrollIntoView({behavior:"smooth"})}
+
+function isPaid(){
+  if (sessionStorage.getItem("fc.paid") === "1") return true;
+  const q = new URLSearchParams(location.search);
+  const c = q.get("checkout");
+  if (c && c !== "cancel") { sessionStorage.setItem("fc.paid","1"); return true; }
+  return false;
+}
+function paywall(){
+  return `<div class="card" style="text-align:center;padding:28px">
+    <h2 class="display" style="margin:0 0 8px">Desk locked</h2>
+    <p class="mini">Pay the one-time fee to open the timeline, letters, TX19 cover letter, and vault.</p>
+    <div class="cta-row" style="justify-content:center">
+      <a class="btn btn-grad" href="#pricing">View plans</a>
+    </div>
+    <div class="field" style="max-width:320px;margin:16px auto 0">
+      <label class="label">Have a code?</label>
+      <input id="accessCode" placeholder="Paste workspace code">
+      <button class="btn" id="unlockCode" type="button" style="margin-top:8px">Unlock</button>
+    </div>
+  </div>`;
+}
+function openOs(){
+  if (!isPaid()) { state.locked = true; render(); document.getElementById("os").scrollIntoView({behavior:"smooth"}); return; }
+  state.locked = false; state.tab="timeline"; render(); persistDesk(); document.getElementById("os").scrollIntoView({behavior:"smooth"});
+}
 $("#enterOs").onclick=openOs; $("#openOs").onclick=openOs; $("#viewTimeline").onclick=openOs;
 document.querySelectorAll("[data-jump]").forEach(a=>a.onclick=e=>{e.preventDefault();state.tab=a.dataset.jump;render();document.getElementById("os").scrollIntoView({behavior:"smooth"})});
 render();
