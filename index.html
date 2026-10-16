@@ -44,10 +44,10 @@
   .mini { color:var(--subtle); font-size:11px; } .split2 { display:grid; grid-template-columns:1fr 1fr; gap:8px; margin-top:12px; }
   .kpi { padding:12px; border-radius:10px; background:rgba(8,8,12,.55); border:1px solid var(--line); } .kpi .k { color:var(--subtle); font-size:10px; letter-spacing:.08em; } .kpi .v { margin-top:4px; font-weight:600; }
   .panel { background:rgba(20,18,32,.55); border:1px solid rgba(168,85,247,.16); border-radius:16px; overflow:hidden; }
-  .tabs { display:flex; gap:4px; padding:8px; overflow-x:auto; border-bottom:1px solid var(--line); background:rgba(8,8,12,.45); position:sticky; top:72px; z-index:20; }
+  .tabs { display:flex; gap:4px; padding:8px; overflow-x:auto; border-bottom:1px solid var(--line); background:rgba(8,8,12,.55); flex-wrap:wrap; }
   .tab { height:38px; padding:0 14px; border-radius:10px; border:0; background:transparent; color:var(--muted); font-size:13px; font-weight:600; white-space:nowrap; }
   .tab.on { background-image:var(--grad); color:#fff; box-shadow:var(--glow); }
-  .pane { padding:22px; min-height:520px; }
+  .pane { padding:22px; min-height:520px; position:relative; z-index:1; }
   .filters { display:flex; gap:8px; flex-wrap:wrap; margin:12px 0 16px; }
   .filters input,.filters select,.field input,.field select,.field textarea { background:rgba(8,8,12,.7); border:1px solid var(--line); border-radius:10px; padding:10px 12px; font-size:13px; outline:none; }
   .filters input { flex:1; min-width:220px; } .field { margin-bottom:12px; } .field input,.field select,.field textarea { width:100%; }
