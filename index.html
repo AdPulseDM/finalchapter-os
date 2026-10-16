@@ -300,7 +300,7 @@ function isPaid(){
   if (c && c !== "cancel") { sessionStorage.setItem("fc.paid","1"); return true; }
   return false;
 }
-function setPreview(on){
+window.setPreview = function setPreview(on){
   window.fcPreview = !!on;
   if (on) document.body.classList.add("preview-mode");
   else document.body.classList.remove("preview-mode");
