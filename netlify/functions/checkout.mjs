@@ -16,11 +16,12 @@ export default async (req) => {
   params.set("client_reference_id", estateId);
   params.set("metadata[estateId]", estateId);
   params.set("metadata[plan]", plan);
+  if (body.email) params.set("customer_email", String(body.email).trim().toLowerCase());
   params.set("line_items[0][quantity]", "1");
   params.set("line_items[0][price_data][currency]", "cad");
   params.set("line_items[0][price_data][unit_amount]", String(amount));
   params.set("line_items[0][price_data][product_data][name]", name);
-  params.set("success_url", "https://finalchapter-os.netlify.app/?checkout=" + plan + "&session_id={CHECKOUT_SESSION_ID}");
+  params.set("success_url", "https://finalchapter-os.netlify.app/?checkout=" + plan + "&email=" + encodeURIComponent(String(body.email||"")) + "&session_id={CHECKOUT_SESSION_ID}");
   params.set("cancel_url", "https://finalchapter-os.netlify.app/?checkout=cancel");
   const res = await fetch("https://api.stripe.com/v1/checkout/sessions", {
     method: "POST",

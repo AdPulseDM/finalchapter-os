@@ -129,6 +129,39 @@ body.preview-mode .pane .tab, body.preview-mode .tabs { pointer-events:auto; opa
     <article><h3>Estate Information Return</h3><p class="mini">180 days after certificate</p><div class="cta-row"><a class="btn" href="https://www.ontario.ca/page/estate-information-return" target="_blank" rel="noopener">Official page</a></div><p class="mini">Source: Ontario Ministry of Finance</p></article>
   </div>
 </section>
+
+<section class="wrap" id="account" style="padding:24px 24px 48px">
+  <h2 class="display" style="font-size:28px">Unlock the desk</h2>
+  <p class="lede">Sign up, pay once, then log in. First sign-in asks you to set your password.</p>
+  <div class="two">
+    <form id="signupForm" class="card">
+      <h3>Sign up</h3>
+      <label class="label">Name</label><input id="suName" required />
+      <label class="label">Email</label><input id="suEmail" type="email" required />
+      <label class="label">Plan</label>
+      <div class="bubbles" id="suPlan">
+        <button type="button" class="on" data-plan="executor">Executor</button>
+        <button type="button" data-plan="family">Family</button>
+        <button type="button" data-plan="professional">Professional</button>
+      </div>
+      <button class="btn btn-grad" type="submit">Continue to payment</button>
+      <p class="mini" id="suMsg"></p>
+    </form>
+    <form id="loginForm" class="card">
+      <h3>Log in</h3>
+      <label class="label">Email</label><input id="liEmail" type="email" required />
+      <label class="label">Password</label>
+      <div style="position:relative"><input id="liPass" type="password" required style="width:100%" /><button type="button" id="liShow" style="position:absolute;right:8px;top:8px;background:none;border:0;color:#94a3b8">Show</button></div>
+      <button class="btn" type="submit">Open desk</button>
+      <p class="mini" id="liMsg"></p>
+    </form>
+  </div>
+  <form id="changeForm" class="card" style="display:none;margin-top:12px">
+    <h3>Set your password</h3>
+    <input id="newPass" type="password" minlength="8" placeholder="New password" required />
+    <button class="btn btn-grad" type="submit">Save and open desk</button>
+  </form>
+</section>
 <section class="wrap" id="pricing" style="padding:24px 24px 64px;text-align:center"><h2 class="display" style="font-size:36px;margin:0">One-time. No subscription grief.</h2><p class="lede" style="margin:8px auto 24px">One-time CAD checkout. After payment you return here unlocked. You can also paste your workspace code. Not legal advice.</p>
     <div class="prices" style="text-align:left">
       <div class="price"><div class="label">Executor</div><div class="amt">$49 once</div><ul><li>60-step timeline</li><li>CRA deadline engine</li><li>Letter drafts</li></ul></div>
@@ -334,6 +367,14 @@ function isPaid(){
   const c = q.get("checkout");
   if (c && c !== "cancel") { sessionStorage.setItem("fc.paid","1"); return true; }
   return false;
+}
+async function markPaidFromReturn(){
+  const q = new URLSearchParams(location.search);
+  const email = q.get("email");
+  const c = q.get("checkout");
+  if (!email || !c || c === "cancel") return;
+  const r = await fetch("/api/auth",{method:"POST",headers:{"content-type":"application/json"},body:JSON.stringify({action:"mark-paid",email})}).then(x=>x.json()).catch(()=>({}));
+  if (r.token) { sessionStorage.setItem("fc.token", r.token); sessionStorage.setItem("fc.paid","1"); }
 }
 window.setPreview = function setPreview(on){
   window.fcPreview = !!on;
