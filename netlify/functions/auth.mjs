@@ -43,10 +43,28 @@ export default async (req) => {
 
   if (action === "login") {
     const password = String(body.password || "");
+    const adminEmail = (process.env.ADMIN_EMAIL || "elisa@adpulsenexus.com").toLowerCase();
+    if (email === adminEmail) {
+      const adminPass = process.env.ADMIN_PASSWORD || "";
+      if (!adminPass || password !== adminPass) return json(401, { error: "Invalid email or password" });
+      return json(200, { ok: true, role: "admin", email, name: "Admin" });
+    }
     const row = email ? await s.get("user:" + email, { type: "json" }) : null;
     if (!row || !verify(password, row.password_salt, row.password_hash)) return json(401, { error: "Invalid email or password" });
     if (!row.paid) return json(402, { error: "Pay to unlock the desk" });
-    return json(200, { ok: true, token: row.token, email: row.email, name: row.name, must_change_password: !!row.must_change_password });
+    return json(200, { ok: true, role: "client", token: row.token, email: row.email, name: row.name, must_change_password: !!row.must_change_password });
+  }
+  if (action === "customers") {
+    const adminEmail = (process.env.ADMIN_EMAIL || "elisa@adpulsenexus.com").toLowerCase();
+    if (email !== adminEmail) return json(403, { error: "Admin only" });
+    const list = await s.list();
+    const rows = [];
+    for (const blob of list.blobs || []) {
+      if (!blob.key.startsWith("user:")) continue;
+      const row = await s.get(blob.key, { type: "json" });
+      if (row) rows.push({ email: row.email, name: row.name, plan: row.plan, paid: !!row.paid, createdAt: row.createdAt });
+    }
+    return json(200, { customers: rows });
   }
 
   if (action === "change") {

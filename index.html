@@ -148,7 +148,7 @@ body.preview-mode .pane .tab, body.preview-mode .tabs { pointer-events:auto; opa
       <p class="mini" id="suMsg"></p>
     </form>
     <form id="loginForm" class="card">
-      <h3>Log in</h3>
+      <h3>Log in</h3><p class="mini">Clients open their desk. Admin email opens the customer list.</p>
       <label class="label">Email</label><input id="liEmail" type="email" required />
       <label class="label">Password</label>
       <div style="position:relative"><input id="liPass" type="password" required style="width:100%" /><button type="button" id="liShow" style="position:absolute;right:8px;top:8px;background:none;border:0;color:#94a3b8">Show</button></div>
@@ -156,6 +156,7 @@ body.preview-mode .pane .tab, body.preview-mode .tabs { pointer-events:auto; opa
       <p class="mini" id="liMsg"></p>
     </form>
   </div>
+  <div id="adminList" class="card" style="display:none;margin-top:12px"></div>
   <form id="changeForm" class="card" style="display:none;margin-top:12px">
     <h3>Set your password</h3>
     <input id="newPass" type="password" minlength="8" placeholder="New password" required />
