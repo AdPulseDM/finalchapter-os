@@ -44,10 +44,10 @@
   .mini { color:var(--subtle); font-size:11px; } .split2 { display:grid; grid-template-columns:1fr 1fr; gap:8px; margin-top:12px; }
   .kpi { padding:12px; border-radius:10px; background:rgba(8,8,12,.55); border:1px solid var(--line); } .kpi .k { color:var(--subtle); font-size:10px; letter-spacing:.08em; } .kpi .v { margin-top:4px; font-weight:600; }
   .panel { background:rgba(20,18,32,.55); border:1px solid rgba(168,85,247,.16); border-radius:16px; overflow:hidden; }
-  .tabs { display:flex; gap:4px; padding:8px; overflow-x:auto; border-bottom:1px solid var(--line); background:rgba(8,8,12,.55); flex-wrap:wrap; }
+  .tabs { display:flex; gap:6px; padding:10px; overflow-x:auto; border-bottom:1px solid var(--line); background:#100e18; flex-wrap:wrap; position:relative; z-index:5; }
   .tab { height:38px; padding:0 14px; border-radius:10px; border:0; background:transparent; color:var(--muted); font-size:13px; font-weight:600; white-space:nowrap; }
   .tab.on { background-image:var(--grad); color:#fff; box-shadow:var(--glow); }
-  .pane { padding:22px; min-height:520px; position:relative; z-index:1; }
+  .pane { padding:22px; min-height:420px; position:relative; z-index:1; clear:both; }
   .filters { display:flex; gap:8px; flex-wrap:wrap; margin:12px 0 16px; }
   .filters input,.filters select,.field input,.field select,.field textarea { background:rgba(8,8,12,.7); border:1px solid var(--line); border-radius:10px; padding:10px 12px; font-size:13px; outline:none; }
   .filters input { flex:1; min-width:220px; } .field { margin-bottom:12px; } .field input,.field select,.field textarea { width:100%; }
@@ -88,13 +88,14 @@ body.preview-mode .pane select,
 body.preview-mode .pane button.btn { pointer-events:none; opacity:.7; }
 body.preview-mode .pane .tab, body.preview-mode .tabs { pointer-events:auto; opacity:1; }
 .preview-banner { background:#fbbf24; color:#1c1402; padding:8px 12px; border-radius:10px; font-size:13px; font-weight:600; margin-bottom:12px; }
+.tour-on { outline:2px solid #c026d3; outline-offset:4px; border-radius:16px; }
 </style>
 </head>
 <body>
 <header class="nav"><div class="wrap nav-inner">
   <a class="brand" href="#top"><div class="mark">FC</div><div><div class="brand-name">FinalChapter</div><div class="brand-sub">Estate OS</div></div></a>
   <nav class="nav-links"><a href="#os">OS</a><a href="#os" data-jump="vault">Vault</a><a href="#os" data-jump="cra">CRA</a><a href="#os" data-jump="letters">Letters</a><a href="#pricing">Pricing</a></nav>
-  <button class="btn" id="startTour" type="button">How this works</button><button class="btn btn-grad" id="openOs" type="button">Open OS</button>
+  <button class="btn btn-grad" id="startTour" type="button">How this works</button>
 </div></header>
 <main id="top">
   <section class="hero"><div class="grid-bg"></div><div class="wrap hero-grid">
@@ -102,18 +103,18 @@ body.preview-mode .pane .tab, body.preview-mode .tabs { pointer-events:auto; opa
       <div class="pill"><span class="dot"></span> Ontario executor OS · CAD pricing</div>
       <h1>The OS for executors <span>when there’s no manual.</span></h1>
       <p class="lede">FinalChapter turns a year of probate, CRA filings, and account closures into one desk. <strong>60 Ontario steps</strong>, deadline math, letters, and a vault.</p>
-      <div class="cta-row"><button class="btn btn-grad btn-lg" id="enterOs" type="button">Enter OS demo</button><button class="btn btn-lg" id="viewTimeline" type="button">View timeline</button></div>
+      <div class="cta-row"><button class="btn btn-grad btn-lg" id="startTourHero" type="button">How this works</button><a class="btn btn-lg" href="#pricing">See plans</a></div>
       <div class="stats"><div><b>60</b><span>Steps tracked</span></div><div><b>6 mo</b><span>CRA window</span></div><div><b>$2,500</b><span>CPP benefit</span></div></div>
     </div>
     <div class="preview"><div class="chrome"><div class="traffic"><i></i><i></i><i></i></div><span>finalchapter.app/os</span><span id="heroPct">0%</span></div>
       <div class="preview-body"><div id="heroTasks"></div><div class="split2"><div class="kpi"><div class="k">NEXT DEADLINE</div><div class="v" id="heroDeadline">Final T1</div></div><div class="kpi"><div class="k">ESTATE ADMIN TAX</div><div class="v" id="heroEat">$0</div><div class="mini">$0 first $50k · 1.5% after</div></div></div></div>
     </div>
   </div></section>
-  <section class="wrap" id="os" style="padding-bottom:64px"><div class="panel"><div class="tabs" id="tabs"></div><div class="pane" id="pane"></div></div></section>
-  <section class="wrap" style="padding:48px 24px"><div class="why">
-    <article><div class="mark">01</div><h3>Province logic</h3><p class="lede">Certificate of Appointment, the 180-day Estate Information Return, creditor notice, and current estate administration tax.</p></article>
-    <article><div class="mark">02</div><h3>Forms on the path</h3><p class="lede">74A, ISP1200, TX19, T1, and T3 are named on the step. This desk does not file them for you.</p></article>
-    <article><div class="mark">03</div><h3>Circle, not chaos</h3><p class="lede">Family and counsel share a feed. Liability stays with the estate trustee.</p></article>
+  <section class="wrap" id="os" style="padding-bottom:64px;display:none"><div class="panel"><div class="tabs" id="tabs"></div><div class="pane" id="pane"></div></div></section>
+  <section class="wrap" id="why" style="padding:48px 24px"><div class="why">
+    <article id="why-province"><div class="mark">01</div><h3>Province logic</h3><p class="lede">Certificate of Appointment, the 180-day Estate Information Return, creditor notice, and current estate administration tax.</p></article>
+    <article id="why-forms"><div class="mark">02</div><h3>Forms on the path</h3><p class="lede">74A, ISP1200, TX19, T1, and T3 are named on the step. This desk does not file them for you.</p></article>
+    <article id="why-circle"><div class="mark">03</div><h3>Circle, not chaos</h3><p class="lede">Family and counsel share a feed. Liability stays with the estate trustee.</p></article>
   </div></section>
   <section class="wrap" id="pricing" style="padding:24px 24px 64px;text-align:center"><h2 class="display" style="font-size:36px;margin:0">One-time. No subscription grief.</h2><p class="lede" style="margin:8px auto 24px">One-time CAD checkout. After payment you return here unlocked. You can also paste your workspace code. Not legal advice.</p>
     <div class="prices" style="text-align:left">
@@ -147,7 +148,7 @@ function render(){
   $("#tabs").innerHTML=tabs.map(([id,l])=>`<button class="tab ${state.tab===id?"on":""}" data-tab="${id}" type="button">${l}</button>`).join("");
   const map={timeline:timelineHTML,vault:vaultHTML,cra:craHTML,letters:lettersHTML,costs:costsHTML,circle:circleHTML,videos:videosHTML};
   if (!isPaid()) { $("#pane").innerHTML = paywall(); $("#tabs").innerHTML = ""; }
-  else {
+  else { showDesk(true);
     const banner = window.fcPreview ? '<div class="preview-banner">Sneak peek · read only · pay to edit and save</div>' : '';
     $("#pane").innerHTML = banner + map[state.tab]();
   }
@@ -292,6 +293,10 @@ function bind(){
   };
 }
 
+function showDesk(on){
+  const os = document.getElementById("os");
+  if (os) os.style.display = on ? "block" : "none";
+}
 function isPaid(){
   if (window.fcPreview) return true;
   if (sessionStorage.getItem("fc.paid") === "1") return true;
@@ -320,10 +325,10 @@ function paywall(){
   </div>`;
 }
 function openOs(){
-  if (!isPaid()) { state.locked = true; render(); document.getElementById("os").scrollIntoView({behavior:"smooth"}); return; }
+  if (!isPaid()) { showDesk(false); return; }
   state.locked = false; state.tab="timeline"; render(); persistDesk(); document.getElementById("os").scrollIntoView({behavior:"smooth"});
 }
-$("#enterOs").onclick=openOs; $("#openOs").onclick=openOs; $("#viewTimeline").onclick=openOs;
+const heroTour=$("#startTourHero"); if(heroTour) heroTour.onclick=()=>{ if(window.startFinalTour) window.startFinalTour(); };
 document.querySelectorAll("[data-jump]").forEach(a=>a.onclick=e=>{e.preventDefault();state.tab=a.dataset.jump;render();document.getElementById("os").scrollIntoView({behavior:"smooth"})});
 render();
 
