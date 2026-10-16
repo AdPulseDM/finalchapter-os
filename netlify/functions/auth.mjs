@@ -45,9 +45,13 @@ export default async (req) => {
     const password = String(body.password || "");
     const adminEmail = (process.env.ADMIN_EMAIL || "elisa@adpulsenexus.com").toLowerCase();
     if (email === adminEmail) {
+      const saved = await s.get("admin:" + adminEmail, { type: "json" });
       const adminPass = process.env.ADMIN_PASSWORD || "";
-      if (!adminPass || password !== adminPass) return json(401, { error: "Invalid email or password" });
-      return json(200, { ok: true, role: "admin", email, name: "Admin" });
+      const ok = saved ? verify(password, saved.salt, saved.hash) : (adminPass && password === adminPass);
+      if (!ok) return json(401, { error: "Invalid email or password" });
+      const token = crypto.randomBytes(16).toString("hex");
+      await s.set("tok:" + token, adminEmail);
+      return json(200, { ok: true, role: "admin", email, name: "Admin", token, must_change_password: !saved });
     }
     const row = email ? await s.get("user:" + email, { type: "json" }) : null;
     if (!row || !verify(password, row.password_salt, row.password_hash)) return json(401, { error: "Invalid email or password" });
@@ -73,7 +77,14 @@ export default async (req) => {
     if (next.length < 8) return json(400, { error: "Use at least 8 characters" });
     // find by token — scan is small; store also by token
     const emailKey = await s.get("tok:" + token, { type: "text" });
-    const row = emailKey ? await s.get("user:" + emailKey, { type: "json" }) : null;
+    if (!emailKey) return json(401, { error: "Not signed in" });
+    const adminEmail = (process.env.ADMIN_EMAIL || "elisa@adpulsenexus.com").toLowerCase();
+    if (emailKey === adminEmail) {
+      const hashed = hash(next);
+      await s.setJSON("admin:" + adminEmail, { salt: hashed.salt, hash: hashed.hash });
+      return json(200, { ok: true });
+    }
+    const row = await s.get("user:" + emailKey, { type: "json" });
     if (!row) return json(401, { error: "Not signed in" });
     const hashed = hash(next);
     row.password_hash = hashed.hash;
