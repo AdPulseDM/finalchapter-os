@@ -1,0 +1,24 @@
+{
+  "desk": "FinalChapter",
+  "generated": "2026-10-23",
+  "note": "Official form pages, keyed to the step ids in index.html (RAW). FinalChapter names and links the form. It does not host or file it. URLs checked 2026-10-23.",
+  "forms": [
+    {"name": "Death certificate order", "steps": [5], "url": "https://www.ontario.ca/page/get-or-replace-an-ontario-death-certificate", "issuer": "ServiceOntario"},
+    {"name": "Statement of Death", "steps": [2], "url": "https://www.ontario.ca/page/what-do-when-someone-dies", "issuer": "Funeral director"},
+    {"name": "ISP1200", "title": "Application for a Canada Pension Plan Death Benefit", "steps": [9], "url": "https://www.canada.ca/en/services/benefits/publicpensions/cpp/cpp-death-benefit.html", "issuer": "Service Canada"},
+    {"name": "Mail redirect", "steps": [15], "url": "https://www.canadapost-postescanada.ca/cpc/en/personal/receiving/manage-mail/mail-forwarding.page", "issuer": "Canada Post"},
+    {"name": "Probate overview", "steps": [21, 26], "url": "https://www.ontario.ca/page/apply-probate-estate", "issuer": "Ontario"},
+    {"name": "Form 74A", "title": "Application for a Certificate of Appointment of Estate Trustee", "steps": [22], "url": "https://ontariocourtforms.on.ca/en/rules-of-civil-procedure-forms/pre-formatted-fillable-estates-forms/", "issuer": "Ontario Superior Court of Justice"},
+    {"name": "Form 74D", "title": "Affidavit of Execution of Will or Codicil", "steps": [23], "url": "https://ontariocourtforms.on.ca/en/rules-of-civil-procedure-forms/pre-formatted-fillable-estates-forms/", "issuer": "Ontario Superior Court of Justice"},
+    {"name": "Form 74G", "title": "Renunciation and Consent", "steps": [24], "url": "https://ontariocourtforms.on.ca/en/rules-of-civil-procedure-forms/pre-formatted-fillable-estates-forms/", "issuer": "Ontario Superior Court of Justice"},
+    {"name": "Estate Information Return", "steps": [28], "url": "https://www.ontario.ca/page/estate-administration-tax", "form_url": "https://forms.mgcs.gov.on.ca/en/dataset/9955", "issuer": "Ontario Ministry of Finance"},
+    {"name": "T1 final", "steps": [31], "url": "https://www.canada.ca/en/revenue-agency/services/tax/individuals/life-events/doing-taxes-someone-died.html", "issuer": "CRA"},
+    {"name": "T3 return (T3RET)", "title": "T3 Trust Income Tax and Information Return", "steps": [32, 58], "url": "https://www.canada.ca/en/revenue-agency/services/forms-publications/forms/t3ret.html", "issuer": "CRA"},
+    {"name": "TX19", "title": "Asking for a Clearance Certificate", "steps": [33], "url": "https://www.canada.ca/en/revenue-agency/services/forms-publications/forms/tx19.html", "issuer": "CRA"},
+    {"name": "IC82-6R13", "title": "Clearance Certificate (information circular)", "steps": [33], "url": "https://www.canada.ca/en/revenue-agency/services/forms-publications/publications/ic82-6/clearance-certificate.html", "issuer": "CRA"},
+    {"name": "ISP1300", "steps": [34], "url": "https://www.canada.ca/en/services/benefits/publicpensions/cpp/cpp-survivor-pension.html", "issuer": "Service Canada"},
+    {"name": "GST/HST cancellation", "steps": [35], "url": "https://www.canada.ca/en/revenue-agency/services/tax/businesses/topics/gst-hst-businesses/account-close.html", "issuer": "CRA"},
+    {"name": "RC4111", "title": "Notify the Canada Revenue Agency of a Death", "steps": [37], "url": "https://www.canada.ca/en/revenue-agency/services/forms-publications/forms/rc4111.html", "issuer": "CRA"},
+    {"name": "Vehicle transfer", "steps": [41], "url": "https://www.ontario.ca/page/buy-or-sell-used-vehicle-ontario", "issuer": "ServiceOntario"}
+  ]
+}

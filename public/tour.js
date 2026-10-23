@@ -3,8 +3,8 @@
     { el: "#why-province", title: "Province logic", body: "Certificate of Appointment, the 180-day Estate Information Return, creditor notice, and current estate administration tax." },
     { el: "#why-forms", title: "Forms on the path", body: "74A, ISP1200, TX19, T1, and T3 are named on the step. This desk does not file them for you." },
     { el: "#why-circle", title: "Circle, not chaos", body: "Family and counsel share a feed. Liability stays with the estate trustee." },
-    { el: "#pricing", title: "One-time unlock", body: "Pay once. Timeline, vault, CRA, letters, costs, circle, and slides unlock on this browser." },
-    { el: null, title: "What unlocks", body: "Timeline of 60 steps. Vault for proof. CRA deadlines and the TX19 letter. Letters you can copy. Costs. Circle. Slides. Not legal advice." }
+    { el: "#pricing", title: "One-time unlock", body: "Create an account, pay once through Stripe, then log in. Timeline, vault, CRA, letters, costs, circle, and slides unlock for your account." },
+    { el: null, title: "What unlocks", body: "Timeline of 60 steps. Vault for proof. CRA deadlines and the TX19 letter. Letters you can copy. Costs. Circle. Slides. It does not file forms. Not legal, tax, or financial advice." }
   ];
   var i = 0;
   var box;

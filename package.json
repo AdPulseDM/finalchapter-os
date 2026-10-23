@@ -1,6 +1,11 @@
 {
   "name": "finalchapter-os",
   "private": true,
+  "type": "module",
+  "scripts": {
+    "check": "for f in netlify/functions/*.mjs netlify/lib/*.mjs; do node --check $f || exit 1; done",
+    "test": "node --test tests/"
+  },
   "dependencies": {
     "@netlify/blobs": "9.1.6"
   }

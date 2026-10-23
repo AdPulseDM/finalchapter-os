@@ -1,35 +1,28 @@
-import crypto from "node:crypto";
-import { getStore } from "@netlify/blobs";
+// /api/estate — load/save the paid user's desk. Requires a valid client session for a PAID account.
+import { json, getSession, getUser, bearer } from "../lib/core.mjs";
+import { usersStore } from "../lib/store.mjs";
 
-function store() {
-  return getStore({ name: "finalchapter-estates", consistency: "strong" });
-}
-function json(status, body) {
-  return Response.json(body, { status, headers: { "x-content-type-options": "nosniff", "x-frame-options": "DENY" } });
-}
-function publicEstate(row) {
-  return { token: row.token, id: row.id, email: row.email, plan: row.plan || "demo", desk: row.desk || null };
-}
-export default async (req) => {
+const MAX_DESK_BYTES = 200 * 1024;
+
+export async function handle(req, { store }) {
   if (req.method !== "POST") return json(405, { error: "Use POST" });
   const body = await req.json().catch(() => ({}));
-  const s = store();
-  if (body.action === "create") {
-    const email = String(body.email || "").trim().toLowerCase();
-    if (!email) return json(400, { error: "Email required" });
-    const row = { id: crypto.randomBytes(8).toString("hex"), token: crypto.randomBytes(16).toString("hex"), email, plan: "demo", desk: body.desk || null, createdAt: new Date().toISOString() };
-    await s.setJSON("es:" + row.id, row);
-    await s.set("tok:" + row.token, row.id);
-    return json(200, { estate: publicEstate(row) });
-  }
-  const token = String(body.token || "");
-  const id = token ? await s.get("tok:" + token, { type: "text" }) : "";
-  if (!id) return json(401, { error: "Estate token missing or expired." });
-  const row = await s.get("es:" + id, { type: "json" });
-  if (!row) return json(404, { error: "Estate not found" });
+  const sess = await getSession(store, bearer(req, body));
+  if (!sess || sess.role !== "client") return json(401, { error: "Not signed in or session expired" });
+  const user = await getUser(store, sess.email);
+  if (!user || !user.paid) return json(402, { error: "Pay to unlock the desk" });
+  const key = "desk:" + user.email;
   if (body.action === "save") {
-    row.desk = body.desk || row.desk;
-    await s.setJSON("es:" + row.id, row);
+    const desk = body.desk && typeof body.desk === "object" ? body.desk : null;
+    if (!desk) return json(400, { error: "desk object required" });
+    if (JSON.stringify(desk).length > MAX_DESK_BYTES) return json(413, { error: "Desk too large" });
+    await store.setJSON(key, { ...desk, savedAt: new Date().toISOString() });
+    return json(200, { ok: true });
   }
-  return json(200, { estate: publicEstate(row) });
-};
+  if (body.action === "load") {
+    return json(200, { ok: true, desk: (await store.get(key, { type: "json" })) || null });
+  }
+  return json(400, { error: "Unknown action" });
+}
+
+export default async (req) => handle(req, { store: usersStore() });
