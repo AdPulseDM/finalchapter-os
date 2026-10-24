@@ -187,15 +187,24 @@ export async function markPaid(store, { email, plan, kind = "purchase", fromPlan
   return { user };
 }
 
+// The Stripe account is shared with other apps; only sessions tagged metadata.app === APP_ID are ours.
+export const APP_ID = "finalchapter";
+export function isOurSession(session) {
+  return !!session && session.object === "checkout.session" && session.metadata?.app === APP_ID;
+}
+
 // Apply a Stripe Checkout Session object. Only marks paid when Stripe says payment_status === "paid".
 export async function applyCheckoutSession(store, session) {
   if (!session || session.object !== "checkout.session") return { error: "Not a checkout session", status: 400 };
+  if (!isOurSession(session)) return { error: "Not a FinalChapter checkout session", status: 400, foreign: true };
   if (session.payment_status !== "paid") return { error: "Payment not completed", status: 402, pending: true };
   const email = normEmail(session.metadata?.email || session.customer_email || session.customer_details?.email);
   if (!email) return { error: "Session is missing email metadata", status: 400 };
   const user = await getUser(store, email);
   if (!user) return { error: "No account for that email", status: 404 };
-  if (session.client_reference_id && session.client_reference_id !== user.id) return { error: "Session does not belong to this account", status: 403 };
+  // Our sessions always carry the account id in client_reference_id and metadata.userId; every id present must match.
+  const ids = [session.client_reference_id, session.metadata?.userId].filter(Boolean);
+  if (!ids.length || ids.some((id) => id !== user.id)) return { error: "Session does not belong to this account", status: 403 };
   const kind = session.metadata?.kind === "upgrade" ? "upgrade" : "purchase";
   const amount = session.amount_subtotal ?? session.amount_total;
   const plan = normPlan(session.metadata?.plan) || (kind === "purchase" ? planFromAmount(amount) : "");

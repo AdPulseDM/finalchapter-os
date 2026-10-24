@@ -12,7 +12,7 @@ const ADMIN = { email: "owner@example.com", password: "correct-horse-battery" };
 let n = 0;
 function stripeSession(user, plan, amount, over = {}) {
   return { id: "cs_test_" + ++n, object: "checkout.session", payment_status: "paid", client_reference_id: user.id, customer_email: user.email,
-    metadata: { email: user.email, userId: user.id, plan, ...(over.metadata || {}) }, amount_subtotal: amount, amount_total: amount, currency: "cad", ...over, ...(over.metadata ? { metadata: { email: user.email, userId: user.id, plan, ...over.metadata } } : {}) };
+    metadata: { app: "finalchapter", email: user.email, userId: user.id, plan, ...(over.metadata || {}) }, amount_subtotal: amount, amount_total: amount, currency: "cad", ...over, ...(over.metadata ? { metadata: { app: "finalchapter", email: user.email, userId: user.id, plan, ...over.metadata } } : {}) };
 }
 async function paidUser(store, plan, email = plan + "@example.com") {
   const r = await call(auth, post("/api/auth", { action: "signup", name: "Buyer", email, password: "supersecret1", plan }), { store, admin: ADMIN });
@@ -209,4 +209,77 @@ test("documents checklist and executor name are saved; junk vault values dropped
   assert.deepEqual(desk.vault, { will: "have", bank: "not" });
   assert.equal(desk.letter.trustee, "Ana Silva");
   assert.equal(desk.dod, undefined, "no date of death until the user enters one");
+});
+
+// ---- shared Stripe account: other apps' sessions must be ignored, never applied ----
+import crypto from "node:crypto";
+import { handle as webhook } from "../netlify/functions/stripe-webhook.mjs";
+const WHSEC = "whsec_shared_acct";
+function signed(event) {
+  const payload = JSON.stringify(event), t = Math.floor(Date.now() / 1000);
+  const sig = crypto.createHmac("sha256", WHSEC).update(`${t}.${payload}`).digest("hex");
+  return new Request("https://example.test/api/stripe-webhook", { method: "POST", headers: { "stripe-signature": `t=${t},v1=${sig}` }, body: payload });
+}
+async function unpaidUser(store, email = "u@example.com") {
+  const r = await call(auth, post("/api/auth", { action: "signup", name: "U", email, password: "supersecret1", plan: "family" }), { store, admin: ADMIN });
+  return { token: r.body.token, user: await store.get("user:" + email, { type: "json" }) };
+}
+
+test("checkout tags the session and payment intent with metadata app=finalchapter", async () => {
+  const store = memStore(); const { token } = await unpaidUser(store);
+  let sent; const fetchImpl = async (_u, o) => { sent = new URLSearchParams(o.body); return new Response(JSON.stringify({ url: "https://checkout.stripe.com/x", id: "cs_x" }), { status: 200 }); };
+  assert.equal((await call(checkout, post("/api/checkout", { plan: "family" }, token), { store, fetchImpl, secretKey: "sk_test_x" })).status, 200);
+  assert.equal(sent.get("metadata[app]"), "finalchapter");
+  assert.equal(sent.get("payment_intent_data[metadata][app]"), "finalchapter");
+});
+
+test("webhook: foreign sessions (other apps, or untagged) get 200 ignored and are not applied, even if the email matches", async () => {
+  const store = memStore(); const { user } = await unpaidUser(store);
+  const base = stripeSession(user, "family", 8900);
+  const variants = [
+    { ...base, id: "cs_test_adpulse1", metadata: { ...base.metadata, app: "adpulse" } },
+    { ...base, id: "cs_test_pulse1", metadata: { ...base.metadata, app: "pulsecheck" } },
+    (() => { const s = { ...base, id: "cs_test_untagged", metadata: { ...base.metadata } }; delete s.metadata.app; return s; })(),
+    { id: "cs_test_nometa", object: "checkout.session", payment_status: "paid", customer_email: user.email, amount_total: 8900, currency: "cad" },
+  ];
+  for (const obj of variants) {
+    for (const type of ["checkout.session.completed", "checkout.session.async_payment_succeeded"]) {
+      const r = await call(webhook, signed({ type, data: { object: obj } }), { store, secret: WHSEC });
+      assert.equal(r.status, 200, obj.id); assert.equal(r.body.ignored, true, obj.id); assert.equal(r.body.applied, undefined);
+    }
+  }
+  // foreign session for an email we don't know: still 200, never 500 (no retries)
+  const stranger = { ...base, id: "cs_test_stranger", customer_email: "nobody@else.com", metadata: { app: "adpulse", email: "nobody@else.com" } };
+  assert.equal((await call(webhook, signed({ type: "checkout.session.completed", data: { object: stranger } }), { store, secret: WHSEC })).status, 200);
+  // unhandled event types are acknowledged and ignored
+  const other = await call(webhook, signed({ type: "invoice.paid", data: { object: { object: "invoice" } } }), { store, secret: WHSEC });
+  assert.equal(other.status, 200); assert.equal(other.body.ignored, true);
+  const row = await store.get("user:" + user.email, { type: "json" });
+  assert.equal(row.paid, false); assert.equal((await store.list({ prefix: "stripe:" })).blobs.length, 0);
+  // a correctly tagged session is still applied
+  const ok = await call(webhook, signed({ type: "checkout.session.completed", data: { object: { ...base, id: "cs_test_ours" } } }), { store, secret: WHSEC });
+  assert.equal(ok.body.applied, true);
+});
+
+test("applyCheckoutSession and verify-checkout refuse foreign sessions and sessions for another user", async () => {
+  const store = memStore(); const a = await unpaidUser(store, "a@example.com"); const b = await unpaidUser(store, "b@example.com");
+  const foreign = stripeSession(a.user, "family", 8900, { metadata: { app: "adpulse" } });
+  const r = await applyCheckoutSession(store, foreign);
+  assert.ok(r.error && r.foreign);
+  const fetchFor = (s) => async () => new Response(JSON.stringify(s), { status: 200 });
+  const v1 = await call(verify, post("/api/verify-checkout", { sessionId: foreign.id }, a.token), { store, fetchImpl: fetchFor(foreign), secretKey: "sk_test_x" });
+  assert.equal(v1.status, 400); assert.equal(v1.body.paid, false);
+  // B tries to confirm A's (genuine) session
+  const aSess = stripeSession(a.user, "family", 8900);
+  const v2 = await call(verify, post("/api/verify-checkout", { sessionId: aSess.id }, b.token), { store, fetchImpl: fetchFor(aSess), secretKey: "sk_test_x" });
+  assert.equal(v2.status, 403);
+  // mismatched userId in metadata is refused even if client_reference_id matches
+  const mixed = stripeSession(a.user, "family", 8900, { metadata: { userId: b.user.id } });
+  assert.equal((await applyCheckoutSession(store, mixed)).status, 403);
+  // no id at all is refused
+  const noIds = stripeSession(a.user, "family", 8900); delete noIds.client_reference_id; delete noIds.metadata.userId;
+  assert.equal((await applyCheckoutSession(store, noIds)).status, 403);
+  for (const e of ["a@example.com", "b@example.com"]) assert.equal((await store.get("user:" + e, { type: "json" })).paid, false);
+  const v3 = await call(verify, post("/api/verify-checkout", { sessionId: aSess.id }, a.token), { store, fetchImpl: fetchFor(aSess), secretKey: "sk_test_x" });
+  assert.equal(v3.body.paid, true);
 });

@@ -1,6 +1,6 @@
 // /api/stripe-webhook — Stripe calls this. Verifies the Stripe-Signature header with STRIPE_WEBHOOK_SECRET
 // and marks the account paid on checkout.session.completed / checkout.session.async_payment_succeeded.
-import { json, env, verifyStripeSignature, applyCheckoutSession } from "../lib/core.mjs";
+import { json, env, verifyStripeSignature, applyCheckoutSession, isOurSession } from "../lib/core.mjs";
 import { usersStore } from "../lib/store.mjs";
 
 export async function handle(req, { store, secret = env("STRIPE_WEBHOOK_SECRET"), nowS }) {
@@ -11,7 +11,13 @@ export async function handle(req, { store, secret = env("STRIPE_WEBHOOK_SECRET")
   if (!check.ok) return json(400, { error: check.error });
   let event;
   try { event = JSON.parse(payload); } catch { return json(400, { error: "Invalid JSON" }); }
-  if (event.type === "checkout.session.completed" || event.type === "checkout.session.async_payment_succeeded") {
+  const HANDLED = ["checkout.session.completed", "checkout.session.async_payment_succeeded"];
+  // The Stripe account is shared with other projects: acknowledge (200) and ignore anything that is not ours,
+  // so Stripe never retries or disables the endpoint because of another app's events.
+  if (!HANDLED.includes(event.type) || !isOurSession(event.data?.object)) {
+    return json(200, { received: true, ignored: true });
+  }
+  {
     const r = await applyCheckoutSession(store, event.data?.object);
     if (r.pending) return json(200, { received: true, pending: true });
     if (r.error) {
@@ -21,7 +27,6 @@ export async function handle(req, { store, secret = env("STRIPE_WEBHOOK_SECRET")
     }
     return json(200, { received: true, applied: true });
   }
-  return json(200, { received: true, ignored: event.type });
 }
 
 export default async (req) => handle(req, { store: usersStore() });

@@ -24,7 +24,7 @@ function signedWebhook(event, secret = WHSEC, t = Math.floor(Date.now() / 1000))
 }
 function session(user, over = {}) {
   return { id: "cs_test_abc123", object: "checkout.session", payment_status: "paid", client_reference_id: user.id, customer_email: user.email,
-    metadata: { email: user.email, userId: user.id, plan: "family" }, amount_subtotal: 8900, amount_total: 8900, currency: "cad", ...over };
+    metadata: { app: "finalchapter", email: user.email, userId: user.id, plan: "family" }, amount_subtotal: 8900, amount_total: 8900, currency: "cad", ...over };
 }
 async function userRow(store, email = "buyer@example.com") { return store.get("user:" + email, { type: "json" }); }
 
@@ -175,14 +175,16 @@ test("verify-checkout fallback only marks paid when Stripe says payment_status i
   const unpaidFetch = async () => new Response(JSON.stringify(session(u, { payment_status: "unpaid" })), { status: 200 });
   const r1 = await call(verify, post("/api/verify-checkout", { sessionId: "cs_test_abc123" }, s.token), { store, secretKey: "sk_test_x", fetchImpl: unpaidFetch });
   assert.equal(r1.body.paid, false); assert.equal((await userRow(store)).paid, false);
-  const bad = await call(verify, post("/api/verify-checkout", { sessionId: "not-a-session" }), { store, secretKey: "sk_test_x", fetchImpl: unpaidFetch });
+  const bad = await call(verify, post("/api/verify-checkout", { sessionId: "not-a-session" }, s.token), { store, secretKey: "sk_test_x", fetchImpl: unpaidFetch });
   assert.equal(bad.status, 400);
   let calledUrl;
   const paidFetch = async (url) => { calledUrl = url; return new Response(JSON.stringify(session(u)), { status: 200 }); };
   const anon = await call(verify, post("/api/verify-checkout", { sessionId: "cs_test_abc123" }), { store, secretKey: "sk_test_x", fetchImpl: paidFetch });
-  assert.equal(anon.body.paid, true); assert.equal(anon.body.workspaceCode, undefined, "code only revealed to the signed-in owner");
-  assert.equal(calledUrl, "https://api.stripe.com/v1/checkout/sessions/cs_test_abc123");
+  assert.equal(anon.status, 401); assert.equal(anon.body.paid, false); assert.equal(anon.body.workspaceCode, undefined, "must be signed in");
+  assert.equal((await userRow(store)).paid, false, "anonymous verify does not apply");
   const owner = await call(verify, post("/api/verify-checkout", { sessionId: "cs_test_abc123" }, s.token), { store, secretKey: "sk_test_x", fetchImpl: paidFetch });
+  assert.equal(owner.body.paid, true);
+  assert.equal(calledUrl, "https://api.stripe.com/v1/checkout/sessions/cs_test_abc123");
   assert.match(owner.body.workspaceCode, /^FC-/);
 });
 

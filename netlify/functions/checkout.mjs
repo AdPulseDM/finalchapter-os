@@ -1,6 +1,6 @@
 // /api/checkout — creates a Stripe Checkout Session for the signed-in (unpaid or upgrading) user.
 // The email, user id and plan travel in metadata/client_reference_id so the webhook can match the payment.
-import { json, env, PLANS, CURRENCY, normPlan, upgradePrice, getSession, getUser, bearer } from "../lib/core.mjs";
+import { json, env, PLANS, CURRENCY, APP_ID, normPlan, upgradePrice, getSession, getUser, bearer } from "../lib/core.mjs";
 import { usersStore } from "../lib/store.mjs";
 
 export function siteUrl() {
@@ -33,6 +33,8 @@ export async function handle(req, { store, fetchImpl = fetch, secretKey = env("S
   params.set("mode", "payment");
   params.set("client_reference_id", user.id);
   params.set("customer_email", user.email);
+  params.set("metadata[app]", APP_ID);
+  params.set("payment_intent_data[metadata][app]", APP_ID);
   params.set("metadata[email]", user.email);
   params.set("metadata[userId]", user.id);
   params.set("metadata[plan]", plan);

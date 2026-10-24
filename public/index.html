@@ -669,12 +669,13 @@ async function handleReturn(){
   const up=sessionStorage.getItem("fc.upgrade"); sessionStorage.removeItem("fc.upgrade");
   if(c==="cancel"){ returnState={kind:"cancel"}; return; }
   const r=await api("verify-checkout",{sessionId:sid});
-  returnState=r.paid?{kind:up?"upgrade":"paid",plan:(r.user&&r.user.plan)||up}:{kind:"pending"};
+  returnState=r.paid?{kind:up?"upgrade":"paid",plan:(r.user&&r.user.plan)||up}:{kind:r.status===401?"login":"pending"};
 }
 let returnState=null;
 function showReturn(){
   const rs=returnState; returnState=null; if(!rs) return;
   if(rs.kind==="cancel"){ notice("Checkout cancelled. You haven’t been charged. Your account is saved. Choose <strong>Complete payment</strong> when you’re ready.<br><button type=\"button\" class=\"btn btn-grad\" id=\"noticePay\" style=\"margin-top:10px;font-size:14px;width:auto;min-height:44px\">Complete payment</button>","warn"); const np=$("#noticePay"); if(np) np.onclick=()=>$("#payNow").click(); document.getElementById("noticeWrap").scrollIntoView({behavior:"smooth"}); return; }
+  if(rs.kind==="login"&&!session.role){ notice("If you’ve paid, log in below to open your checklist. Your payment is confirmed by Stripe automatically.","warn"); document.getElementById("account").scrollIntoView({behavior:"smooth"}); return; }
   if(rs.kind==="pending"||!isPaid()){ notice("We’re confirming your payment with Stripe. This usually takes under a minute. Refresh this page, or log in again shortly.","warn"); document.getElementById("noticeWrap").scrollIntoView({behavior:"smooth"}); return; }
   const plan=PLAN_NAMES[session.user.plan]||"";
   if(rs.kind==="upgrade"){
