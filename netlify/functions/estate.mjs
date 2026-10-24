@@ -1,7 +1,7 @@
 // /api/estate — estates for the signed-in PAID account. Plan limits are enforced in ../lib/estates.mjs.
 // Actions: list, create, load, save, rename, archive, restore, share, unshare  (client session required)
 //          shared (public; read-only progress view for a valid share token)
-import { json, getSession, getUser, bearer, entitlements } from "../lib/core.mjs";
+import { json, getSession, getUser, bearer, entitlements, accessNoticeText } from "../lib/core.mjs";
 import { usersStore, estatesStore } from "../lib/store.mjs";
 import * as E from "../lib/estates.mjs";
 
@@ -17,7 +17,7 @@ export async function handle(req, { store, estates }) {
   const sess = await getSession(store, bearer(req, body));
   if (!sess || sess.role !== "client") return json(401, { error: "Not signed in or session expired" });
   const user = await getUser(store, sess.email);
-  if (!user || !user.paid) return json(402, { error: "Buy a plan to open your checklist" });
+  if (!user || !user.paid) return json(402, { error: accessNoticeText(user?.accessNotice) || "Buy a plan to open your checklist" });
   if (!user.lastActiveAt || Date.now() - Date.parse(user.lastActiveAt) > DAY) {
     user.lastActiveAt = new Date().toISOString();
     await store.setJSON("user:" + user.email, user);

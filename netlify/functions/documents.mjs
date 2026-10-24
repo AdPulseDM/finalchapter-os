@@ -2,7 +2,7 @@
 //   {action:"letter", estateId, type, format:"docx"|"pdf"}  any paid plan
 //   {action:"printkit", estateId}                          paid plan + Print kit add-on
 // Nothing is stored; the file is generated on request and returned as an attachment.
-import { json, getSession, getUser, bearer, hasAddon } from "../lib/core.mjs";
+import { json, getSession, getUser, bearer, hasAddon, accessNoticeText } from "../lib/core.mjs";
 import { usersStore, estatesStore } from "../lib/store.mjs";
 import * as E from "../lib/estates.mjs";
 import * as R from "../../public/fc-rules.js";
@@ -29,7 +29,7 @@ export async function handle(req, { store, estates, today }) {
   const sess = await getSession(store, bearer(req, body));
   if (!sess || sess.role !== "client") return json(401, { error: "Log in to download documents" });
   const user = await getUser(store, sess.email);
-  if (!user || !user.paid) return json(402, { error: "Letter downloads are part of every paid plan. Buy a plan to download." });
+  if (!user || !user.paid) return json(402, { error: accessNoticeText(user?.accessNotice) || "Letter downloads are part of every paid plan. Buy a plan to download." });
   const e = await E.getEstate(estates, user, body.estateId);
   if (!e) return json(404, { error: "Estate not found" });
   const desk = E.sanitizeDesk(e.desk, user.plan);
@@ -43,7 +43,7 @@ export async function handle(req, { store, estates, today }) {
     return file(format === "docx" ? letterDocx(letter) : await letterPdf(letter), letter.filename, format);
   }
   if (body.action === "printkit") {
-    if (!hasAddon(user, "printkit")) return json(402, { error: "The Print kit is a $29 add-on. Buy it once to download your print-ready PDF." });
+    if (!hasAddon(user, "printkit")) return json(402, { error: (user.accessNotice?.kind === "addon" && accessNoticeText(user.accessNotice)) || "The Print kit is a $29 add-on. Buy it once to download your print-ready PDF." });
     const bytes = await printKitPdf({ estateName: e.name, desk, today: day });
     return file(bytes, `${e.name.replace(/[^A-Za-z0-9]+/g, "-").slice(0, 50)}-print-kit`, "pdf");
   }

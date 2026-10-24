@@ -629,7 +629,7 @@ function renderAccount(){
   forms.style.display="none"; panel.style.display="block";
   if(session.role==="admin"){ $("#accountInfo").innerHTML="<strong>Admin</strong>"; $("#payNow").style.display="none"; $("#openDesk").style.display="none"; loadCustomers(); return }
   const u=session.user||{};
-  $("#accountInfo").innerHTML=`<strong>${esc(u.name)}</strong> <span class="mini">${esc(u.email)} · ${esc(PLAN_NAMES[u.plan]||u.plan)} plan · ${u.paid?"paid":"payment not completed"}</span>`+(u.paid&&session.workspaceCode?`<p class="mini">Backup sign-in code: <code>${esc(session.workspaceCode)}</code><br>Use it to open your checklist on another device without your password. Keep it private like a password.</p>`:"");
+  $("#accountInfo").innerHTML=`<strong>${esc(u.name)}</strong> <span class="mini">${esc(u.email)} · ${esc(PLAN_NAMES[u.plan]||u.plan)} plan · ${u.paid?"paid":u.notice?"not active":"payment not completed"}</span>`+(u.notice?`<p class="mini" role="status" id="accessNotice" style="margin-top:8px;color:#fbbf24">${esc(u.notice)}</p>`:"")+(u.paid&&session.workspaceCode?`<p class="mini">Backup sign-in code: <code>${esc(session.workspaceCode)}</code><br>Use it to open your checklist on another device without your password. Keep it private like a password.</p>`:"");
   $("#payNow").style.display=u.paid?"none":""; $("#openDesk").style.display=u.paid?"":"none";
   if(u.paid){
     const P={executor:[1,49,"Executor"],family:[2,89,"Family"],professional:[3,199,"Professional"]}; const cur=P[u.plan]||P.executor;

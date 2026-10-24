@@ -19,7 +19,8 @@ export async function handle(req, { store, fetchImpl = fetch, secretKey = env("S
   if (!ids.length || ids.some((id) => id !== me.id)) return json(403, { paid: false, error: "This payment belongs to a different account." });
   const r = await applyCheckoutSession(store, s);
   if (r.error) return json(r.status, { paid: false, error: r.error });
-  return json(200, { paid: true, user: publicUser(r.user), workspaceCode: r.user.workspaceCode });
+  // A replayed session for a payment that was later refunded must not report the account as paid.
+  return json(200, { paid: !!r.user.paid, user: publicUser(r.user), workspaceCode: r.user.paid ? r.user.workspaceCode : undefined });
 }
 
 export default async (req) => handle(req, { store: usersStore() });
