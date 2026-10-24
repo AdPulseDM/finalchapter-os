@@ -80,3 +80,8 @@ test("policy and tour copy follow the usability changes", () => {
   assert.ok(!/demo/i.test(privacy + tour));
   assert.ok(!tour.includes("Province logic"));
 });
+
+test("setup card names the estate and single-estate plans get a rename control", () => {
+  assert.ok(html.includes('renameCurrent("Estate of "+state.letter.name)'));
+  assert.ok(html.includes('id="renameCur"'));
+});

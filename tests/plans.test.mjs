@@ -60,7 +60,7 @@ test("verify-checkout stores the purchased plan", async () => {
   assert.equal(r.body.user.entitlements.maxEstates, 5);
 });
 
-test("Executor and Family: exactly one estate; cannot create a second", async () => {
+test("Executor and Family: exactly one estate, can rename it, cannot create a second or archive", async () => {
   for (const plan of ["executor", "family"]) {
     const store = memStore(), estates = memStore(); const d = { store, estates };
     const { token } = await paidUser(store, plan);
@@ -70,9 +70,12 @@ test("Executor and Family: exactly one estate; cannot create a second", async ()
     const c = await E(d, token, { action: "create", name: "Second" });
     assert.equal(c.status, 403, plan);
     assert.equal((await E(d, token, { action: "list" })).body.estates.length, 1);
-    // rename/archive are Professional client-list features
+    // any paid plan can rename its own estate; archive stays a Professional client-list feature
     const id = list.body.estates[0].id;
-    assert.equal((await E(d, token, { action: "rename", estateId: id, name: "X" })).status, 403);
+    const ren = await E(d, token, { action: "rename", estateId: id, name: "Estate of M. Rossi" });
+    assert.equal(ren.status, 200, plan); assert.equal(ren.body.estate.name, "Estate of M. Rossi");
+    assert.equal((await E(d, token, { action: "list" })).body.estates.length, 1, "rename does not create an estate");
+    assert.equal((await E(d, token, { action: "rename", estateId: id, name: "" })).status, 400);
     assert.equal((await E(d, token, { action: "archive", estateId: id })).status, 403);
   }
 });

@@ -418,7 +418,7 @@ function estateBarHTML(){
   const ent=state.ent||{}; const cur=state.estates.find(e=>e.id===state.estateId);
   if(!cur) return "";
   const open=state.estates.filter(e=>!e.archived||e.id===state.estateId);
-  const sw=ent.maxEstates>1?`<label for="estSwitch">Working on:</label><select id="estSwitch">${open.map(e=>`<option value="${e.id}" ${e.id===state.estateId?"selected":""}>${esc(e.name)}${e.archived?" (archived)":""}</option>`).join("")}</select> <span>${state.estates.length} of ${ent.maxEstates} client estates</span>`:`<span>Working on:</span> <strong>${esc(cur.name)}</strong>`;
+  const sw=ent.maxEstates>1?`<label for="estSwitch">Working on:</label><select id="estSwitch">${open.map(e=>`<option value="${e.id}" ${e.id===state.estateId?"selected":""}>${esc(e.name)}${e.archived?" (archived)":""}</option>`).join("")}</select> <span>${state.estates.length} of ${ent.maxEstates} client estates</span>`:`<span>Working on:</span> <strong>${esc(cur.name)}</strong> <button class="btn" type="button" id="renameCur" aria-label="Rename this estate">Rename</button>`;
   return sw+(state.readOnly?` <span class="ro">Archived: read-only. Restore it from Clients to edit.</span>`:"")+` <span id="saveMsg" role="status" style="margin-left:auto"></span>`;
 }
 function clientsHTML(){
@@ -492,6 +492,13 @@ function stepDeck(id, dir){
   const bar = document.querySelector("#deck-"+id+" .deck-count");
   if (bar) bar.textContent = (i+1)+" / "+slides.length;
 }
+async function renameCurrent(name){
+  if(!state.estateId||!name) return;
+  const r=await api("estate",{action:"rename",estateId:state.estateId,name:name.slice(0,120)});
+  const i=state.estates.findIndex(e=>e.id===state.estateId);
+  if(r.ok&&i>=0){ state.estates[i]=r.estate; render(); }
+  else if(!r.ok){ const m=$("#saveMsg"); if(m) m.textContent=r.error||"Could not rename"; }
+}
 function deskPayload(){
   const ent=state.ent||{};
   return {tab:state.tab,dod:state.dod,value:state.value,letter:state.letter,vault:state.vault,tasks:state.tasks.map(t=>({id:t.id,status:t.status})),...(ent.costs?{costs:state.costs}:{}),...(ent.circle?{circle:state.circle}:{})};
@@ -550,12 +557,15 @@ function bind(){
   const add=$("#addMem"); if(add) add.onclick=()=>{const name=$("#mem").value.trim(); if(!name)return; state.circle.push({name,relation:$("#memRel").value.trim()||"Family",role:$("#memRole").value}); render()};
   const sf=$("#setupForm"); if(sf) sf.onsubmit=e=>{e.preventDefault(); const d=$("#suDod").value; if(!d){$("#setupMsg").textContent="Enter the date of death.";return}
     state.dod=d; state.letter.name=$("#suDec").value.trim(); state.letter.trustee=$("#suTrs").value.trim(); if(!state.letter.estate&&state.letter.name) state.letter.estate="Estate of "+state.letter.name;
-    state.flash="Saved. Your deadlines are now counted from "+d+". See the Deadlines tab."; notice(""); render(); const f=$("#flash"); if(f) f.scrollIntoView({block:"center"});};
+    state.flash="Saved. Your deadlines are now counted from "+d+". See the Deadlines tab."; notice("");
+    if(state.letter.name) renameCurrent("Estate of "+state.letter.name);
+    render(); const f=$("#flash"); if(f) f.scrollIntoView({block:"center"});};
   const sl=$("#setupLater"); if(sl) sl.onclick=()=>{state.setupSkipped=true; render()};
   document.querySelectorAll("[data-vault]").forEach(b=>b.onclick=()=>{state.vault={...(state.vault||{}),[b.dataset.vault]:b.dataset.v}; render()});
   document.querySelectorAll("[data-rmmem]").forEach(b=>b.onclick=()=>{state.circle.splice(+b.dataset.rmmem,1);render()});
   document.querySelectorAll("[data-est]").forEach(i=>i.onchange=()=>{const c=state.costs.find(x=>x.id===+i.dataset.est); if(c){c.est=Math.max(0,Number(i.value)||0); render()}});
   const addCost=$("#addCost"); if(addCost) addCost.onclick=()=>{const name=$("#costName").value.trim(); if(!name)return; state.costs.push({id:Math.max(0,...state.costs.map(c=>c.id))+1,name,est:0,actual:0,paid:false}); render()};
+  const rc=$("#renameCur"); if(rc) rc.onclick=async()=>{const cur=state.estates.find(e=>e.id===state.estateId); const name=prompt("Name this estate (for example, Estate of M. Rossi)",cur?cur.name:""); if(name&&name.trim()) await renameCurrent(name.trim());};
   const sw=$("#estSwitch"); if(sw) sw.onchange=async()=>{await openEstate(sw.value); render()};
   const estAct=async(action,id,extra)=>{const r=await api("estate",{action,estateId:id,...(extra||{})}); if(!r.ok){const m=$("#estMsg"); if(m) m.textContent=r.error||"Could not update"; return null} return r};
   document.querySelectorAll("[data-openest]").forEach(b=>b.onclick=async()=>{await openEstate(b.dataset.openest); state.tab="timeline"; render()});

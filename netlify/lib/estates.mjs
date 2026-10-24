@@ -92,7 +92,7 @@ export async function saveEstate(store, user, id, desk) {
 }
 
 export async function renameEstate(store, user, id, name) {
-  if (!limitsFor(user)?.clientList) return { error: "Renaming estates is part of the Professional client list", status: 403 };
+  if (!limitsFor(user)) return { error: "Buy a plan to open your checklist", status: 402 }; // any paid plan may rename its own estates
   const e = await getEstate(store, user, id);
   if (!e) return { error: "Estate not found", status: 404 };
   const n = normName(name);
