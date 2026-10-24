@@ -64,7 +64,7 @@ test("usability fixes: clear hero, no jargon, menus, support, storage", () => {
   assert.ok(!/demo/i.test(html), "no demo wording");
   assert.ok(html.indexOf('id="pricing"') < html.indexOf('id="account"'), "plans before the account form");
   assert.ok(html.includes('id="menuBtn"') && html.includes('aria-controls="navMenu"'), "mobile menu");
-  assert.ok(html.includes("Forgot your password?") && html.includes("elisa@adpulsenexus.com"));
+  assert.ok(html.includes("Forgot your password?") && html.includes("info@adpulsenexus.com"));
   assert.ok(html.includes('id="liRemember"') && !/id="liRemember"[^>]*checked/.test(html), "keep-me-signed-in unchecked by default");
   assert.ok(/localStorage\.removeItem\("fc\.token"\)/.test(html), "logout clears localStorage");
   assert.ok(html.includes("What happens after you buy") && html.includes(">Support</a>"));
