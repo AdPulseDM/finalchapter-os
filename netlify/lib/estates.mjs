@@ -22,12 +22,13 @@ export function sanitizeDesk(desk, plan) {
   const p = PLANS[plan];
   const d = desk && typeof desk === "object" ? desk : {};
   const out = {};
-  if (typeof d.dod === "string" && /^\d{4}-\d{2}-\d{2}$/.test(d.dod)) out.dod = d.dod;
+  for (const k of ["dod", "certDate", "t3YearEnd", "creditorLast"]) if (typeof d[k] === "string" && /^\d{4}-\d{2}-\d{2}$/.test(d[k])) out[k] = d[k];
+  if (typeof d.selfEmployed === "boolean") out.selfEmployed = d.selfEmployed;
   if (Number.isFinite(d.value) && d.value >= 0 && d.value < 1e12) out.value = d.value;
   if (typeof d.tab === "string") out.tab = clean(d.tab, 20);
   if (d.letter && typeof d.letter === "object") {
     out.letter = {};
-    for (const k of ["recipient", "estate", "name", "trustee", "date", "account", "note"]) if (k in d.letter) out.letter[k] = clean(d.letter[k], k === "note" ? 2000 : 200);
+    for (const k of ["recipient", "type", "estate", "name", "trustee", "trusteeAddress", "trusteeContact", "address", "institution", "date", "account", "note"]) if (k in d.letter) out.letter[k] = clean(d.letter[k], k === "note" ? 2000 : 200);
   }
   if (d.vault && typeof d.vault === "object") {
     out.vault = {};

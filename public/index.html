@@ -147,6 +147,17 @@ body.share-mode #os { padding-top:24px; } body.share-mode .tabs { display:none; 
   .phase { padding:6px; font-size:11px; }
   .setup .grid3 { grid-template-columns:1fr; }
 }
+.nextdl { border:1px solid rgba(52,211,153,.35); background:rgba(16,185,129,.07); border-radius:14px; padding:14px 16px; margin-bottom:16px; }
+.nextdl h3 { margin:0 0 6px; font-size:20px; }
+.nd-list { list-style:none; margin:6px 0 0; padding:0; display:grid; gap:8px; }
+.nd { display:flex; gap:12px; align-items:flex-start; padding:10px; border:1px solid var(--line); border-radius:12px; background:rgba(8,8,12,.5); }
+.nd.first { border-color:rgba(52,211,153,.55); }
+.nd-days { min-width:58px; text-align:center; } .nd-days b { display:block; font-family:"Space Grotesk",sans-serif; font-size:24px; color:#6ee7b7; } .nd-days span { font-size:11px; color:var(--subtle); }
+mark.blank { background:#fde68a; color:#1c1402; font-weight:700; padding:0 2px; border-radius:3px; }
+.preview-letter mark.blank { background:#fde68a; }
+.warn-text { color:#fcd34d; }
+.addon .your { display:inline-block; margin-top:6px; padding:10px 14px; border-radius:10px; background:#34d399; color:#052e1c; font-weight:700; font-size:13px; }
+.addon { border-color:rgba(52,211,153,.35) !important; }
 @media (max-width:420px) { .brand-name { font-size:14px; } .mark { width:32px; height:32px; } .nav-cta .btn { padding:0 10px; font-size:13px; } }
 </style>
 </head>
@@ -154,8 +165,8 @@ body.share-mode #os { padding-top:24px; } body.share-mode .tabs { display:none; 
 <header class="nav"><div class="wrap nav-inner">
   <a class="brand" href="#top" aria-label="FinalChapter home"><div class="mark" aria-hidden="true">FC</div><div><div class="brand-name">FinalChapter</div><div class="brand-sub">Ontario executor checklist</div></div></a>
   <nav class="nav-links" id="navMenu" aria-label="Main">
-    <span class="nav-out"><a href="#how" data-tour-start>How it works</a><a href="#what-you-get">What you get</a><a href="#pricing">Plans</a><a href="#account" data-login>Log in</a></span>
-    <span class="nav-in" hidden><a href="#os" data-jump="timeline">My checklist</a><a href="#os" data-jump="cra">Deadlines</a><a href="#os" data-jump="letters">Letters</a><a href="#account">Account</a><a href="#top" data-logout>Log out</a></span>
+    <span class="nav-out"><a href="/probate.html">Probate check</a><a href="#how" data-tour-start>How it works</a><a href="#what-you-get">What you get</a><a href="#pricing">Plans</a><a href="#account" data-login>Log in</a></span>
+    <span class="nav-in" hidden><a href="#os" data-jump="timeline">My checklist</a><a href="#os" data-jump="cra">Deadlines</a><a href="#os" data-jump="letters">Letters</a><a href="/probate.html">Probate check</a><a href="#account">Account</a><a href="#top" data-logout>Log out</a></span>
   </nav>
   <div class="nav-cta">
     <button class="btn btn-grad desk-only" id="startTour" type="button">How it works</button>
@@ -171,19 +182,19 @@ body.share-mode #os { padding-top:24px; } body.share-mode .tabs { display:none; 
       <div class="pill"><span class="dot"></span> For Ontario executors (estate trustees)</div>
       <h1>A step-by-step checklist <span>for Ontario executors</span></h1>
       <p class="lede">If someone has died and you’re handling their estate in Ontario, FinalChapter gives you a <strong>60-step checklist</strong>, deadline dates for CRA and the courts, and letter drafts to copy. One payment, from $49 CAD.</p>
-      <div class="cta-row"><a class="btn btn-grad btn-lg" href="#pricing">See plans</a><button class="btn btn-lg" id="startTourHero" type="button">How it works</button></div>
+      <div class="cta-row"><a class="btn btn-grad btn-lg" href="#pricing">See plans</a><a class="btn btn-lg" href="/probate.html">Do I need probate? Free check</a><button class="btn btn-lg" id="startTourHero" type="button">How it works</button></div>
       <p class="notlegal" id="notLegal">FinalChapter is an organizer. It does not file forms for you and is not legal, tax or financial advice.</p>
-      <div class="stats"><div><b>60</b><span>Steps tracked</span></div><div><b>6 mo</b><span>Final tax return window</span></div><div><b>Up to $5,000</b><span>CPP death benefit</span></div></div>
+      <div class="stats"><div><b>60</b><span>Steps tracked</span></div><div><b>180 days</b><span>Estate Information Return</span></div><div><b>Up to $5,000</b><span>CPP death benefit</span></div></div>
       <p class="mini" style="max-width:440px;margin-top:10px">CPP death benefit: up to $2,500, plus a top-up of up to $2,500 for deaths on or after January 1, 2025 when the deceased never received a CPP/QPP benefit and had no spouse or partner eligible for the survivor’s pension (maximum $5,000). Source: <a href="https://www.canada.ca/en/services/benefits/publicpensions/cpp/cpp-death-benefit.html" target="_blank" rel="noopener">Service Canada, ISP1200</a>.</p>
     </div>
     <div class="preview"><div class="chrome"><div class="traffic"><i></i><i></i><i></i></div><span id="heroLabel"><strong>Example estate</strong> · sample data</span><span id="heroPct">0%</span></div>
-      <div class="preview-body"><div id="heroTasks"></div><div class="split2"><div class="kpi"><div class="k">NEXT DEADLINE</div><div class="v" id="heroDeadline">Final T1</div></div><div class="kpi"><div class="k">ESTATE ADMIN TAX</div><div class="v" id="heroEat">$0</div><div class="mini">$0 first $50k · 1.5% after</div></div></div></div>
+      <div class="preview-body"><div id="heroTasks"></div><div class="split2"><div class="kpi"><div class="k">NEXT DEADLINE</div><div class="v" id="heroDeadline">Final T1</div></div><div class="kpi"><div class="k">ESTATE ADMIN TAX</div><div class="v" id="heroEat">$0</div><div class="mini">$0 up to $50k · $15 per $1,000 after</div></div></div></div>
     </div>
   </div></section>
   <div class="wrap" id="noticeWrap"><div id="notice" role="status" aria-live="polite" hidden></div></div>
   <section class="wrap" id="os" style="padding-bottom:64px;display:none"><div class="panel"><div id="estateBar" class="estate-bar"></div><div class="tabs" id="tabs"></div><div class="pane" id="pane"></div></div></section>
   <section class="wrap" id="why" style="padding:48px 24px"><div class="why">
-    <article id="why-province"><div class="mark">01</div><h3>Ontario rules built in</h3><p class="lede">Court application, estate tax return within 180 days, notice to creditors, estate tax estimate.</p></article>
+    <article id="why-province"><div class="mark">01</div><h3>Ontario rules built in</h3><p class="lede">Probate check (regular or small-estate path), Estate Information Return 180 days after the certificate, notice to creditors, and an exact Estate Administration Tax estimate.</p></article>
     <article id="why-forms"><div class="mark">02</div><h3>Official forms, linked</h3><p class="lede"><a href="https://ontariocourtforms.on.ca/en/rules-of-civil-procedure-forms/pre-formatted-fillable-estates-forms/" target="_blank" rel="noopener">74A</a>, <a href="https://www.canada.ca/en/services/benefits/publicpensions/cpp/cpp-death-benefit.html" target="_blank" rel="noopener">ISP1200</a>, <a href="https://www.canada.ca/en/revenue-agency/services/forms-publications/forms/tx19.html" target="_blank" rel="noopener">TX19</a>, <a href="https://www.canada.ca/en/revenue-agency/services/tax/individuals/life-events/doing-taxes-someone-died.html" target="_blank" rel="noopener">T1</a>, and <a href="https://www.canada.ca/en/revenue-agency/services/forms-publications/forms/t3ret.html" target="_blank" rel="noopener">T3</a> are named on the step that needs them. FinalChapter does not file them for you.</p></article>
     <article id="why-circle"><div class="mark">03</div><h3>Family &amp; advisers</h3><p class="lede">Keep a list of family and advisers, and share a view-only progress link with them (Family and Professional plans). Responsibility stays with the estate trustee (the executor).</p></article>
   </div></section>
@@ -197,7 +208,7 @@ body.share-mode #os { padding-top:24px; } body.share-mode .tabs { display:none; 
   <h2 class="display" style="font-size:28px">What you get</h2>
   <div class="why">
     <article><h3>An organizer</h3><p class="lede">A 60-step Ontario estate checklist with deadline estimates and a documents checklist. Family and Professional add a cost tracker, a list of family and advisers, and a view-only progress link you can share. Professional adds up to five client estates.</p></article>
-    <article><h3>Drafts you edit</h3><p class="lede">Letter and checklist drafts (bank, utility, insurer, TX19 cover letter) that you copy or download as text and review before you use them.</p></article>
+    <article><h3>Drafts you edit</h3><p class="lede">Letter drafts (bank, utility, landlord, insurer, employer, notice to creditors, TX19 cover letter) filled in from your estate details, with clear blanks for anything missing. Download as Word (.docx) or PDF and review before you send.</p></article>
     <article><h3>Links to official sources</h3><p class="lede">Each form is linked to its official Ontario or Government of Canada page so you can get the current version.</p></article>
   </div>
   <div class="card" style="margin-top:14px">
@@ -212,10 +223,11 @@ body.share-mode #os { padding-top:24px; } body.share-mode .tabs { display:none; 
 </section>
 <section class="wrap" id="pricing" style="padding:24px 24px 64px;text-align:center"><h2 class="display" style="font-size:36px;margin:0">One-time. No subscription grief.</h2><p class="lede" style="margin:8px auto 24px">One-time payment in CAD through Stripe. After payment you come straight back to your checklist. See <a href="#what-you-get">what you get</a>. Not legal, tax, or financial advice.</p>
     <div class="prices" style="text-align:left">
-      <div class="price"><div class="label">Executor</div><div class="amt">$49 once</div><ul><li>One estate</li><li>60-step checklist</li><li>Tax deadline dates</li><li>Letter drafts</li></ul></div>
+      <div class="price"><div class="label">Executor</div><div class="amt">$49 once</div><ul><li>One estate</li><li>60-step checklist</li><li>Next-deadline dashboard (CRA and Ontario)</li><li>Letter drafts as Word or PDF</li></ul></div>
       <div class="price pop"><span class="tag">MOST POPULAR</span><div class="label">Family</div><div class="amt">$89 once</div><ul><li>Everything in Executor</li><li>Family &amp; advisers list</li><li>View-only progress link to share with family</li><li>Cost tracker</li></ul></div>
       <div class="price"><div class="label">Professional</div><div class="amt">$199 once</div><ul><li>Everything in Family</li><li>Up to five client estates</li><li>Client list and estate switcher</li></ul></div>
     </div>
+    <div class="card addon" id="printkit" style="text-align:left;margin-top:14px"><div class="label">Optional add-on for any paid plan</div><h3 style="margin:4px 0 6px">Print kit · $29 once</h3><p class="mini" style="font-size:14px;margin:0 0 6px">A print-ready PDF of your estate: timeline, checklist with checkboxes, deadline sheet and the full letter pack, filled in from your details. Digital PDF only; nothing is mailed. Buy it once per account and download it again any time.</p><div id="printkitAction"></div></div>
     <p class="mini legal-links" style="margin-top:16px">By buying you agree to the <a href="/terms.html">Terms of Service</a> · <a href="/privacy.html">Privacy Policy</a> · <a href="/refunds.html">Refund Policy</a>. Prices in Canadian dollars. We are a small supplier and are not registered for GST/HST, so no GST/HST is charged at present. The price shown at checkout is what you pay.</p>
     <div class="card" id="after-you-buy" style="text-align:left;max-width:720px;margin:18px auto 0">
       <h3 style="margin:0 0 8px">What happens after you buy</h3>
@@ -287,49 +299,32 @@ body.share-mode #os { padding-top:24px; } body.share-mode .tabs { display:none; 
   </div>
 </section>
 </main>
-<footer><div class="wrap foot"><div>FinalChapter · Ontario executor organizer · Does not file forms · Not legal, tax, or financial advice</div><div class="foot-links"><a href="/terms.html">Terms of Service</a><a href="/privacy.html">Privacy Policy</a><a href="/refunds.html">Refund Policy</a><a href="#what-you-get">What you get</a><a href="mailto:elisa@adpulsenexus.com">Support</a></div><div>Verify with the Ontario Superior Court of Justice and the CRA</div></div></footer>
-<script>
-const PHASES=[{id:"immediate",name:"Immediate",range:"0–7 days",color:"#fb7185"},{id:"first30",name:"First 30",range:"8–30 days",color:"#fbbf24"},{id:"probate",name:"Probate",range:"Month 1–3",color:"#c084fc"},{id:"cra",name:"CRA",range:"Month 1–6",color:"#34d399"},{id:"assets",name:"Assets",range:"Month 2–8",color:"#60a5fa"},{id:"closure",name:"Closures",range:"Month 3–9",color:"#94a3b8"},{id:"final",name:"Final",range:"Month 9–12",color:"#e4e4e7"}];
-
-const FORM_LINKS = {
-  "Form 74A": "https://ontariocourtforms.on.ca/en/rules-of-civil-procedure-forms/pre-formatted-fillable-estates-forms/",
-  "Form 74D": "https://ontariocourtforms.on.ca/en/rules-of-civil-procedure-forms/pre-formatted-fillable-estates-forms/",
-  "Form 74G": "https://ontariocourtforms.on.ca/en/rules-of-civil-procedure-forms/pre-formatted-fillable-estates-forms/",
-  "ISP1200": "https://www.canada.ca/en/services/benefits/publicpensions/cpp/cpp-death-benefit.html",
-  "ISP1300": "https://www.canada.ca/en/services/benefits/publicpensions/cpp/cpp-survivor-pension.html",
-  "TX19": "https://www.canada.ca/en/revenue-agency/services/forms-publications/forms/tx19.html",
-  "IC82-6R13": "https://www.canada.ca/en/revenue-agency/services/forms-publications/publications/ic82-6/clearance-certificate.html",
-  "T1 final": "https://www.canada.ca/en/revenue-agency/services/tax/individuals/life-events/doing-taxes-someone-died.html",
-  "T3 return": "https://www.canada.ca/en/revenue-agency/services/forms-publications/forms/t3ret.html",
-  "Final T3 return": "https://www.canada.ca/en/revenue-agency/services/forms-publications/forms/t3ret.html",
-  "EIR": "https://www.ontario.ca/page/estate-administration-tax",
-  "Death certificate order": "https://www.ontario.ca/page/get-or-replace-an-ontario-death-certificate",
-  "Statement of Death": "https://www.ontario.ca/page/what-do-when-someone-dies",
-  "Mail redirect": "https://www.canadapost-postescanada.ca/cpc/en/personal/receiving/manage-mail/mail-forwarding.page",
-  "Vehicle transfer": "https://www.ontario.ca/page/buy-or-sell-used-vehicle-ontario",
-  "GST cancellation": "https://www.canada.ca/en/revenue-agency/services/tax/businesses/topics/gst-hst-businesses/account-close.html",
-  "RC4111": "https://www.canada.ca/en/revenue-agency/services/forms-publications/forms/rc4111.html"
-};
-const SOURCES_CHECKED = "2026-10-23";
+<footer><div class="wrap foot"><div>FinalChapter · Ontario executor organizer · Does not file forms · Not legal, tax, or financial advice</div><div class="foot-links"><a href="/terms.html">Terms of Service</a><a href="/privacy.html">Privacy Policy</a><a href="/refunds.html">Refund Policy</a><a href="#what-you-get">What you get</a><a href="/probate.html">Probate check</a><a href="mailto:elisa@adpulsenexus.com">Support</a></div><div>Verify with the Ontario Superior Court of Justice and the CRA</div></div></footer>
+<script type="module">
+import * as R from "/fc-rules.js";
+window.FCRules = R;
+const { PHASES, FORM_LINKS, SOURCES_CHECKED, VAULT_DOCS } = R;
 const esc = v => String(v ?? "").replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
 const ext = (url, text) => `<a href="${url}" target="_blank" rel="noopener">${text}</a>`;
-const RAW=[[1,"immediate","Obtain the medical certificate of death","A physician or coroner completes it.","done","Day 1","Ontario medical certificate",["Medical certificate"],1],[2,"immediate","Contact the funeral home","They file the statement of death.","done","Day 2","ServiceOntario",["Statement of Death"],2],[3,"immediate","Secure property and valuables","Locks, mail, deliveries.","doing","Day 2","Duty of care",[],2],[4,"immediate","Locate the will","Safe, box, or lawyer.","done","Day 3","Will search",["Will search"],3],[5,"immediate","Order death certificates","Banks want originals.","doing","Day 5","ServiceOntario",["Death certificate order"],5],[6,"immediate","Speak with an estate lawyer","Real estate or a contest.","todo","Day 5","LSO referral",[],5],[7,"immediate","Read the will","Trustee, alternates, wishes.","done","Day 3","No will: SLRA",["Will"],3],[8,"immediate","Rental tenancy","Short notice may apply.","todo","Day 7","Residential Tenancies Act",["Tenancy notice"],7],[9,"first30","CPP death benefit","Up to $2,500, plus a top-up of up to $2,500 for deaths on or after Jan 1, 2025 if eligible (maximum $5,000). The estate should apply within 60 days.","todo","Week 2","ISP1200",["ISP1200"],14],[10,"first30","Notify Service Canada","Stop benefits on the SIN.","todo","Week 2","Death certificate",["SIN notice"],14],[11,"first30","Cancel OHIP and licence","ServiceOntario.","todo","Week 2","Prevent misuse",["Health card"],14],[12,"first30","List bank accounts","Balance on the date of death.","todo","Week 3","Tell each bank",[],21],[13,"first30","Notify life insurers","Certificate and policy number.","todo","Week 3","Claim form",["Claim form"],21],[14,"first30","Employer and pension","Final pay and survivor benefits.","todo","Week 3","Record of employment",[],21],[15,"first30","Redirect mail","Canada Post estate forwarding.","todo","Week 3","Proof you can act",["Mail redirect"],21],[16,"first30","Digital accounts","Email, banking, subscriptions.","todo","Week 4","Provider rules",[],28],[17,"first30","Vacant-home insurance","Call before cover lapses.","blocked","Week 2","Policy window",[],14],[18,"first30","Values at death","Needed for probate tax.","todo","Month 1","Valuation",["Valuation sheet"],30],[19,"first30","Open an estate account","Estate money only.","todo","Month 1","Will and certificate",["Estate account"],30],[20,"first30","Notice to creditors","Not mandatory. Still useful.","todo","Month 1","Trustee Act s.53",["Creditor notice"],30],[21,"probate","Is a certificate required?","Land in their name usually needs one.","doing","Month 2","Banks set limits",[],45],[22,"probate","Form 74A – Application for a Certificate of Appointment of Estate Trustee","Filed with the Superior Court of Justice.","todo","Month 2","Superior Court",["Form 74A"],60],[23,"probate","Affidavit of execution","Witness affidavit (Form 74D, Affidavit of Execution of Will or Codicil).","todo","Month 2","Form 74D",["Form 74D"],60],[24,"probate","Renunciation","If a named trustee steps aside (Form 74G, Renunciation and Consent).","todo","Month 2","Form 74G",["Form 74G"],60],[25,"probate","Estate administration tax","$0 on the first $50,000. 1.5% after, rounded up.","todo","Month 2","EAT Act",["EAT calculation"],60],[26,"probate","File at the court","Under $150,000 may use the small-estate path.","todo","Month 2","Court fee is separate",["Filing package"],75],[27,"probate","Wait for the certificate","Do not distribute yet.","blocked","Month 3","Times vary",[],90],[28,"probate","Estate Information Return","180 days after the certificate.","todo","Month 4","Not 90 days",["EIR"],120],[29,"probate","Certificate to the banks","They release to the estate account.","todo","Month 4","Certified copy",[],120],[30,"probate","Last creditor notice","Before gifts go out.","todo","Month 4","Keep proof",[],120],[31,"cra","Final T1","Later of 30 April and six months after death.","todo","Month 6","Terminal return",["T1 final"],180],[32,"cra","T3 if the estate earns","Separate taxpayer from the next day. File the T3 return (T3RET).","todo","Month 6","90 days after year-end",["T3 return"],180],[33,"cra","TX19 clearance","Before the final distribution.","todo","Month 8","Often many months",["TX19","IC82-6R13"],240],[34,"cra","CPP survivor pension","Eligible spouse or partner.","todo","Month 2","ISP1300",["ISP1300"],60],[35,"cra","Close GST/HST","Stop credits in their name.","todo","Month 2","CRA",["GST cancellation"],60],[36,"cra","TFSA and RRSP","RRSP may roll to a spouse.","todo","Month 3","Carrier forms",["Transfer"],90],[37,"cra","Tell CRA of the death","Stops benefits.","todo","Week 4","RC4111",["RC4111"],28],[38,"cra","Rights returns","Up to three extra returns.","todo","Month 6","Guide T4011",["Rights return"],180],[39,"assets","Home value","MPAC plus appraisal.","todo","Month 2","Date-of-death value",["Appraisal"],60],[40,"assets","Land title","Survivorship or estate transfer.","todo","Month 5","Land registry",["Transfer"],150],[41,"assets","Vehicles","ServiceOntario.","todo","Month 3","Plates",["Vehicle transfer"],90],[42,"assets","Collect debts","Loans and receivables.","todo","Month 4","In writing",[],120],[43,"assets","Personal property","Inventory, then sell or give.","todo","Month 6","Follow the will",["Inventory"],180],[44,"assets","Business interests","Shares or a sole prop.","todo","Month 6","Minute book",[],180],[45,"assets","Investments","Deemed disposition at fair value.","todo","Month 5","In kind or sell",[],150],[46,"assets","Safety deposit box","Will and death certificate.","todo","Month 2","Inventory with the bank",[],60],[47,"assets","Mortgage","Keep paying.","todo","Month 2","Tell the lender",[],60],[48,"closure","Close utilities","Final reads.","todo","Month 4","Hydro, gas, water",["Utility letter"],120],[49,"closure","Cancel subscriptions","Watch auto-renew.","todo","Month 4","Cards on file",[],120],[50,"closure","Email and social","Each platform has its own rule.","todo","Month 6","Memorialise or close",["Digital request"],180],[51,"closure","Cards and loyalty","Some allow a spouse transfer.","todo","Month 5","Return ID cards",[],150],[52,"closure","Cancel spare policies","After the transfer.","todo","Month 3","Give notice",["Cancellation"],90],[53,"closure","Electoral roll","Elections Ontario.","todo","Month 6","Remove the name",[],180],[54,"closure","Property tax","Unpaid tax can lien.","todo","Month 6","Municipal certificate",[],180],[55,"final","Estate accounts","Receipts, debts, gifts.","todo","Month 10","Trustee accounting",["Estate accounts"],300],[56,"final","Releases","After clearance, before the last cheque.","todo","Month 11","Release",["Release"],330],[57,"final","Distribute","Compensation is claimable, not automatic.","todo","Month 11","Follow the will",[],330],[58,"final","Close the estate account","Final T3 return if needed.","todo","Month 12","Nil return",["Final T3 return"],365],[59,"final","Store records","CRA can look back years.","todo","Month 12","Six-year floor",[],365],[60,"final","Discharge letter","Pass accounts only if disputed.","todo","Month 12","Tell the beneficiaries",["Closure letter"],365]];
-const TASKS=RAW.map(t=>({id:t[0],phase:t[1],title:t[2],desc:t[3],status:t[4],due:t[5],note:t[6],forms:t[7],day:t[8]}));
-const state={estates:[],estateId:null,ent:null,readOnly:false,shareToken:null,shareView:null,tab:"timeline",tasks:TASKS,q:"",status:"all",phase:"all",open:1,dod:new Date(Date.now()-30*86400000).toISOString().slice(0,10),value:425000,letter:{recipient:"Bank",estate:"Estate of Elena Vasquez",name:"Elena Vasquez",date:"2024-11-20",account:"**** 4521",note:"Please freeze the account and send a final statement as of the date of death."},costs:[{id:1,name:"Estate administration tax",est:5625,actual:0,paid:false},{id:2,name:"Lawyer — probate",est:4500,actual:2200,paid:false},{id:3,name:"Funeral",est:12000,actual:11450,paid:true},{id:4,name:"Court filing fee",est:232,actual:232,paid:true},{id:5,name:"Accountant",est:1500,actual:0,paid:false},{id:6,name:"Appraisal",est:500,actual:450,paid:true}],circle:[{name:"Sarah Chen",relation:"Daughter",role:"Executor"},{name:"Michael Vasquez",relation:"Spouse",role:"Family"},{name:"David Park Law",relation:"Counsel",role:"Lawyer"}]};
+const TASKS=R.TASKS.map(t=>({...t}));
+const state={estates:[],estateId:null,ent:null,readOnly:false,shareToken:null,shareView:null,tab:"timeline",tasks:TASKS,q:"",status:"all",phase:"all",open:1,dod:new Date(Date.now()-30*86400000).toISOString().slice(0,10),value:425000,letter:{type:"bank",recipient:"Bank",institution:"Example Bank, 100 King St W, Toronto ON",estate:"Estate of Elena Vasquez",name:"Elena Vasquez",date:"2024-11-20",account:"ending 4521",note:""},costs:[{id:1,name:"Estate administration tax",est:5625,actual:0,paid:false},{id:2,name:"Lawyer — probate",est:4500,actual:2200,paid:false},{id:3,name:"Funeral",est:12000,actual:11450,paid:true},{id:4,name:"Court filing fee",est:232,actual:232,paid:true},{id:5,name:"Accountant",est:1500,actual:0,paid:false},{id:6,name:"Appraisal",est:500,actual:450,paid:true}],circle:[{name:"Sarah Chen",relation:"Daughter",role:"Executor"},{name:"Michael Vasquez",relation:"Spouse",role:"Family"},{name:"David Park Law",relation:"Counsel",role:"Lawyer"}]};
 const $=s=>document.querySelector(s);
 const money=n=>n.toLocaleString("en-CA",{style:"currency",currency:"CAD"});
-function eat(v){const r=Math.ceil(Math.max(0,v)/1000)*1000;return r<=50000?0:(r-50000)*0.015}
+const eat=R.eat;
 function addDays(b,d){const x=new Date(b);x.setDate(x.getDate()+d);return x}
 function cppMax(){return state.dod>="2025-01-01"?"Up to $2,500 + top-up up to $2,500 if eligible (max $5,000)":"Up to $2,500 (top-up applies only to deaths on or after 2025-01-01)"}
-function deadlines(){if(!state.dod) return [];const dod=new Date(state.dod+"T12:00:00");const april=new Date(dod.getFullYear()+1,3,30);const six=addDays(dod,183);const t1=six>april?six:april;return[{name:"CPP death benefit (ISP1200)",due:addDays(dod,60),note:cppMax()+" · estate applies within 60 days",src:FORM_LINKS["ISP1200"],srcName:"Service Canada · ISP1200"},{name:"Final T1",due:t1,note:"Later of six months and 30 April",src:FORM_LINKS["T1 final"],srcName:"CRA · deceased persons"},{name:"T3 return (T3RET)",due:addDays(dod,90),note:"90 days after a short first year",src:FORM_LINKS["T3 return"],srcName:"CRA · T3RET"},{name:"Estate Information Return",due:addDays(dod,210),note:"180 days after the certificate — estimate",src:FORM_LINKS["EIR"],srcName:"Ontario Ministry of Finance"},{name:"TX19",due:addDays(dod,240),note:"Before final distribution",src:FORM_LINKS["TX19"],srcName:"CRA · TX19"}].map(d=>({...d,days:Math.ceil((d.due-new Date())/86400000)}))}
-function letterText(){const L=state.letter;return `RE: Estate notification — ${L.name||"[name]"}\n\n${L.date}\n\nTo: ${L.recipient}\nAccount: ${L.account}\n\nI write as the estate trustee (executor) of the estate of ${L.name||"[name of the person who died]"}, who died on ${state.dod||"[date of death]"}.\n\n${L.note}\n\nPlease send the final statement as of the date of death and confirm the account is frozen.\n\n${L.trustee||"[your name]"}\nEstate trustee (executor)${L.estate?", "+L.estate:""}\n\nWorking draft. Not legal advice.`}
+function deskDates(){return {dod:state.dod,certDate:state.certDate,t3YearEnd:state.t3YearEnd,creditorLast:state.creditorLast,selfEmployed:!!state.selfEmployed}}
+function today(){return R.todayYMD()}
+function curLetter(){const cur=state.estates.find(e=>e.id===state.estateId); return R.buildLetter(state.letter.type||"bank",{...deskDates(),letter:state.letter},cur?cur.name:"",today())}
+function letterText(){return R.plainText(curLetter())}
+function letterHTML(L){return `<strong>${esc(L.title)}</strong>\n\n`+L.lines.map(l=>R.segments(l).map(x=>x.blank?`<mark class="blank">[${esc(x.t)}]</mark>`:esc(x.t)).join("")).join("\n")+`\n\n<em>${esc(L.footer)}</em>`}
 window.state = state;
 window.render = render;
 function render(){
   const done=state.tasks.filter(t=>t.status==="done").length;
   $("#heroPct").textContent=Math.round(done/60*100)+"%";
   $("#heroEat").textContent=money(eat(state.value));
-  const t1=deadlines()[1]; $("#heroDeadline").textContent=!t1?"Add date of death":t1.days>0?t1.days+" days left":Math.abs(t1.days)+" days past";
+  const nd=R.nextDeadlines(deskDates(),today(),1); const n1=nd.upcoming[0]; $("#heroDeadline").textContent=nd.needDod?"Add date of death":n1?(n1.id==="t1"?"Final T1":n1.name.split(" (")[0].replace(" application","")).slice(0,28)+" · "+n1.days+"d":"None upcoming";
   const hl=$("#heroLabel"); if(hl) hl.innerHTML=isPaid()?"<strong>Your estate</strong>":"<strong>Example estate</strong> · sample data";
   $("#heroTasks").innerHTML=state.tasks.slice(0,4).map(t=>`<div class="row-mini"><div class="tick ${t.status}">${t.status==="done"?"✓":t.id}</div><div><div style="font-size:13px;font-weight:600">${t.title}</div><div class="mini">${t.due}</div></div></div>`).join("");
   const ent=state.ent||{};
@@ -358,55 +353,47 @@ function setupHTML(){
 function timelineHTML(){
   const rows=state.tasks.filter(t=>{if(state.status!=="all"&&t.status!==state.status)return false;if(state.phase!=="all"&&t.phase!==state.phase)return false;if(state.q&&!(t.title+" "+t.desc+" "+t.forms.join(" ")).toLowerCase().includes(state.q.toLowerCase()))return false;return true});
   const phases=PHASES.map(p=>{const all=state.tasks.filter(t=>t.phase===p.id);const d=all.filter(t=>t.status==="done").length;return `<button class="phase" data-phase="${p.id}" type="button"><div class="mini">${d}/${all.length}</div><div>${p.name}</div><div class="bar"><div style="width:${all.length?Math.round(d/all.length*100):0}%;background:${p.color}"></div></div></button>`}).join("");
-  return (state.flash?`<div id="flash" class="setup" role="status" style="padding:12px 16px">${esc(state.flash)}</div>`:"")+setupHTML()+`<div class="filters"><label class="sr" for="q">Search steps</label><input id="q" placeholder="Search steps, e.g. 74A, T1, ISP1200" value="${state.q.replace(/"/g,'&quot;')}"/><label class="sr" for="st">Status</label><select id="st">${["all","todo","doing","done","blocked"].map(s=>`<option ${state.status===s?"selected":""}>${s}</option>`).join("")}</select><label class="sr" for="ph">Phase</label><select id="ph"><option value="all">all phases</option>${PHASES.map(p=>`<option value="${p.id}" ${state.phase===p.id?"selected":""}>${p.name}</option>`).join("")}</select></div><div class="phases">${phases}</div>`+rows.map(t=>{const open=state.open===t.id;return `<article class="task"><button class="task-h" data-open="${t.id}" type="button"><div class="tick ${t.status}">${t.status==="done"?"✓":t.id}</div><div style="flex:1"><div>${t.title}</div><div class="mini">${t.note}</div></div><span class="badge">${t.status}</span></button>${open?`<div class="detail">${t.desc}<div style="margin-top:8px">${(t.forms.length?t.forms:["No form"]).map(f=>{const link=FORM_LINKS[f]; return link?`<a class="badge" href="${link}" target="_blank" rel="noopener">${f} · open</a>`:`<span class="badge">${f}</span>`}).join(" ")}</div><div style="margin-top:8px">${["todo","doing","done","blocked"].map(s=>`<button class="btn" data-set="${t.id}" data-status="${s}" type="button" style="margin-right:6px">${s}</button>`).join("")}</div></div>`:""}</article>`}).join("");
+  return (state.flash?`<div id="flash" class="setup" role="status" style="padding:12px 16px">${esc(state.flash)}</div>`:"")+setupHTML()+(setupHTML()?"":nextDeadlineHTML())+`<div class="filters"><label class="sr" for="q">Search steps</label><input id="q" placeholder="Search steps, e.g. 74A, T1, ISP1200" value="${state.q.replace(/"/g,'&quot;')}"/><label class="sr" for="st">Status</label><select id="st">${["all","todo","doing","done","blocked"].map(s=>`<option ${state.status===s?"selected":""}>${s}</option>`).join("")}</select><label class="sr" for="ph">Phase</label><select id="ph"><option value="all">all phases</option>${PHASES.map(p=>`<option value="${p.id}" ${state.phase===p.id?"selected":""}>${p.name}</option>`).join("")}</select></div><div class="phases">${phases}</div>`+rows.map(t=>{const open=state.open===t.id;return `<article class="task"><button class="task-h" data-open="${t.id}" type="button"><div class="tick ${t.status}">${t.status==="done"?"✓":t.id}</div><div style="flex:1"><div>${t.title}</div><div class="mini">${t.note}</div></div><span class="badge">${t.status}</span></button>${open?`<div class="detail">${t.desc}<div style="margin-top:8px">${(t.forms.length?t.forms:["No form"]).map(f=>{const link=FORM_LINKS[f]; return link?`<a class="badge" href="${link}" target="_blank" rel="noopener">${f} · open</a>`:`<span class="badge">${f}</span>`}).join(" ")}</div><div style="margin-top:8px">${["todo","doing","done","blocked"].map(s=>`<button class="btn" data-set="${t.id}" data-status="${s}" type="button" style="margin-right:6px">${s}</button>`).join("")}</div></div>`:""}</article>`}).join("");
 }
-const VAULT_DOCS=[["will","Original will"],["deathcert","Death certificates (ServiceOntario)"],["coa","Certificate of Appointment (Form 74A), if needed"],["insurance","Life insurance policies"],["bank","Bank and investment statements"],["property","Deed, mortgage and property tax bills"],["id","ID and SIN of the person who died"],["tax","Recent tax returns and notices of assessment"]];
 function vaultHTML(){
   const v=state.vault||{}; const have=VAULT_DOCS.filter(d=>v[d[0]]==="have").length;
   return `<h3 class="display" style="margin-top:0">Documents checklist</h3><p class="mini" style="font-size:14px">Have you got these? Mark each one. FinalChapter does not store files; keep originals somewhere safe. ${have} of ${VAULT_DOCS.length} gathered.</p>`+
   VAULT_DOCS.map(([k,l])=>`<div class="vault-row"><strong>${k==="coa"?ext(FORM_LINKS["Form 74A"],l):esc(l)}</strong><span class="seg" role="group" aria-label="${esc(l)}"><button type="button" data-vault="${k}" data-v="not" class="not ${v[k]!=="have"?"on":""}" aria-pressed="${v[k]!=="have"}">Not yet</button><button type="button" data-vault="${k}" data-v="have" class="${v[k]==="have"?"on":""}" aria-pressed="${v[k]==="have"}">Have it</button></span></div>`).join("");
 }
-function tx19Letter(){
-  const L=state.letter;
-  const today=new Date().toISOString().slice(0,10);
-  return `FORM TX19 — Asking for a Clearance Certificate
-Cover letter draft · sources checked ${SOURCES_CHECKED}
-Source: https://www.canada.ca/en/revenue-agency/services/tax/individuals/life-events/doing-taxes-someone-died/clearance-certificate.html
-
-To: CRA — Audit, Clearance Certificates
-GTA East Tax Services Office
-Post Office Box 20000, Station A
-Sudbury ON P3A 5C1
-
-Re: Estate of ${L.name}
-Date of death: ${state.dod||"[date of death]"}
-Estate: ${L.estate}
-
-I am the estate trustee. I request a clearance certificate under section 159 of the Income Tax Act.
-
-Attached or previously filed:
-- Final T1 (terminal return)
-- T3 returns if the estate earned income
-- Notice of Assessment
-- Will and Certificate of Appointment (if obtained)
-- Statement of assets and distribution plan
-
-Holdback note (IC82-6R13, paragraph 2 — ${FORM_LINKS["IC82-6R13"]}):
-A clearance certificate is not required before every interim distribution, provided enough property is retained to pay any amount the estate may owe the CRA. Final distribution should wait for the certificate. Distributing without a holdback or a certificate can leave the trustee personally liable.
-
-This is a working draft. Not tax or legal advice. Verify with CRA before you mail or fax.
-
-${L.estate}
-Estate trustee
-Date: ${today}`;
+function dueLine(i){return i.due?`${R.longDate(i.due)} · ${i.days!=null?(i.days===0?"today":i.days>0?i.days+" days left":Math.abs(i.days)+" days ago"):""}`:"Date needed"}
+const NEEDS_LABEL={certDate:"Certificate issued on",t3YearEnd:"T3 first tax year-end",creditorLast:"Last creditor notice published on"};
+function dateInputs(prefix){
+  return `<div class="field"><label class="label" for="${prefix}dod">Date of death</label><input id="${prefix}dod" data-date="dod" class="inp" type="date" value="${esc(state.dod||"")}" style="width:100%"></div>
+  <div class="field"><label class="label" for="${prefix}cert">Certificate issued on (starts the 180-day EIR clock)</label><input id="${prefix}cert" data-date="certDate" class="inp" type="date" value="${esc(state.certDate||"")}" style="width:100%"></div>
+  <div class="field"><label class="label" for="${prefix}t3">T3 first tax year-end (optional, up to 1 year after death)</label><input id="${prefix}t3" data-date="t3YearEnd" class="inp" type="date" value="${esc(state.t3YearEnd||"")}" style="width:100%"></div>
+  <div class="field"><label class="label" for="${prefix}cred">Last notice to creditors published on (optional)</label><input id="${prefix}cred" data-date="creditorLast" class="inp" type="date" value="${esc(state.creditorLast||"")}" style="width:100%"></div>
+  <label class="mini check" for="${prefix}se"><input type="checkbox" id="${prefix}se" data-flag="selfEmployed" ${state.selfEmployed?"checked":""}> The person who died (or their spouse or partner living with them) was self-employed</label>`;
+}
+function nextDeadlineHTML(){
+  const nd=R.nextDeadlines(deskDates(),today(),3);
+  if(nd.needDod) return `<section class="nextdl" aria-labelledby="ndH"><h3 id="ndH" class="display">Next deadlines</h3><p style="margin:0 0 10px">Enter the date of death to see your CRA and Ontario deadlines.</p><div class="cta-row"><label class="sr" for="ndDod">Date of death</label><input id="ndDod" data-date="dod" class="inp" type="date"><span class="mini">Every date is counted from it.</span></div></section>`;
+  const eir=nd.prompts.find(p=>p.id==="eir");
+  return `<section class="nextdl" aria-labelledby="ndH"><div style="display:flex;justify-content:space-between;gap:8px;flex-wrap:wrap;align-items:baseline"><h3 id="ndH" class="display">Next deadlines</h3><button class="linkbtn" type="button" data-tab="cra">All deadlines and dates</button></div>
+  <ol class="nd-list">${nd.upcoming.map((i,k)=>`<li class="nd ${k===0?"first":""}"><div class="nd-days"><b>${i.days}</b><span>day${i.days===1?"":"s"}</span></div><div><strong>${esc(i.name)}</strong>${i.estimate?' <span class="badge">estimate</span>':""}${i.practice?' <span class="badge">common practice</span>':""}<div class="mini">${esc(R.longDate(i.due))} · ${esc(i.note)}</div><div class="mini">Source: ${ext(i.src.url,esc(i.src.name))} · checked ${SOURCES_CHECKED}</div></div></li>`).join("")||`<li class="mini">No upcoming dated deadlines. Check the Deadlines tab.</li>`}</ol>
+  ${nd.past.length?`<p class="mini warn-text">${nd.past.length} deadline${nd.past.length>1?"s have":" has"} already passed (${nd.past.map(p=>esc(p.name.split(":")[0])).join("; ")}). If not done, act now; late T1 filing with a balance owing attracts a penalty.</p>`:""}
+  ${eir?`<div class="cta-row" style="margin-top:6px"><label class="mini" for="ndCert"><strong>Estate certificate issued on</strong> (starts the 180-day Estate Information Return clock)</label><input id="ndCert" data-date="certDate" class="inp" type="date"></div>`:""}
+  <p class="mini" style="margin:8px 0 0">Estimates from official sources. Not legal or tax advice; you still file.</p></section>`;
 }
 function craHTML(){
-  return `<div class="two"><div class="card"><label class="label" for="dod">Date of death</label><input id="dod" class="inp" type="date" value="${state.dod}" style="width:100%"></div><div>${state.dod?"":`<div class="card"><strong>Enter the date of death to see your deadlines.</strong><p class="mini">Every date here is counted from the date of death.</p></div>`}${deadlines().map(d=>`<div class="card" style="margin-bottom:8px"><strong>${d.name}</strong><div class="mini">${d.note} · ${d.due.toLocaleDateString("en-CA")}</div><div>${d.days>0?d.days+"d left":Math.abs(d.days)+"d past"}</div><div class="mini">Source checked ${SOURCES_CHECKED} · ${ext(d.src,d.srcName)}</div></div>`).join("")}</div></div>
-  <div class="card" style="margin-top:14px"><strong>Holdback note</strong><p class="mini" style="margin:6px 0 0">Under CRA Information Circular ${ext(FORM_LINKS["IC82-6R13"],"IC82-6R13")}, paragraph 2, you do not need a clearance certificate before every distribution if you hold back enough to cover any amount the estate may still owe. Final distribution should wait for TX19. Distributing without a holdback or the certificate can make the trustee personally liable.</p></div>
-  <div class="card" style="margin-top:14px"><div class="label">TX19 cover letter · sources checked ${SOURCES_CHECKED} · ${ext(FORM_LINKS["TX19"],"TX19 official page")}</div><button class="btn" id="copyTx" type="button">Copy TX19 letter</button> <button class="btn btn-grad" id="dlTx" type="button">Download TX19.txt</button><div class="preview-letter" id="tx19" style="margin-top:10px">${esc(tx19Letter())}</div></div>`;
+  const dl=R.deadlinesFor(deskDates()); const t=today();
+  const items=[...dl.items].sort((a,b)=>a.due&&b.due?a.due.localeCompare(b.due):a.due?-1:b.due?1:0);
+  return `<div class="two"><div class="card">${dateInputs("c")}<p class="mini">Saved with this estate.</p></div><div>${dl.needDod?`<div class="card"><strong>Enter the date of death to see your deadlines.</strong><p class="mini">Every date here is counted from the date of death.</p></div>`:""}${items.map(d=>`<div class="card" style="margin-bottom:8px"><strong>${esc(d.name)}</strong>${d.optional?' <span class="badge">optional</span>':""}${d.conditional?' <span class="badge">only if it applies</span>':""}${d.estimate?' <span class="badge">estimate</span>':""}${d.practice?' <span class="badge">common practice</span>':""}<div>${d.due?esc(dueLine({...d,days:R.daysBetween(t,d.due)})):`<span class="warn-text">${esc(NEEDS_LABEL[d.needs]||"Date needed")}: enter it on the left</span>`}</div><div class="mini">${esc(d.note)}</div><div class="mini">Source checked ${SOURCES_CHECKED} · ${ext(d.src.url,esc(d.src.name))}</div></div>`).join("")}
+  <p class="mini">If a CRA or Ministry of Finance due date falls on a weekend or public holiday, it is generally on time on the next business day. Payment due dates for the final T1 do not move for self-employed filers.</p></div></div>
+  <div class="card" style="margin-top:14px"><strong>Holdback note</strong><p class="mini" style="margin:6px 0 0">Under CRA Information Circular ${ext(FORM_LINKS["IC82-6R13"],"IC82-6R13")}, paragraph 2, you do not need a clearance certificate before every distribution if you hold back enough to cover any amount the estate may still owe. Final distribution should wait for TX19. Distributing without a holdback or the certificate can make the trustee personally liable. The TX19 cover letter is in the <button class="linkbtn" type="button" data-tab="letters">Letters</button> tab.</p></div>`;
 }
-function lettersHTML(){const L=state.letter;return `<div class="letters"><div class="card"><label class="label" for="rec">Recipient</label><select id="rec" class="inp">${["Bank","Utility","Landlord","Insurance","Employer"].map(r=>`<option ${L.recipient===r?"selected":""}>${r}</option>`).join("")}</select><div class="field" style="margin-top:10px"><label class="label" for="est">Estate name (optional)</label><input id="est" value="${esc(L.estate)}"></div><div class="field"><label class="label" for="dec">Person who died</label><input id="dec" value="${esc(L.name)}"></div><div class="field"><label class="label" for="trs">Your name (executor)</label><input id="trs" value="${esc(L.trustee||"")}"></div><div class="field"><label class="label" for="nt">Note</label><textarea id="nt" rows="4">${esc(L.note)}</textarea></div></div><div><button class="btn" id="copy" type="button">Copy</button> <button class="btn btn-grad" id="dl" type="button">Download .txt</button><div class="preview-letter" id="letter" style="margin-top:10px">${esc(letterText())}</div></div></div>`}
-function costsHTML(){const fee=eat(state.value);if(state.costs[0])state.costs[0].est=Math.round(fee);return `<div class="two"><div class="card"><label class="label" for="val">Estate value</label><input id="val" type="number" min="0" value="${state.value}"><p class="display">${money(fee)}</p><p class="mini">Estate administration tax estimate: $0 on the first $50,000, then 1.5%.</p></div><div>${state.costs.map((c,i)=>`<div class="card" style="margin-bottom:8px"><button class="btn" data-pay="${c.id}" type="button">${c.paid?"Paid":"Unpaid"}</button> ${esc(c.name)} · est ${i===0?money(c.est):`<input type="number" min="0" aria-label="Estimate for ${esc(c.name)}" data-est="${c.id}" value="${c.est}" style="width:110px">`}</div>`).join("")}<div class="filters"><label class="sr" for="costName">New cost</label><input id="costName" placeholder="Add a cost (e.g. Appraisal)" maxlength="120"><button class="btn" id="addCost" type="button">Add</button></div><p class="mini">Total estimated ${money(state.costs.reduce((a,c)=>a+(Number(c.est)||0),0))} · paid items ${state.costs.filter(c=>c.paid).length}</p></div></div>`}
+function lettersHTML(){const L=state.letter; const type=L.type||"bank"; const f=(id,key,label,ph)=>`<div class="field"><label class="label" for="${id}">${label}</label><input id="${id}" data-letter="${key}" maxlength="200" value="${esc(L[key]||"")}" ${ph?`placeholder="${esc(ph)}"`:""}></div>`;
+  const owned=!!(session.user&&session.user.addons&&session.user.addons.printkit);
+  return `<div class="letters"><div class="card"><label class="label" for="ltype">Letter</label><select id="ltype" class="inp" style="width:100%">${R.LETTER_TYPES.map(([k,l])=>`<option value="${k}" ${type===k?"selected":""}>${esc(l)}</option>`).join("")}</select>
+  <div style="margin-top:10px">${f("linst","institution","Recipient name and address","e.g. TD Bank, 55 King St W, Toronto")}${f("lacct","account","Account or policy number: last 4 digits only (optional)","e.g. ending 4521")}${f("dec","name","Person who died")}${f("laddr","address","Their last address (city is enough for a creditor notice)")}${f("trs","trustee","Your name (executor)")}${f("ltaddr","trusteeAddress","Your mailing address")}${f("ltcon","trusteeContact","Your phone or email")}${f("est","estate","Estate name (optional)")}</div>
+  <div class="field"><label class="label" for="nt">Extra note (optional)</label><textarea id="nt" data-letter="note" rows="3" maxlength="2000">${esc(L.note)}</textarea></div><p class="mini">Date of death and certificate date come from the Deadlines tab. Anything missing shows as a <mark class="blank">[highlighted blank]</mark>.</p></div>
+  <div><div class="cta-row"><button class="btn btn-grad" id="dlDocx" type="button">Download Word (.docx)</button><button class="btn btn-grad" id="dlPdf" type="button">Download PDF</button><button class="btn" id="copy" type="button">Copy text</button></div><p class="mini" id="dlMsg" role="status"></p><div class="preview-letter" id="letter" style="margin-top:10px">${letterHTML(curLetter())}</div>
+  <div class="card" style="margin-top:12px"><strong>Print kit</strong> <span class="mini">${owned?"Included in your account.":"$29 add-on"}</span><p class="mini" style="margin:6px 0">Timeline, checklist with checkboxes, deadline sheet and every letter above, in one print-ready PDF filled in from this estate. Digital PDF only; nothing is mailed.</p>${owned?`<button class="btn btn-grad" id="dlKit" type="button">Download Print kit (PDF)</button>`:`<button class="btn" id="buyKit" type="button">Buy the Print kit · $29</button>`}<p class="mini" id="kitMsg" role="status"></p></div></div></div>`}
+function costsHTML(){const fee=eat(state.value);if(state.costs[0])state.costs[0].est=Math.round(fee);return `<div class="two"><div class="card"><label class="label" for="val">Estate value</label><input id="val" type="number" min="0" value="${state.value}"><p class="display">${money(fee)}</p><p class="mini">${esc(R.eatExplain(state.value))} <a href="${R.SRC.eatPage.url}" target="_blank" rel="noopener">Ministry of Finance</a> · checked ${SOURCES_CHECKED}</p></div><div>${state.costs.map((c,i)=>`<div class="card" style="margin-bottom:8px"><button class="btn" data-pay="${c.id}" type="button">${c.paid?"Paid":"Unpaid"}</button> ${esc(c.name)} · est ${i===0?money(c.est):`<input type="number" min="0" aria-label="Estimate for ${esc(c.name)}" data-est="${c.id}" value="${c.est}" style="width:110px">`}</div>`).join("")}<div class="filters"><label class="sr" for="costName">New cost</label><input id="costName" placeholder="Add a cost (e.g. Appraisal)" maxlength="120"><button class="btn" id="addCost" type="button">Add</button></div><p class="mini">Total estimated ${money(state.costs.reduce((a,c)=>a+(Number(c.est)||0),0))} · paid items ${state.costs.filter(c=>c.paid).length}</p></div></div>`}
 function circleHTML(){
   const share=state.ent&&state.ent.share;
   const url=state.shareToken?location.origin+"/?share="+encodeURIComponent(state.shareToken):"";
@@ -501,7 +488,7 @@ async function renameCurrent(name){
 }
 function deskPayload(){
   const ent=state.ent||{};
-  return {tab:state.tab,dod:state.dod,value:state.value,letter:state.letter,vault:state.vault,tasks:state.tasks.map(t=>({id:t.id,status:t.status})),...(ent.costs?{costs:state.costs}:{}),...(ent.circle?{circle:state.circle}:{})};
+  return {tab:state.tab,dod:state.dod,certDate:state.certDate||undefined,t3YearEnd:state.t3YearEnd||undefined,creditorLast:state.creditorLast||undefined,selfEmployed:!!state.selfEmployed,value:state.value,letter:state.letter,vault:state.vault,tasks:state.tasks.map(t=>({id:t.id,status:t.status})),...(ent.costs?{costs:state.costs}:{}),...(ent.circle?{circle:state.circle}:{})};
 }
 let lastSaved="", saveTimer=null;
 function schedulePersist(){
@@ -516,8 +503,8 @@ async function persistDesk(){
   const m=$("#saveMsg"); if(r.ok){lastSaved=body; if(m) m.textContent="Saved";} else if(m) m.textContent=r.error||"Not saved";
 }
 function freshDesk(){
-  state.dod=""; state.value=0; state.vault={}; state.setupSkipped=false;
-  state.letter={recipient:"Bank",estate:"",name:"",trustee:"",date:new Date().toISOString().slice(0,10),account:"",note:"Please freeze the account and send a final statement as of the date of death."};
+  state.dod=""; state.certDate=""; state.t3YearEnd=""; state.creditorLast=""; state.selfEmployed=false; state.value=0; state.vault={}; state.setupSkipped=false;
+  state.letter={type:"bank",recipient:"Bank",estate:"",name:"",trustee:"",trusteeAddress:"",trusteeContact:"",address:"",institution:"",date:new Date().toISOString().slice(0,10),account:"",note:""};
   state.tasks.forEach(t=>t.status="todo");
   state.costs=[{id:1,name:"Estate administration tax",est:0,actual:0,paid:false},{id:2,name:"Lawyer — probate",est:0,actual:0,paid:false},{id:3,name:"Funeral",est:0,actual:0,paid:false},{id:4,name:"Court filing fee",est:0,actual:0,paid:false},{id:5,name:"Accountant",est:0,actual:0,paid:false},{id:6,name:"Appraisal",est:0,actual:0,paid:false}];
   state.circle=[];
@@ -546,12 +533,15 @@ function bind(){
   document.querySelectorAll("[data-phase]").forEach(b=>b.onclick=()=>{state.phase=b.dataset.phase;render()});
   document.querySelectorAll("[data-open]").forEach(b=>b.onclick=()=>{const id=+b.dataset.open;state.open=state.open===id?null:id;render()});
   document.querySelectorAll("[data-set]").forEach(b=>b.onclick=()=>{state.tasks.find(t=>t.id===+b.dataset.set).status=b.dataset.status;render()});
-  const dod=$("#dod"); if(dod) dod.onchange=e=>{state.dod=e.target.value;render()};
-  ["rec","est","dec","trs","nt"].forEach(id=>{const el=$("#"+id); if(!el)return; const key={rec:"recipient",est:"estate",dec:"name",trs:"trustee",nt:"note"}[id]; el.oninput=e=>{state.letter[key]=e.target.value; $("#letter").textContent=letterText()}});
+  document.querySelectorAll("[data-date]").forEach(el=>el.onchange=e=>{const k=el.dataset.date, v=e.target.value; if(v&&!R.isYMD(v)) return; state[k]=v; render(); persistDesk();});
+  document.querySelectorAll("[data-flag]").forEach(el=>el.onchange=e=>{state[el.dataset.flag]=e.target.checked; render();});
+  const lt=$("#ltype"); if(lt) lt.onchange=e=>{state.letter.type=e.target.value; render()};
+  document.querySelectorAll("[data-letter]").forEach(el=>el.oninput=e=>{state.letter[el.dataset.letter]=e.target.value; $("#letter").innerHTML=letterHTML(curLetter()); schedulePersist();});
   const copy=$("#copy"); if(copy) copy.onclick=async()=>{await navigator.clipboard.writeText(letterText()); copy.textContent="Copied"};
-  const copyTx=$("#copyTx"); if(copyTx) copyTx.onclick=async()=>{await navigator.clipboard.writeText(tx19Letter()); copyTx.textContent="Copied"};
-  const dlTx=$("#dlTx"); if(dlTx) dlTx.onclick=()=>{const a=document.createElement("a"); a.href=URL.createObjectURL(new Blob([tx19Letter()],{type:"text/plain"})); a.download="TX19-cover-letter.txt"; a.click()};
-  const dl=$("#dl"); if(dl) dl.onclick=()=>{const a=document.createElement("a"); a.href=URL.createObjectURL(new Blob([letterText()],{type:"text/plain"})); a.download="estate-letter.txt"; a.click()};
+  const dlDocx=$("#dlDocx"); if(dlDocx) dlDocx.onclick=()=>downloadDoc({action:"letter",type:state.letter.type||"bank",format:"docx"},"#dlMsg");
+  const dlPdf=$("#dlPdf"); if(dlPdf) dlPdf.onclick=()=>downloadDoc({action:"letter",type:state.letter.type||"bank",format:"pdf"},"#dlMsg");
+  const dlKit=$("#dlKit"); if(dlKit) dlKit.onclick=()=>downloadDoc({action:"printkit"},"#kitMsg");
+  const buyKit=$("#buyKit"); if(buyKit) buyKit.onclick=()=>startAddon("printkit");
   const val=$("#val"); if(val) val.onchange=e=>{state.value=Number(e.target.value)||0;render()};
   document.querySelectorAll("[data-pay]").forEach(b=>b.onclick=()=>{const c=state.costs.find(x=>x.id===+b.dataset.pay); c.paid=!c.paid; render()});
   const add=$("#addMem"); if(add) add.onclick=()=>{const name=$("#mem").value.trim(); if(!name)return; state.circle.push({name,relation:$("#memRel").value.trim()||"Family",role:$("#memRole").value}); render()};
@@ -623,6 +613,8 @@ async function refreshAccount(){
 }
 function restoreDesk(d){
   if(typeof d.dod==="string") state.dod=d.dod;
+  for(const k of ["certDate","t3YearEnd","creditorLast"]) if(typeof d[k]==="string") state[k]=d[k];
+  if(typeof d.selfEmployed==="boolean") state.selfEmployed=d.selfEmployed;
   if(typeof d.value==="number") state.value=d.value;
   if(d.letter&&typeof d.letter==="object") Object.assign(state.letter,d.letter);
   if(Array.isArray(d.tasks)) d.tasks.forEach(x=>{const t=state.tasks.find(t=>t.id===x.id); if(t&&["todo","doing","done","blocked"].includes(x.status)) t.status=x.status});
@@ -632,7 +624,7 @@ function restoreDesk(d){
 }
 function renderAccount(){
   const panel=$("#accountPanel"), forms=$("#authForms"); if(!panel) return;
-  setNav(); renderPriceButtons();
+  setNav(); renderPriceButtons(); renderPrintkit();
   if(!session.role){panel.style.display="none";forms.style.display="";$("#adminList").style.display="none";return}
   forms.style.display="none"; panel.style.display="block";
   if(session.role==="admin"){ $("#accountInfo").innerHTML="<strong>Admin</strong>"; $("#payNow").style.display="none"; $("#openDesk").style.display="none"; loadCustomers(); return }
@@ -643,6 +635,8 @@ function renderAccount(){
     const P={executor:[1,49,"Executor"],family:[2,89,"Family"],professional:[3,199,"Professional"]}; const cur=P[u.plan]||P.executor;
     const ups=Object.entries(P).filter(([,v])=>v[0]>cur[0]);
     if(ups.length) $("#accountInfo").innerHTML+=`<p class="mini" style="margin-top:8px">Upgrade and pay only the difference: `+ups.map(([k,v])=>`<button class="btn" type="button" data-upgrade="${k}">${v[2]} (+$${v[1]-cur[1]} CAD)</button>`).join(" ")+`</p>`;
+    $("#accountInfo").innerHTML+=u.addons&&u.addons.printkit?`<p class="mini">Print kit: included. Download it from the Letters tab.</p>`:`<p class="mini">Optional: <button class="btn" type="button" id="acctKit">Add the Print kit (+$29 CAD)</button></p>`;
+    const ak=$("#acctKit"); if(ak) ak.onclick=()=>startAddon("printkit");
     document.querySelectorAll("[data-upgrade]").forEach(b=>b.onclick=()=>startUpgrade(b.dataset.upgrade));
   }
 }
@@ -657,6 +651,30 @@ async function loadCustomers(){
   if(!r.customers){box.textContent=r.error||"Could not load customers";return}
   box.innerHTML=`<h3>Customers (${r.customers.length})</h3>`+r.customers.map(c=>`<div class="mini">${esc(c.name)} · ${esc(c.email)} · ${esc(c.plan)} · ${c.paid?"paid "+esc(c.paidAt||""):"unpaid"} · joined ${esc(c.createdAt)}</div>`).join("");
 }
+async function downloadDoc(body,msgSel){
+  const m=$(msgSel); if(m) m.textContent="Preparing your file…";
+  await persistDesk();
+  try{
+    const res=await fetch("/api/documents",{method:"POST",headers:{"content-type":"application/json",...(session.token?{authorization:"Bearer "+session.token}:{})},body:JSON.stringify({...body,estateId:state.estateId})});
+    if(!res.ok){const d=await res.json().catch(()=>({})); if(m) m.textContent=d.error||"Could not create the file"; return;}
+    const cd=res.headers.get("content-disposition")||""; const name=(/filename="([^"]+)"/.exec(cd)||[])[1]||"document";
+    const a=document.createElement("a"); a.href=URL.createObjectURL(await res.blob()); a.download=name; document.body.appendChild(a); a.click(); a.remove();
+    if(m) m.textContent="Downloaded "+name+". Review it before you use it.";
+  }catch(e){ if(m) m.textContent="Network error. Try again."; }
+}
+async function startAddon(addon){
+  sessionStorage.setItem("fc.addon",addon);
+  const r=await api("checkout",{addon});
+  if(!r.url){ sessionStorage.removeItem("fc.addon"); alert(r.error||"Stripe checkout failed"); return; }
+  location.href=r.url;
+}
+function renderPrintkit(){
+  const box=$("#printkitAction"); if(!box) return;
+  const u=session.role==="client"?session.user:null;
+  if(u&&u.paid&&u.addons&&u.addons.printkit){ box.innerHTML=`<span class="your">✓ You have the Print kit</span> <button class="btn" type="button" id="kitOpen" style="margin-top:12px">Download from the Letters tab</button>`; $("#kitOpen").onclick=()=>goDesk("letters"); return; }
+  if(u&&u.paid){ box.innerHTML=`<button class="btn btn-grad" type="button" id="kitBuy" style="margin-top:6px">Add the Print kit · $29</button>`; $("#kitBuy").onclick=()=>startAddon("printkit"); return; }
+  box.innerHTML=`<p class="mini" style="margin:0">Available after you buy any plan. Add it from your account or the Letters tab.</p>`;
+}
 async function startCheckout(plan){
   const r=await api("checkout",{plan});
   if(!r.url){ alert(r.error||"Stripe checkout failed"); return; }
@@ -667,13 +685,16 @@ async function handleReturn(){
   if(!sid&&!c) return;
   history.replaceState(null,"",location.pathname);
   const up=sessionStorage.getItem("fc.upgrade"); sessionStorage.removeItem("fc.upgrade");
-  if(c==="cancel"){ returnState={kind:"cancel"}; return; }
+  const addon=sessionStorage.getItem("fc.addon")||q.get("addon"); sessionStorage.removeItem("fc.addon");
+  if(c==="cancel"){ returnState={kind:addon?"addonCancel":"cancel"}; return; }
   const r=await api("verify-checkout",{sessionId:sid});
-  returnState=r.paid?{kind:up?"upgrade":"paid",plan:(r.user&&r.user.plan)||up}:{kind:r.status===401?"login":"pending"};
+  returnState=r.paid?{kind:addon?"addon":up?"upgrade":"paid",plan:(r.user&&r.user.plan)||up}:{kind:r.status===401?"login":"pending"};
 }
 let returnState=null;
 function showReturn(){
   const rs=returnState; returnState=null; if(!rs) return;
+  if(rs.kind==="addonCancel"){ notice("Print kit checkout cancelled. You haven’t been charged.","warn"); document.getElementById("noticeWrap").scrollIntoView({behavior:"smooth"}); return; }
+  if(rs.kind==="addon"&&isPaid()){ notice("Print kit unlocked – thank you. Download it from the <strong>Letters</strong> tab."); goDesk("letters"); return; }
   if(rs.kind==="cancel"){ notice("Checkout cancelled. You haven’t been charged. Your account is saved. Choose <strong>Complete payment</strong> when you’re ready.<br><button type=\"button\" class=\"btn btn-grad\" id=\"noticePay\" style=\"margin-top:10px;font-size:14px;width:auto;min-height:44px\">Complete payment</button>","warn"); const np=$("#noticePay"); if(np) np.onclick=()=>$("#payNow").click(); document.getElementById("noticeWrap").scrollIntoView({behavior:"smooth"}); return; }
   if(rs.kind==="login"&&!session.role){ notice("If you’ve paid, log in below to open your checklist. Your payment is confirmed by Stripe automatically.","warn"); document.getElementById("account").scrollIntoView({behavior:"smooth"}); return; }
   if(rs.kind==="pending"||!isPaid()){ notice("We’re confirming your payment with Stripe. This usually takes under a minute. Refresh this page, or log in again shortly.","warn"); document.getElementById("noticeWrap").scrollIntoView({behavior:"smooth"}); return; }
@@ -718,7 +739,7 @@ function renderPriceButtons(){
     else { slot.innerHTML=`<button class="btn btn-grad" type="button" style="margin-top:12px">Upgrade for +$${PLAN_PRICE[plan]-PLAN_PRICE[PLAN_ORDER[cur]]}</button>`; slot.firstChild.onclick=()=>startUpgrade(plan); }
   });
 }
-renderPriceButtons();
+renderPriceButtons(); renderPrintkit();
 let chosenPlan="executor";
 function selectPlan(p){chosenPlan=p;document.querySelectorAll("#suPlan [data-plan]").forEach(b=>{b.classList.toggle("on",b.dataset.plan===p);b.setAttribute("aria-pressed",b.dataset.plan===p)})}
 document.querySelectorAll("#suPlan [data-plan]").forEach(b=>b.onclick=()=>selectPlan(b.dataset.plan));

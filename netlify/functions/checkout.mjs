@@ -1,6 +1,6 @@
 // /api/checkout — creates a Stripe Checkout Session for the signed-in (unpaid or upgrading) user.
 // The email, user id and plan travel in metadata/client_reference_id so the webhook can match the payment.
-import { json, env, PLANS, CURRENCY, APP_ID, normPlan, upgradePrice, getSession, getUser, bearer } from "../lib/core.mjs";
+import { json, env, PLANS, ADDONS, CURRENCY, APP_ID, normPlan, normAddon, hasAddon, upgradePrice, getSession, getUser, bearer } from "../lib/core.mjs";
 import { usersStore } from "../lib/store.mjs";
 
 export function siteUrl() {
@@ -16,8 +16,15 @@ export async function handle(req, { store, fetchImpl = fetch, secretKey = env("S
   const user = await getUser(store, sess.email);
   if (!user) return json(401, { error: "Account not found" });
   // Unpaid: buy a plan at full price. Paid: only an upgrade to a higher plan, charged the difference.
-  let plan, amount, name, kind = "purchase";
-  if (user.paid) {
+  // Add-on (e.g. Print kit): any paid plan, once per account.
+  let plan, amount, name, kind = "purchase", addon = "";
+  if (body.addon !== undefined) {
+    addon = normAddon(body.addon);
+    if (!addon) return json(400, { error: "Unknown add-on" });
+    if (!user.paid) return json(402, { error: "Buy a plan first. The Print kit is an add-on for paid plans." });
+    if (hasAddon(user, addon)) return json(409, { error: "You already have the Print kit" });
+    kind = "addon"; plan = user.plan; amount = ADDONS[addon].amount; name = ADDONS[addon].name;
+  } else if (user.paid) {
     plan = normPlan(body.upgradeTo || body.plan);
     amount = upgradePrice(user.plan, plan);
     if (!amount) return json(400, { error: "You already have this plan or a higher one" });
@@ -40,6 +47,7 @@ export async function handle(req, { store, fetchImpl = fetch, secretKey = env("S
   params.set("metadata[plan]", plan);
   params.set("metadata[kind]", kind);
   if (kind === "upgrade") params.set("metadata[fromPlan]", user.plan);
+  if (kind === "addon") { params.set("metadata[addon]", addon); params.set("payment_intent_data[metadata][addon]", addon); }
   params.set("payment_intent_data[metadata][email]", user.email);
   params.set("payment_intent_data[metadata][plan]", plan);
   params.set("line_items[0][quantity]", "1");
@@ -47,7 +55,7 @@ export async function handle(req, { store, fetchImpl = fetch, secretKey = env("S
   params.set("line_items[0][price_data][unit_amount]", String(amount));
   params.set("line_items[0][price_data][product_data][name]", name);
   params.set("success_url", base + "/?session_id={CHECKOUT_SESSION_ID}");
-  params.set("cancel_url", base + "/?checkout=cancel#account");
+  params.set("cancel_url", base + "/?checkout=cancel" + (kind === "addon" ? "&addon=" + addon : "") + "#account");
   const res = await fetchImpl("https://api.stripe.com/v1/checkout/sessions", {
     method: "POST",
     headers: { authorization: "Bearer " + secretKey, "content-type": "application/x-www-form-urlencoded" },

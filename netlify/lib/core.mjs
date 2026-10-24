@@ -8,6 +8,16 @@ export const PLANS = {
   family: { name: "FinalChapter Family", amount: 8900, rank: 2, maxEstates: 1, circle: true, costs: true, share: true, clientList: false },
   professional: { name: "FinalChapter Professional", amount: 19900, rank: 3, maxEstates: 5, circle: true, costs: true, share: true, clientList: true },
 };
+// One-time add-ons any paid plan can buy once per account (enforced in markAddon and documents.mjs).
+export const ADDONS = {
+  printkit: { name: "FinalChapter Print kit", amount: 2900 },
+};
+export function normAddon(v) {
+  return Object.prototype.hasOwnProperty.call(ADDONS, v) ? v : "";
+}
+export function hasAddon(user, addon) {
+  return !!(user && user.paid && user.addons && user.addons[addon]);
+}
 export const RETENTION_MS = 3 * 365 * 24 * 60 * 60 * 1000; // 3 years after last activity
 export function planFromAmount(amount) {
   const a = Number(amount);
@@ -90,7 +100,9 @@ export function newWorkspaceCode() {
 // ---------- users ----------
 export function publicUser(u) {
   if (!u) return null;
-  return { email: u.email, name: u.name, plan: u.plan, paid: !!u.paid, paidAt: u.paidAt || null, entitlements: u.paid ? entitlements(u.plan) : null };
+  const addons = {};
+  for (const k of Object.keys(ADDONS)) if (hasAddon(u, k)) addons[k] = true;
+  return { email: u.email, name: u.name, plan: u.plan, paid: !!u.paid, paidAt: u.paidAt || null, entitlements: u.paid ? entitlements(u.plan) : null, addons };
 }
 export async function getUser(store, email) {
   const e = normEmail(email);
@@ -187,6 +199,30 @@ export async function markPaid(store, { email, plan, kind = "purchase", fromPlan
   return { user };
 }
 
+// kind "addon": a one-time add-on (e.g. the Print kit). Requires a paid plan; once per account; amount must match.
+export async function markAddon(store, { email, addon, stripeSessionId, amountTotal, currency }) {
+  const user = await getUser(store, email);
+  if (!user) return { error: "No account for that email", status: 404 };
+  if (currency && String(currency).toLowerCase() !== CURRENCY) return { error: "Currency mismatch", status: 400 };
+  const a = normAddon(addon);
+  if (!a) return { error: "Unknown add-on", status: 400 };
+  if (stripeSessionId) {
+    const seen = await store.get("stripe:" + stripeSessionId, { type: "json" });
+    if (seen) return { user, already: true };
+  }
+  if (amountTotal != null && Number(amountTotal) !== ADDONS[a].amount) return { error: "Amount does not match add-on price", status: 400 };
+  if (!user.paid) return { error: "Add-ons require a paid plan", status: 400 };
+  const now = new Date().toISOString();
+  if (!hasAddon(user, a)) {
+    user.addons = { ...(user.addons || {}), [a]: { at: now, stripeSessionId: stripeSessionId || null } };
+  }
+  user.lastActiveAt = now;
+  user.purchases = [...(user.purchases || []), { kind: "addon", addon: a, amount: amountTotal ?? null, stripeSessionId: stripeSessionId || null, at: now }];
+  await store.setJSON("user:" + user.email, user);
+  if (stripeSessionId) await store.setJSON("stripe:" + stripeSessionId, { email: user.email, addon: a, kind: "addon", at: now });
+  return { user };
+}
+
 // The Stripe account is shared with other apps; only sessions tagged metadata.app === APP_ID are ours.
 export const APP_ID = "finalchapter";
 export function isOurSession(session) {
@@ -205,8 +241,11 @@ export async function applyCheckoutSession(store, session) {
   // Our sessions always carry the account id in client_reference_id and metadata.userId; every id present must match.
   const ids = [session.client_reference_id, session.metadata?.userId].filter(Boolean);
   if (!ids.length || ids.some((id) => id !== user.id)) return { error: "Session does not belong to this account", status: 403 };
-  const kind = session.metadata?.kind === "upgrade" ? "upgrade" : "purchase";
   const amount = session.amount_subtotal ?? session.amount_total;
+  if (session.metadata?.kind === "addon") {
+    return await markAddon(store, { email, addon: session.metadata?.addon, stripeSessionId: session.id, amountTotal: amount, currency: session.currency });
+  }
+  const kind = session.metadata?.kind === "upgrade" ? "upgrade" : "purchase";
   const plan = normPlan(session.metadata?.plan) || (kind === "purchase" ? planFromAmount(amount) : "");
   if (!plan) return { error: "Session is missing plan metadata", status: 400 };
   return await markPaid(store, { email, plan, kind, fromPlan: session.metadata?.fromPlan, stripeSessionId: session.id, amountTotal: amount, currency: session.currency });

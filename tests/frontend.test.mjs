@@ -2,6 +2,7 @@ import { test } from "node:test";
 import assert from "node:assert/strict";
 import fs from "node:fs";
 const html = fs.readFileSync(new URL("../public/index.html", import.meta.url), "utf8");
+const rules = fs.readFileSync(new URL("../public/fc-rules.js", import.meta.url), "utf8");
 const catalog = JSON.parse(fs.readFileSync(new URL("../public/forms-catalog.json", import.meta.url), "utf8"));
 
 test("no client-side unlock paths remain", () => {
@@ -15,8 +16,9 @@ test("no client-side unlock paths remain", () => {
 test("content fixes present", () => {
   assert.ok(!html.includes("finalchapter.app/os"));
   assert.ok(!/Form checked \$\{today\}/.test(html));
-  assert.ok(!html.includes("Form 74.1") && !html.includes("Form 74.8"));
-  assert.ok(html.includes("Form 74A – Application for a Certificate of Appointment of Estate Trustee"));
+  // Old (pre-2022) form numbers must not come back; 74.1A–74.1F are the current small-estate forms.
+  assert.ok(!/Form 74\.(4|5|8|13|14)\b/.test(html + rules));
+  assert.ok(rules.includes("Form 74A – Application for a Certificate of Appointment of Estate Trustee"));
   assert.ok(html.includes("maximum $5,000") && html.includes("Up to $5,000"));
   assert.ok(!html.includes("ontario.ca/page/estate-information-return"));
   assert.ok(!html.includes("forms/rc411.html"));
@@ -24,7 +26,7 @@ test("content fixes present", () => {
 });
 
 test("catalog step ids match the forms named on those steps", () => {
-  const raw = JSON.parse(html.match(/const RAW=(\[\[.*?\]\]);/s)[1]);
+  const raw = JSON.parse(rules.match(/const RAW = (\[\[.*?\]\]);/s)[1]);
   const byId = Object.fromEntries(raw.map((t) => [t[0], t]));
   const aliases = { "Death certificate order": ["Death certificate order"], "Probate overview": null, "Estate Information Return": ["EIR"], "T3 return (T3RET)": ["T3 return", "Final T3 return"], "GST/HST cancellation": ["GST cancellation"] };
   for (const f of catalog.forms) {
@@ -84,4 +86,28 @@ test("policy and tour copy follow the usability changes", () => {
 test("setup card names the estate and single-estate plans get a rename control", () => {
   assert.ok(html.includes('renameCurrent("Estate of "+state.letter.name)'));
   assert.ok(html.includes('id="renameCur"'));
+});
+
+test("new feature pages: no demo wording, no feed claims, disclaimers, sources and checked dates", () => {
+  const read = (f) => fs.readFileSync(new URL("../public/" + f, import.meta.url), "utf8");
+  const pages = ["index.html", "probate.html", "fc-rules.js", "terms.html", "refunds.html", "privacy.html", "tour.js"].map((f) => [f, read(f)]);
+  for (const [f, s] of pages) {
+    assert.ok(!/demo/i.test(s), f + ": no demo wording");
+    assert.ok(!/\bfeed\b/i.test(s), f + ": no shared feed claims (replaced by the view-only progress link)");
+  }
+  const probate = read("probate.html");
+  assert.ok(probate.includes("Not legal advice.") && probate.includes("you still file"));
+  assert.ok(probate.includes("Talk to a lawyer if"));
+  assert.ok(probate.includes('<script type="module">') && probate.includes('from "/fc-rules.js"'));
+  assert.ok(!/<script[^>]+src="https?:/.test(probate + html), "no third-party scripts");
+  assert.ok(rules.includes('SOURCES_CHECKED = "2026-10-24"'));
+  for (const u of ["ontario.ca/laws/statute/98e34", "ontario.ca/laws/regulation/140310", "ontario.ca/page/probate-small-estate", "ontariocourtforms.on.ca", "prepare-returns/filing-deadlines.html", "ontario.ca/laws/regulation/900194"]) assert.ok(rules.includes(u), u);
+  assert.ok(!rules.includes("regulation/110310") && !/310\/11\b/.test(rules + probate + html), "EIR regulation is O. Reg. 310/14");
+  assert.ok(!/1\.5% after/.test(html), "EAT shown as $15 per $1,000 or part, not a flat 1.5%");
+  const terms = read("terms.html"), refunds = read("refunds.html"), privacy = read("privacy.html");
+  assert.ok(terms.includes("Print kit") && terms.includes("digital PDF only") && /nothing is printed, mailed or shipped/.test(terms));
+  assert.ok(refunds.includes("add-ons (such as the Print kit)") && refunds.includes("All sales are final"));
+  assert.ok(privacy.includes("We do not keep a copy of the file") && privacy.includes("run only in your browser"));
+  assert.ok(html.includes('id="printkit"') && html.includes("Print kit · $29 once"));
+  assert.ok(html.includes('href="/probate.html"'));
 });
