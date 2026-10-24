@@ -40,6 +40,7 @@ export async function handle(req, { store, fetchImpl = fetch, secretKey = env("S
   params.set("mode", "payment");
   params.set("client_reference_id", user.id);
   params.set("customer_email", user.email);
+  params.set("payment_intent_data[receipt_email]", user.email);
   params.set("metadata[app]", APP_ID);
   params.set("payment_intent_data[metadata][app]", APP_ID);
   params.set("metadata[email]", user.email);
