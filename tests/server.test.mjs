@@ -64,7 +64,7 @@ test("unpaid user cannot open the desk; ?checkout-style claims do nothing server
   const me = await call(auth, post("/api/auth", { action: "me" }, s.token), { store, admin: ADMIN });
   assert.equal(me.body.user.paid, false);
   assert.equal(me.body.workspaceCode, undefined);
-  const load = await call(estate, post("/api/estate", { action: "load", checkout: "family", paid: true }, s.token), { store });
+  const load = await call(estate, post("/api/estate", { action: "load", checkout: "family", paid: true }, s.token), { store, estates: memStore() });
   assert.equal(load.status, 402);
 });
 
@@ -151,7 +151,10 @@ test("signed checkout.session.completed marks paid with plan from metadata and i
   assert.match(after.workspaceCode, /^FC-[A-Z2-9]{5}-[A-Z2-9]{5}-[A-Z2-9]{5}$/);
   const me = await call(auth, post("/api/auth", { action: "me" }, s.token), { store, admin: ADMIN });
   assert.equal(me.body.user.paid, true);
-  const save = await call(estate, post("/api/estate", { action: "save", desk: { dod: "2025-03-01" } }, s.token), { store });
+  const estates = memStore();
+  const list = await call(estate, post("/api/estate", { action: "list" }, s.token), { store, estates });
+  assert.equal(list.body.estates.length, 1);
+  const save = await call(estate, post("/api/estate", { action: "save", estateId: list.body.estates[0].id, desk: { dod: "2025-03-01" } }, s.token), { store, estates });
   assert.equal(save.status, 200);
   const red = await call(auth, post("/api/auth", { action: "redeem", code: after.workspaceCode }), { store, admin: ADMIN });
   assert.equal(red.status, 200); assert.equal(red.body.user.paid, true);

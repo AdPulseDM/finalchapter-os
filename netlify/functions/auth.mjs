@@ -31,6 +31,8 @@ export async function handle(req, { store, admin = adminConfig() }) {
     }
     const user = await getUser(store, email);
     if (!user || !verifyPassword(password, user.password_salt, user.password_hash)) return json(401, { error: "Invalid email or password" });
+    user.lastActiveAt = new Date().toISOString();
+    await store.setJSON("user:" + user.email, user);
     const s = await createSession(store, { email, role: "client" });
     return json(200, { ok: true, role: "client", token: s.token, exp: s.exp, user: publicUser(user) });
   }

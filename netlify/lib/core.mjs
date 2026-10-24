@@ -2,11 +2,28 @@
 // Pure helpers take a Blobs-like store ({get, set, setJSON, delete, list}) so they can be unit-tested with an in-memory store.
 import crypto from "node:crypto";
 
+// Plan entitlements are enforced server-side (see netlify/lib/estates.mjs).
 export const PLANS = {
-  executor: { name: "FinalChapter Executor", amount: 4900 },
-  family: { name: "FinalChapter Family", amount: 8900 },
-  professional: { name: "FinalChapter Professional", amount: 19900 },
+  executor: { name: "FinalChapter Executor", amount: 4900, rank: 1, maxEstates: 1, circle: false, costs: false, share: false, clientList: false },
+  family: { name: "FinalChapter Family", amount: 8900, rank: 2, maxEstates: 1, circle: true, costs: true, share: true, clientList: false },
+  professional: { name: "FinalChapter Professional", amount: 19900, rank: 3, maxEstates: 5, circle: true, costs: true, share: true, clientList: true },
 };
+export const RETENTION_MS = 3 * 365 * 24 * 60 * 60 * 1000; // 3 years after last activity
+export function planFromAmount(amount) {
+  const a = Number(amount);
+  return Object.keys(PLANS).find((k) => PLANS[k].amount === a) || "";
+}
+export function upgradePrice(fromPlan, toPlan) {
+  const f = PLANS[fromPlan], t = PLANS[toPlan];
+  if (!f || !t || t.rank <= f.rank) return 0;
+  return t.amount - f.amount;
+}
+export function entitlements(plan) {
+  const p = PLANS[plan];
+  if (!p) return null;
+  const { maxEstates, circle, costs, share, clientList } = p;
+  return { plan, maxEstates, circle, costs, share, clientList };
+}
 export const CURRENCY = "cad";
 export const CLIENT_SESSION_MS = 7 * 24 * 60 * 60 * 1000; // 7 days
 export const ADMIN_SESSION_MS = 8 * 60 * 60 * 1000; // 8 hours
@@ -73,7 +90,7 @@ export function newWorkspaceCode() {
 // ---------- users ----------
 export function publicUser(u) {
   if (!u) return null;
-  return { email: u.email, name: u.name, plan: u.plan, paid: !!u.paid, paidAt: u.paidAt || null };
+  return { email: u.email, name: u.name, plan: u.plan, paid: !!u.paid, paidAt: u.paidAt || null, entitlements: u.paid ? entitlements(u.plan) : null };
 }
 export async function getUser(store, email) {
   const e = normEmail(email);
@@ -131,23 +148,42 @@ export function adminConfig() {
 }
 
 // ---------- payment (internal only: called from webhook / verified session) ----------
-export async function markPaid(store, { email, plan, stripeSessionId, amountTotal, currency }) {
+// kind "purchase": first payment for `plan`, amount must equal PLANS[plan].amount.
+// kind "upgrade": pays the difference from `fromPlan` to `plan`; only moves the account UP a tier.
+export async function markPaid(store, { email, plan, kind = "purchase", fromPlan, stripeSessionId, amountTotal, currency }) {
   const user = await getUser(store, email);
   if (!user) return { error: "No account for that email", status: 404 };
-  const p = normPlan(plan) || user.plan;
-  if (amountTotal != null && PLANS[p] && Number(amountTotal) !== PLANS[p].amount) return { error: "Amount does not match plan", status: 400 };
   if (currency && String(currency).toLowerCase() !== CURRENCY) return { error: "Currency mismatch", status: 400 };
-  if (user.paid && user.stripeSessionId === stripeSessionId) return { user, already: true };
+  if (stripeSessionId) {
+    const seen = await store.get("stripe:" + stripeSessionId, { type: "json" });
+    if (seen) return { user, already: true };
+  }
+  let p = normPlan(plan);
+  if (kind === "upgrade") {
+    const from = normPlan(fromPlan);
+    const expected = upgradePrice(from, p);
+    if (!p || !from || !expected) return { error: "Invalid upgrade", status: 400 };
+    if (amountTotal != null && Number(amountTotal) !== expected) return { error: "Amount does not match upgrade price", status: 400 };
+    if (!user.paid) return { error: "Upgrade requires a paid account", status: 400 };
+  } else {
+    if (!p && amountTotal != null) p = planFromAmount(amountTotal);
+    if (!p) return { error: "Unknown plan", status: 400 };
+    if (amountTotal != null && Number(amountTotal) !== PLANS[p].amount) return { error: "Amount does not match plan", status: 400 };
+  }
+  const now = new Date().toISOString();
+  const current = user.paid ? PLANS[user.plan]?.rank || 0 : 0;
+  if (!user.paid || PLANS[p].rank > current) user.plan = p; // never downgrade
   user.paid = true;
-  user.plan = p;
-  user.paidAt = new Date().toISOString();
+  user.paidAt = user.paidAt || now;
+  user.lastActiveAt = now;
   user.stripeSessionId = stripeSessionId || user.stripeSessionId || null;
+  user.purchases = [...(user.purchases || []), { kind, plan: p, fromPlan: kind === "upgrade" ? fromPlan : null, amount: amountTotal ?? null, stripeSessionId: stripeSessionId || null, at: now }];
   if (!user.workspaceCode) {
     user.workspaceCode = newWorkspaceCode();
     await store.set("code:" + user.workspaceCode, user.email);
   }
   await store.setJSON("user:" + user.email, user);
-  if (stripeSessionId) await store.setJSON("stripe:" + stripeSessionId, { email: user.email, plan: p, at: user.paidAt });
+  if (stripeSessionId) await store.setJSON("stripe:" + stripeSessionId, { email: user.email, plan: p, kind, at: now });
   return { user };
 }
 
@@ -156,12 +192,15 @@ export async function applyCheckoutSession(store, session) {
   if (!session || session.object !== "checkout.session") return { error: "Not a checkout session", status: 400 };
   if (session.payment_status !== "paid") return { error: "Payment not completed", status: 402, pending: true };
   const email = normEmail(session.metadata?.email || session.customer_email || session.customer_details?.email);
-  const plan = normPlan(session.metadata?.plan);
-  if (!email || !plan) return { error: "Session is missing email or plan metadata", status: 400 };
+  if (!email) return { error: "Session is missing email metadata", status: 400 };
   const user = await getUser(store, email);
   if (!user) return { error: "No account for that email", status: 404 };
   if (session.client_reference_id && session.client_reference_id !== user.id) return { error: "Session does not belong to this account", status: 403 };
-  return await markPaid(store, { email, plan, stripeSessionId: session.id, amountTotal: session.amount_subtotal ?? session.amount_total, currency: session.currency });
+  const kind = session.metadata?.kind === "upgrade" ? "upgrade" : "purchase";
+  const amount = session.amount_subtotal ?? session.amount_total;
+  const plan = normPlan(session.metadata?.plan) || (kind === "purchase" ? planFromAmount(amount) : "");
+  if (!plan) return { error: "Session is missing plan metadata", status: 400 };
+  return await markPaid(store, { email, plan, kind, fromPlan: session.metadata?.fromPlan, stripeSessionId: session.id, amountTotal: amount, currency: session.currency });
 }
 
 // ---------- Stripe webhook signature (same scheme as stripe.webhooks.constructEvent) ----------

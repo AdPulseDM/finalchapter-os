@@ -113,11 +113,11 @@ body.preview-mode .pane .tab, body.preview-mode .tabs { pointer-events:auto; opa
       <div class="preview-body"><div id="heroTasks"></div><div class="split2"><div class="kpi"><div class="k">NEXT DEADLINE</div><div class="v" id="heroDeadline">Final T1</div></div><div class="kpi"><div class="k">ESTATE ADMIN TAX</div><div class="v" id="heroEat">$0</div><div class="mini">$0 first $50k · 1.5% after</div></div></div></div>
     </div>
   </div></section>
-  <section class="wrap" id="os" style="padding-bottom:64px;display:none"><div class="panel"><div class="tabs" id="tabs"></div><div class="pane" id="pane"></div></div></section>
+  <section class="wrap" id="os" style="padding-bottom:64px;display:none"><div class="panel"><div id="estateBar" class="mini" style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-bottom:8px"></div><div class="tabs" id="tabs"></div><div class="pane" id="pane"></div></div></section>
   <section class="wrap" id="why" style="padding:48px 24px"><div class="why">
     <article id="why-province"><div class="mark">01</div><h3>Province logic</h3><p class="lede">Certificate of Appointment, the 180-day Estate Information Return, creditor notice, and current estate administration tax.</p></article>
     <article id="why-forms"><div class="mark">02</div><h3>Forms on the path</h3><p class="lede"><a href="https://ontariocourtforms.on.ca/en/rules-of-civil-procedure-forms/pre-formatted-fillable-estates-forms/" target="_blank" rel="noopener">74A</a>, <a href="https://www.canada.ca/en/services/benefits/publicpensions/cpp/cpp-death-benefit.html" target="_blank" rel="noopener">ISP1200</a>, <a href="https://www.canada.ca/en/revenue-agency/services/forms-publications/forms/tx19.html" target="_blank" rel="noopener">TX19</a>, <a href="https://www.canada.ca/en/revenue-agency/services/tax/individuals/life-events/doing-taxes-someone-died.html" target="_blank" rel="noopener">T1</a>, and <a href="https://www.canada.ca/en/revenue-agency/services/forms-publications/forms/t3ret.html" target="_blank" rel="noopener">T3</a> are named on the step. This desk does not file them for you.</p></article>
-    <article id="why-circle"><div class="mark">03</div><h3>Circle, not chaos</h3><p class="lede">Family and counsel share a feed. Liability stays with the estate trustee.</p></article>
+    <article id="why-circle"><div class="mark">03</div><h3>Circle, not chaos</h3><p class="lede">Keep a list of family and counsel, and share a read-only progress link with them (Family and Professional plans). Liability stays with the estate trustee.</p></article>
   </div></section>
   
 <section class="wrap" id="forms" style="padding:24px 24px 48px">
@@ -173,7 +173,7 @@ body.preview-mode .pane .tab, body.preview-mode .tabs { pointer-events:auto; opa
 <section class="wrap" id="what-you-get" style="padding:24px 24px 48px">
   <h2 class="display" style="font-size:28px">What you get</h2>
   <div class="why">
-    <article><h3>An organizer</h3><p class="lede">A 60-step Ontario estate checklist with deadline estimates, a document checklist (vault), a cost tracker, and a circle list for family and counsel.</p></article>
+    <article><h3>An organizer</h3><p class="lede">A 60-step Ontario estate checklist with deadline estimates, a document checklist (vault), and, on Family and Professional plans, a cost tracker, a circle list for family and counsel, and a read-only progress link you can share. Professional adds up to five client estates.</p></article>
     <article><h3>Drafts you edit</h3><p class="lede">Letter and checklist drafts (bank, utility, insurer, TX19 cover letter) that you copy or download as text and review before you use them.</p></article>
     <article><h3>Links to official sources</h3><p class="lede">Each form is linked to its official Ontario or Government of Canada page so you can get the current version.</p></article>
   </div>
@@ -189,11 +189,11 @@ body.preview-mode .pane .tab, body.preview-mode .tabs { pointer-events:auto; opa
 </section>
 <section class="wrap" id="pricing" style="padding:24px 24px 64px;text-align:center"><h2 class="display" style="font-size:36px;margin:0">One-time. No subscription grief.</h2><p class="lede" style="margin:8px auto 24px">One-time payment in CAD through Stripe. After payment, log in with your email and password to open your desk. See <a href="#what-you-get">what you get</a>. Not legal, tax, or financial advice.</p>
     <div class="prices" style="text-align:left">
-      <div class="price"><div class="label">Executor</div><div class="amt">$49 once</div><ul><li>60-step timeline</li><li>CRA deadline engine</li><li>Letter drafts</li></ul></div>
-      <div class="price pop"><span class="tag">MOST POPULAR</span><div class="label">Family</div><div class="amt">$89 once</div><ul><li>Everything in Executor</li><li>Circle</li><li>Cost tracker</li></ul></div>
-      <div class="price"><div class="label">Professional</div><div class="amt">$199 once</div><ul><li>Five client estates</li><li>Letter drafts</li><li>Client list</li></ul></div>
+      <div class="price"><div class="label">Executor</div><div class="amt">$49 once</div><ul><li>One estate</li><li>60-step timeline</li><li>CRA deadline engine</li><li>Letter drafts</li></ul></div>
+      <div class="price pop"><span class="tag">MOST POPULAR</span><div class="label">Family</div><div class="amt">$89 once</div><ul><li>Everything in Executor</li><li>Circle list of family and counsel</li><li>Read-only progress link to share with family</li><li>Cost tracker</li></ul></div>
+      <div class="price"><div class="label">Professional</div><div class="amt">$199 once</div><ul><li>Everything in Family</li><li>Up to five client estates</li><li>Client list and estate switcher</li></ul></div>
     </div>
-    <p class="mini" style="margin-top:16px">By buying you agree to the <a href="/terms.html">Terms of Service</a> · <a href="/privacy.html">Privacy Policy</a> · <a href="/refunds.html">Refund Policy</a>. Prices in Canadian dollars. [TAX NOTE: state whether prices include or exclude GST/HST].</p>
+    <p class="mini" style="margin-top:16px">By buying you agree to the <a href="/terms.html">Terms of Service</a> · <a href="/privacy.html">Privacy Policy</a> · <a href="/refunds.html">Refund Policy</a>. Prices in Canadian dollars. We are a small supplier and are not registered for GST/HST, so no GST/HST is charged at present. The price shown at checkout is what you pay.</p>
   </section>
 </main>
 <footer><div class="wrap foot"><div>FinalChapter · Ontario executor organizer · Does not file forms · Not legal, tax, or financial advice</div><div><a href="/terms.html">Terms of Service</a> · <a href="/privacy.html">Privacy Policy</a> · <a href="/refunds.html">Refund Policy</a> · <a href="#what-you-get">What you get</a></div><div>Verify with the Ontario Superior Court of Justice and the CRA</div></div></footer>
@@ -224,7 +224,7 @@ const esc = v => String(v ?? "").replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt
 const ext = (url, text) => `<a href="${url}" target="_blank" rel="noopener">${text}</a>`;
 const RAW=[[1,"immediate","Obtain the medical certificate of death","A physician or coroner completes it.","done","Day 1","Ontario medical certificate",["Medical certificate"],1],[2,"immediate","Contact the funeral home","They file the statement of death.","done","Day 2","ServiceOntario",["Statement of Death"],2],[3,"immediate","Secure property and valuables","Locks, mail, deliveries.","doing","Day 2","Duty of care",[],2],[4,"immediate","Locate the will","Safe, box, or lawyer.","done","Day 3","Will search",["Will search"],3],[5,"immediate","Order death certificates","Banks want originals.","doing","Day 5","ServiceOntario",["Death certificate order"],5],[6,"immediate","Speak with an estate lawyer","Real estate or a contest.","todo","Day 5","LSO referral",[],5],[7,"immediate","Read the will","Trustee, alternates, wishes.","done","Day 3","No will: SLRA",["Will"],3],[8,"immediate","Rental tenancy","Short notice may apply.","todo","Day 7","Residential Tenancies Act",["Tenancy notice"],7],[9,"first30","CPP death benefit","Up to $2,500, plus a top-up of up to $2,500 for deaths on or after Jan 1, 2025 if eligible (maximum $5,000). The estate should apply within 60 days.","todo","Week 2","ISP1200",["ISP1200"],14],[10,"first30","Notify Service Canada","Stop benefits on the SIN.","todo","Week 2","Death certificate",["SIN notice"],14],[11,"first30","Cancel OHIP and licence","ServiceOntario.","todo","Week 2","Prevent misuse",["Health card"],14],[12,"first30","List bank accounts","Balance on the date of death.","todo","Week 3","Tell each bank",[],21],[13,"first30","Notify life insurers","Certificate and policy number.","todo","Week 3","Claim form",["Claim form"],21],[14,"first30","Employer and pension","Final pay and survivor benefits.","todo","Week 3","Record of employment",[],21],[15,"first30","Redirect mail","Canada Post estate forwarding.","todo","Week 3","Proof you can act",["Mail redirect"],21],[16,"first30","Digital accounts","Email, banking, subscriptions.","todo","Week 4","Provider rules",[],28],[17,"first30","Vacant-home insurance","Call before cover lapses.","blocked","Week 2","Policy window",[],14],[18,"first30","Values at death","Needed for probate tax.","todo","Month 1","Valuation",["Valuation sheet"],30],[19,"first30","Open an estate account","Estate money only.","todo","Month 1","Will and certificate",["Estate account"],30],[20,"first30","Notice to creditors","Not mandatory. Still useful.","todo","Month 1","Trustee Act s.53",["Creditor notice"],30],[21,"probate","Is a certificate required?","Land in their name usually needs one.","doing","Month 2","Banks set limits",[],45],[22,"probate","Form 74A – Application for a Certificate of Appointment of Estate Trustee","Filed with the Superior Court of Justice.","todo","Month 2","Superior Court",["Form 74A"],60],[23,"probate","Affidavit of execution","Witness affidavit (Form 74D, Affidavit of Execution of Will or Codicil).","todo","Month 2","Form 74D",["Form 74D"],60],[24,"probate","Renunciation","If a named trustee steps aside (Form 74G, Renunciation and Consent).","todo","Month 2","Form 74G",["Form 74G"],60],[25,"probate","Estate administration tax","$0 on the first $50,000. 1.5% after, rounded up.","todo","Month 2","EAT Act",["EAT calculation"],60],[26,"probate","File at the court","Under $150,000 may use the small-estate path.","todo","Month 2","Court fee is separate",["Filing package"],75],[27,"probate","Wait for the certificate","Do not distribute yet.","blocked","Month 3","Times vary",[],90],[28,"probate","Estate Information Return","180 days after the certificate.","todo","Month 4","Not 90 days",["EIR"],120],[29,"probate","Certificate to the banks","They release to the estate account.","todo","Month 4","Certified copy",[],120],[30,"probate","Last creditor notice","Before gifts go out.","todo","Month 4","Keep proof",[],120],[31,"cra","Final T1","Later of 30 April and six months after death.","todo","Month 6","Terminal return",["T1 final"],180],[32,"cra","T3 if the estate earns","Separate taxpayer from the next day. File the T3 return (T3RET).","todo","Month 6","90 days after year-end",["T3 return"],180],[33,"cra","TX19 clearance","Before the final distribution.","todo","Month 8","Often many months",["TX19","IC82-6R13"],240],[34,"cra","CPP survivor pension","Eligible spouse or partner.","todo","Month 2","ISP1300",["ISP1300"],60],[35,"cra","Close GST/HST","Stop credits in their name.","todo","Month 2","CRA",["GST cancellation"],60],[36,"cra","TFSA and RRSP","RRSP may roll to a spouse.","todo","Month 3","Carrier forms",["Transfer"],90],[37,"cra","Tell CRA of the death","Stops benefits.","todo","Week 4","RC4111",["RC4111"],28],[38,"cra","Rights returns","Up to three extra returns.","todo","Month 6","Guide T4011",["Rights return"],180],[39,"assets","Home value","MPAC plus appraisal.","todo","Month 2","Date-of-death value",["Appraisal"],60],[40,"assets","Land title","Survivorship or estate transfer.","todo","Month 5","Land registry",["Transfer"],150],[41,"assets","Vehicles","ServiceOntario.","todo","Month 3","Plates",["Vehicle transfer"],90],[42,"assets","Collect debts","Loans and receivables.","todo","Month 4","In writing",[],120],[43,"assets","Personal property","Inventory, then sell or give.","todo","Month 6","Follow the will",["Inventory"],180],[44,"assets","Business interests","Shares or a sole prop.","todo","Month 6","Minute book",[],180],[45,"assets","Investments","Deemed disposition at fair value.","todo","Month 5","In kind or sell",[],150],[46,"assets","Safety deposit box","Will and death certificate.","todo","Month 2","Inventory with the bank",[],60],[47,"assets","Mortgage","Keep paying.","todo","Month 2","Tell the lender",[],60],[48,"closure","Close utilities","Final reads.","todo","Month 4","Hydro, gas, water",["Utility letter"],120],[49,"closure","Cancel subscriptions","Watch auto-renew.","todo","Month 4","Cards on file",[],120],[50,"closure","Email and social","Each platform has its own rule.","todo","Month 6","Memorialise or close",["Digital request"],180],[51,"closure","Cards and loyalty","Some allow a spouse transfer.","todo","Month 5","Return ID cards",[],150],[52,"closure","Cancel spare policies","After the transfer.","todo","Month 3","Give notice",["Cancellation"],90],[53,"closure","Electoral roll","Elections Ontario.","todo","Month 6","Remove the name",[],180],[54,"closure","Property tax","Unpaid tax can lien.","todo","Month 6","Municipal certificate",[],180],[55,"final","Estate accounts","Receipts, debts, gifts.","todo","Month 10","Trustee accounting",["Estate accounts"],300],[56,"final","Releases","After clearance, before the last cheque.","todo","Month 11","Release",["Release"],330],[57,"final","Distribute","Compensation is claimable, not automatic.","todo","Month 11","Follow the will",[],330],[58,"final","Close the estate account","Final T3 return if needed.","todo","Month 12","Nil return",["Final T3 return"],365],[59,"final","Store records","CRA can look back years.","todo","Month 12","Six-year floor",[],365],[60,"final","Discharge letter","Pass accounts only if disputed.","todo","Month 12","Tell the beneficiaries",["Closure letter"],365]];
 const TASKS=RAW.map(t=>({id:t[0],phase:t[1],title:t[2],desc:t[3],status:t[4],due:t[5],note:t[6],forms:t[7],day:t[8]}));
-const state={tab:"timeline",tasks:TASKS,q:"",status:"all",phase:"all",open:1,dod:"2024-09-15",value:425000,letter:{recipient:"Bank",estate:"Estate of Elena Vasquez",name:"Elena Vasquez",date:"2024-11-20",account:"**** 4521",note:"Please freeze the account and send a final statement as of the date of death."},costs:[{id:1,name:"Estate administration tax",est:5625,actual:0,paid:false},{id:2,name:"Lawyer — probate",est:4500,actual:2200,paid:false},{id:3,name:"Funeral",est:12000,actual:11450,paid:true},{id:4,name:"Court filing fee",est:232,actual:232,paid:true},{id:5,name:"Accountant",est:1500,actual:0,paid:false},{id:6,name:"Appraisal",est:500,actual:450,paid:true}],circle:[{name:"Sarah Chen",relation:"Daughter",role:"Executor"},{name:"Michael Vasquez",relation:"Spouse",role:"Family"},{name:"David Park Law",relation:"Counsel",role:"Lawyer"}]};
+const state={estates:[],estateId:null,ent:null,readOnly:false,shareToken:null,shareView:null,tab:"timeline",tasks:TASKS,q:"",status:"all",phase:"all",open:1,dod:"2024-09-15",value:425000,letter:{recipient:"Bank",estate:"Estate of Elena Vasquez",name:"Elena Vasquez",date:"2024-11-20",account:"**** 4521",note:"Please freeze the account and send a final statement as of the date of death."},costs:[{id:1,name:"Estate administration tax",est:5625,actual:0,paid:false},{id:2,name:"Lawyer — probate",est:4500,actual:2200,paid:false},{id:3,name:"Funeral",est:12000,actual:11450,paid:true},{id:4,name:"Court filing fee",est:232,actual:232,paid:true},{id:5,name:"Accountant",est:1500,actual:0,paid:false},{id:6,name:"Appraisal",est:500,actual:450,paid:true}],circle:[{name:"Sarah Chen",relation:"Daughter",role:"Executor"},{name:"Michael Vasquez",relation:"Spouse",role:"Family"},{name:"David Park Law",relation:"Counsel",role:"Lawyer"}]};
 const $=s=>document.querySelector(s);
 const money=n=>n.toLocaleString("en-CA",{style:"currency",currency:"CAD"});
 function eat(v){const r=Math.ceil(Math.max(0,v)/1000)*1000;return r<=50000?0:(r-50000)*0.015}
@@ -240,14 +240,19 @@ function render(){
   $("#heroEat").textContent=money(eat(state.value));
   const t1=deadlines()[1]; $("#heroDeadline").textContent=t1.days>0?t1.days+" days left":Math.abs(t1.days)+" days past";
   $("#heroTasks").innerHTML=state.tasks.slice(0,4).map(t=>`<div class="row-mini"><div class="tick ${t.status}">${t.status==="done"?"✓":t.id}</div><div><div style="font-size:13px;font-weight:600">${t.title}</div><div class="mini">${t.due}</div></div></div>`).join("");
-  const tabs=[["timeline","Timeline"],["vault","Vault"],["cra","CRA"],["letters","Letters"],["costs","Costs"],["circle","Circle"],["videos","Videos"]];
+  const ent=state.ent||{};
+  const tabs=[["timeline","Timeline"],["vault","Vault"],["cra","CRA"],["letters","Letters"],ent.costs&&["costs","Costs"],ent.circle&&["circle","Circle"],["videos","Videos"],ent.clientList&&["clients","Clients"]].filter(Boolean);
+  if(!tabs.some(t=>t[0]===state.tab)) state.tab="timeline";
   $("#tabs").innerHTML=tabs.map(([id,l])=>`<button class="tab ${state.tab===id?"on":""}" data-tab="${id}" type="button">${l}</button>`).join("");
-  const map={timeline:timelineHTML,vault:vaultHTML,cra:craHTML,letters:lettersHTML,costs:costsHTML,circle:circleHTML,videos:videosHTML};
-  if (!isPaid()) { $("#pane").innerHTML = paywall(); $("#tabs").innerHTML = ""; }
+  const map={timeline:timelineHTML,vault:vaultHTML,cra:craHTML,letters:lettersHTML,costs:costsHTML,circle:circleHTML,videos:videosHTML,clients:clientsHTML};
+  if (state.shareView) { showDesk(true); $("#tabs").innerHTML=""; $("#estateBar").innerHTML=""; $("#pane").innerHTML=sharedHTML(); bind(); return; }
+  if (!isPaid()) { $("#pane").innerHTML = paywall(); $("#tabs").innerHTML = ""; $("#estateBar").innerHTML=""; }
   else { showDesk(true);
+    $("#estateBar").innerHTML=estateBarHTML();
     $("#pane").innerHTML = map[state.tab]();
   }
   bind();
+  schedulePersist();
 }
 function timelineHTML(){
   const rows=state.tasks.filter(t=>{if(state.status!=="all"&&t.status!==state.status)return false;if(state.phase!=="all"&&t.phase!==state.phase)return false;if(state.q&&!(t.title+" "+t.desc+" "+t.forms.join(" ")).toLowerCase().includes(state.q.toLowerCase()))return false;return true});
@@ -294,9 +299,37 @@ function craHTML(){
   <div class="card" style="margin-top:14px"><strong>Holdback note</strong><p class="mini" style="margin:6px 0 0">Under CRA Information Circular ${ext(FORM_LINKS["IC82-6R13"],"IC82-6R13")}, paragraph 2, you do not need a clearance certificate before every distribution if you hold back enough to cover any amount the estate may still owe. Final distribution should wait for TX19. Distributing without a holdback or the certificate can make the trustee personally liable.</p></div>
   <div class="card" style="margin-top:14px"><div class="label">TX19 cover letter · sources checked ${SOURCES_CHECKED} · ${ext(FORM_LINKS["TX19"],"TX19 official page")}</div><button class="btn" id="copyTx" type="button">Copy TX19 letter</button> <button class="btn btn-grad" id="dlTx" type="button">Download TX19.txt</button><div class="preview-letter" id="tx19" style="margin-top:10px">${esc(tx19Letter())}</div></div>`;
 }
-function lettersHTML(){const L=state.letter;return `<div class="letters"><div class="card"><label class="label">Recipient</label><select id="rec">${["Bank","Utility","Landlord","Insurance","Employer"].map(r=>`<option ${L.recipient===r?"selected":""}>${r}</option>`).join("")}</select><div class="field" style="margin-top:10px"><label class="label">Estate</label><input id="est" value="${L.estate.replace(/"/g,'&quot;')}"></div><div class="field"><label class="label">Deceased</label><input id="dec" value="${L.name}"></div><div class="field"><label class="label">Note</label><textarea id="nt" rows="4">${L.note}</textarea></div></div><div><button class="btn" id="copy" type="button">Copy</button> <button class="btn btn-grad" id="dl" type="button">Download .txt</button><div class="preview-letter" id="letter" style="margin-top:10px">${esc(letterText())}</div></div></div>`}
-function costsHTML(){const fee=eat(state.value);state.costs[0].est=Math.round(fee);return `<div class="two"><div class="card"><label class="label">Estate value</label><input id="val" type="number" value="${state.value}"><p class="display">${money(fee)}</p><p class="mini">$0 on the first $50,000, then 1.5%.</p></div><div>${state.costs.map(c=>`<div class="card" style="margin-bottom:8px"><button class="btn" data-pay="${c.id}" type="button">${c.paid?"Paid":"Unpaid"}</button> ${c.name} · est ${money(c.est)}</div>`).join("")}</div></div>`}
-function circleHTML(){return `<div class="card">${state.circle.map(m=>`<div style="margin:8px 0"><strong>${m.name}</strong> <span class="mini">${m.relation} · ${m.role}</span></div>`).join("")}<div class="filters"><input id="mem" placeholder="Add a name"><button class="btn btn-grad" id="addMem" type="button">Add</button></div><p class="mini">Kids Help Phone 1-800-668-6868 · CMHA Ontario</p></div>`}
+function lettersHTML(){const L=state.letter;return `<div class="letters"><div class="card"><label class="label">Recipient</label><select id="rec">${["Bank","Utility","Landlord","Insurance","Employer"].map(r=>`<option ${L.recipient===r?"selected":""}>${r}</option>`).join("")}</select><div class="field" style="margin-top:10px"><label class="label">Estate</label><input id="est" value="${esc(L.estate)}"></div><div class="field"><label class="label">Deceased</label><input id="dec" value="${esc(L.name)}"></div><div class="field"><label class="label">Note</label><textarea id="nt" rows="4">${esc(L.note)}</textarea></div></div><div><button class="btn" id="copy" type="button">Copy</button> <button class="btn btn-grad" id="dl" type="button">Download .txt</button><div class="preview-letter" id="letter" style="margin-top:10px">${esc(letterText())}</div></div></div>`}
+function costsHTML(){const fee=eat(state.value);if(state.costs[0])state.costs[0].est=Math.round(fee);return `<div class="two"><div class="card"><label class="label">Estate value</label><input id="val" type="number" min="0" value="${state.value}"><p class="display">${money(fee)}</p><p class="mini">Estate administration tax estimate: $0 on the first $50,000, then 1.5%.</p></div><div>${state.costs.map((c,i)=>`<div class="card" style="margin-bottom:8px"><button class="btn" data-pay="${c.id}" type="button">${c.paid?"Paid":"Unpaid"}</button> ${esc(c.name)} · est ${i===0?money(c.est):`<input type="number" min="0" data-est="${c.id}" value="${c.est}" style="width:110px">`}</div>`).join("")}<div class="filters"><input id="costName" placeholder="Add a cost (e.g. Appraisal)" maxlength="120"><button class="btn" id="addCost" type="button">Add</button></div><p class="mini">Total estimated ${money(state.costs.reduce((a,c)=>a+(Number(c.est)||0),0))} · paid items ${state.costs.filter(c=>c.paid).length}</p></div></div>`}
+function circleHTML(){
+  const share=state.ent&&state.ent.share;
+  const url=state.shareToken?location.origin+"/?share="+encodeURIComponent(state.shareToken):"";
+  return `<div class="card"><h3 class="display" style="margin-top:0">Circle</h3><p class="mini">Family and counsel for this estate. Names, relationships and roles you add here appear on the read-only link if you share one.</p>${state.circle.map((m,i)=>`<div style="margin:8px 0"><strong>${esc(m.name)}</strong> <span class="mini">${esc(m.relation)} · ${esc(m.role)}</span> <button class="btn" data-rmmem="${i}" type="button" style="padding:2px 8px">Remove</button></div>`).join("")||'<p class="mini">No one added yet.</p>'}
+  <div class="filters"><input id="mem" placeholder="Name" maxlength="120"><input id="memRel" placeholder="Relationship (e.g. Sister)" maxlength="60"><select id="memRole">${["Family","Beneficiary","Co-executor","Lawyer","Accountant","Other"].map(r=>`<option>${r}</option>`).join("")}</select><button class="btn btn-grad" id="addMem" type="button">Add</button></div>
+  ${share?`<div class="card" style="margin-top:12px"><strong>Read-only progress link</strong><p class="mini">Anyone with this link can see the estate name, date of death, checklist progress and the Circle names above. They cannot see letters, values, costs or your account, and cannot change anything. Revoke it at any time.</p>${url?`<input id="shareUrl" readonly value="${esc(url)}" style="width:100%"><div class="cta-row" style="margin-top:8px"><button class="btn" id="copyShare" type="button">Copy link</button><button class="btn" id="unshare" type="button">Revoke link</button></div>`:`<button class="btn btn-grad" id="mkShare" type="button" ${state.readOnly?"disabled":""}>Create link</button>`}<p class="mini" id="shareMsg"></p></div>`:""}
+  <p class="mini">Kids Help Phone 1-800-668-6868 · CMHA Ontario</p></div>`}
+function estateBarHTML(){
+  const ent=state.ent||{}; const cur=state.estates.find(e=>e.id===state.estateId);
+  if(!cur) return "";
+  const open=state.estates.filter(e=>!e.archived||e.id===state.estateId);
+  const sw=ent.maxEstates>1?`<label for="estSwitch">Estate</label><select id="estSwitch">${open.map(e=>`<option value="${e.id}" ${e.id===state.estateId?"selected":""}>${esc(e.name)}${e.archived?" (archived)":""}</option>`).join("")}</select> <span>${state.estates.length} of ${ent.maxEstates} estates used</span>`:`<strong>${esc(cur.name)}</strong>`;
+  return sw+(state.readOnly?` <span style="color:#f59e0b">Archived: read-only. Restore it from Clients to edit.</span>`:"")+` <span id="saveMsg"></span>`;
+}
+function clientsHTML(){
+  const ent=state.ent||{}; const full=state.estates.length>=ent.maxEstates;
+  return `<div class="card"><h3 class="display" style="margin-top:0">Client list</h3><p class="mini">${state.estates.length} of ${ent.maxEstates} client estates used. Archived estates stay read-only and still count toward the limit.</p>
+  ${state.estates.map(e=>`<div class="card" style="margin:8px 0;display:flex;gap:8px;align-items:center;flex-wrap:wrap"><strong style="flex:1">${esc(e.name)}</strong><span class="mini">${e.archived?"Archived":"Active"} · updated ${esc(String(e.updatedAt||"").slice(0,10))}${e.shared?" · shared link on":""}</span><button class="btn" data-openest="${e.id}" type="button">${e.id===state.estateId?"Open (current)":"Open"}</button><button class="btn" data-renest="${e.id}" type="button">Rename</button><button class="btn" data-${e.archived?"restore":"archive"}est="${e.id}" type="button">${e.archived?"Restore":"Archive"}</button></div>`).join("")}
+  <div class="filters"><input id="newEst" placeholder="Client or estate name" maxlength="120" ${full?"disabled":""}><button class="btn btn-grad" id="mkEst" type="button" ${full?"disabled":""}>Add client estate</button></div><p class="mini" id="estMsg">${full?"You have reached the "+ent.maxEstates+"-estate limit for your plan.":""}</p></div>`;
+}
+function sharedHTML(){
+  const v=state.shareView; if(v.error) return `<div class="card"><h3 class="display">Link not available</h3><p class="mini">${esc(v.error)}</p></div>`;
+  const st={}; (v.tasks||[]).forEach(t=>st[t.id]=t.status);
+  const done=TASKS.filter(t=>st[t.id]==="done").length;
+  return `<div class="card"><div class="label">Read-only view shared by the estate trustee</div><h3 class="display" style="margin:6px 0">${esc(v.name)}</h3><p class="mini">${v.dod?"Date of death "+esc(v.dod)+" · ":""}${done} of ${TASKS.length} steps done · last updated ${esc(String(v.updatedAt||"").slice(0,10))}</p>
+  ${PHASES.map(p=>{const all=TASKS.filter(t=>t.phase===p.id);return `<div style="margin-top:12px"><strong>${esc(p.name)}</strong> <span class="mini">${all.filter(t=>st[t.id]==="done").length}/${all.length}</span>${all.map(t=>`<div class="row-mini"><div class="tick ${st[t.id]||"todo"}">${st[t.id]==="done"?"✓":t.id}</div><div style="font-size:13px">${esc(t.title)} <span class="mini">${esc(st[t.id]||"todo")}</span></div></div>`).join("")}</div>`}).join("")}
+  ${(v.circle||[]).length?`<div style="margin-top:12px"><strong>Circle</strong>${v.circle.map(m=>`<div class="mini">${esc(m.name)} · ${esc(m.relation)} · ${esc(m.role)}</div>`).join("")}</div>`:""}
+  <p class="mini" style="margin-top:12px">FinalChapter does not file forms and is not legal, tax, or financial advice. Questions go to the estate trustee.</p></div>`;
+}
 
 
 const DECKS = {
@@ -353,9 +386,44 @@ function stepDeck(id, dir){
   const bar = document.querySelector("#deck-"+id+" .deck-count");
   if (bar) bar.textContent = (i+1)+" / "+slides.length;
 }
-function persistDesk(){
-  if(!isPaid()) return;
-  api("estate",{action:"save",desk:{tab:state.tab,dod:state.dod,value:state.value,letter:state.letter,tasks:state.tasks.map(t=>({id:t.id,status:t.status}))}});
+function deskPayload(){
+  const ent=state.ent||{};
+  return {tab:state.tab,dod:state.dod,value:state.value,letter:state.letter,tasks:state.tasks.map(t=>({id:t.id,status:t.status})),...(ent.costs?{costs:state.costs}:{}),...(ent.circle?{circle:state.circle}:{})};
+}
+let lastSaved="", saveTimer=null;
+function schedulePersist(){
+  if(!isPaid()||!state.estateId||state.readOnly) return;
+  const body=JSON.stringify(deskPayload()); if(body===lastSaved) return;
+  clearTimeout(saveTimer); saveTimer=setTimeout(()=>persistDesk(),800);
+}
+async function persistDesk(){
+  if(!isPaid()||!state.estateId||state.readOnly) return;
+  const desk=deskPayload(); const body=JSON.stringify(desk); if(body===lastSaved) return;
+  const r=await api("estate",{action:"save",estateId:state.estateId,desk});
+  const m=$("#saveMsg"); if(r.ok){lastSaved=body; if(m) m.textContent="Saved";} else if(m) m.textContent=r.error||"Not saved";
+}
+function freshDesk(){
+  state.dod=new Date().toISOString().slice(0,10); state.value=0;
+  state.letter={recipient:"Bank",estate:"",name:"",date:new Date().toISOString().slice(0,10),account:"",note:"Please freeze the account and send a final statement as of the date of death."};
+  state.tasks.forEach(t=>t.status="todo");
+  state.costs=[{id:1,name:"Estate administration tax",est:0,actual:0,paid:false},{id:2,name:"Lawyer — probate",est:0,actual:0,paid:false},{id:3,name:"Funeral",est:0,actual:0,paid:false},{id:4,name:"Court filing fee",est:0,actual:0,paid:false},{id:5,name:"Accountant",est:0,actual:0,paid:false},{id:6,name:"Appraisal",est:0,actual:0,paid:false}];
+  state.circle=[];
+}
+async function loadEstates(pick){
+  const r=await api("estate",{action:"list"}); if(!r.ok) return;
+  state.ent=r.entitlements; state.estates=r.estates||[];
+  const want=pick||sessionStorage.getItem("fc.estate");
+  const e=state.estates.find(x=>x.id===want)||state.estates.find(x=>!x.archived)||state.estates[0];
+  if(e) await openEstate(e.id);
+}
+async function openEstate(id){
+  await persistDesk();
+  const d=await api("estate",{action:"load",estateId:id}); if(!d.ok) return;
+  freshDesk(); restoreDesk(d.desk||{});
+  state.estateId=id; state.readOnly=!!d.estate.archived; state.shareToken=d.shareToken||null;
+  const i=state.estates.findIndex(x=>x.id===id); if(i>=0) state.estates[i]=d.estate;
+  sessionStorage.setItem("fc.estate",id);
+  lastSaved=JSON.stringify(deskPayload());
 }
 function bind(){
   document.querySelectorAll("[data-tab]").forEach(b=>b.onclick=()=>{state.tab=b.dataset.tab;render();document.getElementById("os").scrollIntoView({behavior:"smooth"})});
@@ -373,7 +441,20 @@ function bind(){
   const dl=$("#dl"); if(dl) dl.onclick=()=>{const a=document.createElement("a"); a.href=URL.createObjectURL(new Blob([letterText()],{type:"text/plain"})); a.download="estate-letter.txt"; a.click()};
   const val=$("#val"); if(val) val.onchange=e=>{state.value=Number(e.target.value)||0;render()};
   document.querySelectorAll("[data-pay]").forEach(b=>b.onclick=()=>{const c=state.costs.find(x=>x.id===+b.dataset.pay); c.paid=!c.paid; render()});
-  const add=$("#addMem"); if(add) add.onclick=()=>{const name=$("#mem").value.trim(); if(!name)return; state.circle.push({name,relation:"Family",role:"Family"}); render()};
+  const add=$("#addMem"); if(add) add.onclick=()=>{const name=$("#mem").value.trim(); if(!name)return; state.circle.push({name,relation:$("#memRel").value.trim()||"Family",role:$("#memRole").value}); render()};
+  document.querySelectorAll("[data-rmmem]").forEach(b=>b.onclick=()=>{state.circle.splice(+b.dataset.rmmem,1);render()});
+  document.querySelectorAll("[data-est]").forEach(i=>i.onchange=()=>{const c=state.costs.find(x=>x.id===+i.dataset.est); if(c){c.est=Math.max(0,Number(i.value)||0); render()}});
+  const addCost=$("#addCost"); if(addCost) addCost.onclick=()=>{const name=$("#costName").value.trim(); if(!name)return; state.costs.push({id:Math.max(0,...state.costs.map(c=>c.id))+1,name,est:0,actual:0,paid:false}); render()};
+  const sw=$("#estSwitch"); if(sw) sw.onchange=async()=>{await openEstate(sw.value); render()};
+  const estAct=async(action,id,extra)=>{const r=await api("estate",{action,estateId:id,...(extra||{})}); if(!r.ok){const m=$("#estMsg"); if(m) m.textContent=r.error||"Could not update"; return null} return r};
+  document.querySelectorAll("[data-openest]").forEach(b=>b.onclick=async()=>{await openEstate(b.dataset.openest); state.tab="timeline"; render()});
+  document.querySelectorAll("[data-renest]").forEach(b=>b.onclick=async()=>{const e=state.estates.find(x=>x.id===b.dataset.renest); const name=prompt("Rename estate",e?e.name:""); if(!name) return; if(await estAct("rename",b.dataset.renest,{name})){await loadEstates(state.estateId); render()}});
+  document.querySelectorAll("[data-archiveest]").forEach(b=>b.onclick=async()=>{if(!confirm("Archive this estate? It becomes read-only and its share link is revoked.")) return; await persistDesk(); if(await estAct("archive",b.dataset.archiveest)){await loadEstates(state.estateId); render()}});
+  document.querySelectorAll("[data-restoreest]").forEach(b=>b.onclick=async()=>{if(await estAct("restore",b.dataset.restoreest)){await loadEstates(state.estateId); render()}});
+  const mkEst=$("#mkEst"); if(mkEst) mkEst.onclick=async()=>{const name=$("#newEst").value.trim(); const r=await estAct("create",null,{name}); if(r){await loadEstates(r.estate.id); state.tab="timeline"; render()}};
+  const mkShare=$("#mkShare"); if(mkShare) mkShare.onclick=async()=>{await persistDesk(); const r=await api("estate",{action:"share",estateId:state.estateId}); if(r.ok){state.shareToken=r.token; render()} else $("#shareMsg").textContent=r.error||"Could not create link"};
+  const unshare=$("#unshare"); if(unshare) unshare.onclick=async()=>{const r=await api("estate",{action:"unshare",estateId:state.estateId}); if(r.ok){state.shareToken=null; render()}};
+  const copyShare=$("#copyShare"); if(copyShare) copyShare.onclick=async()=>{await navigator.clipboard.writeText($("#shareUrl").value); copyShare.textContent="Copied"};
   document.querySelectorAll("[data-next]").forEach(b=>b.onclick=()=>stepDeck(b.dataset.next,1));
   document.querySelectorAll("[data-prev]").forEach(b=>b.onclick=()=>stepDeck(b.dataset.prev,-1));
 
@@ -405,7 +486,7 @@ async function refreshAccount(){
   const r=await api("auth",{action:"me"});
   if(!r.ok){setSession("");session.user=null;session.role=null;renderAccount();return}
   session.role=r.role; session.user=r.user||null; session.workspaceCode=r.workspaceCode||null;
-  if(isPaid()){ const d=await api("estate",{action:"load"}); if(d.ok&&d.desk) restoreDesk(d.desk); }
+  if(isPaid()) await loadEstates();
   renderAccount(); render();
 }
 function restoreDesk(d){
@@ -413,6 +494,8 @@ function restoreDesk(d){
   if(typeof d.value==="number") state.value=d.value;
   if(d.letter&&typeof d.letter==="object") Object.assign(state.letter,d.letter);
   if(Array.isArray(d.tasks)) d.tasks.forEach(x=>{const t=state.tasks.find(t=>t.id===x.id); if(t&&["todo","doing","done","blocked"].includes(x.status)) t.status=x.status});
+  if(Array.isArray(d.costs)&&d.costs.length) state.costs=d.costs;
+  if(Array.isArray(d.circle)) state.circle=d.circle;
 }
 function renderAccount(){
   const panel=$("#accountPanel"), forms=$("#authForms"); if(!panel) return;
@@ -422,6 +505,17 @@ function renderAccount(){
   const u=session.user||{};
   $("#accountInfo").innerHTML=`<strong>${esc(u.name)}</strong> <span class="mini">${esc(u.email)} · ${esc(u.plan)} · ${u.paid?"paid":"payment not completed"}</span>`+(u.paid&&session.workspaceCode?`<p class="mini">Workspace code (keep private; it opens your desk on another device): <code>${esc(session.workspaceCode)}</code></p>`:"");
   $("#payNow").style.display=u.paid?"none":""; $("#openDesk").style.display=u.paid?"":"none";
+  if(u.paid){
+    const P={executor:[1,49,"Executor"],family:[2,89,"Family"],professional:[3,199,"Professional"]}; const cur=P[u.plan]||P.executor;
+    const ups=Object.entries(P).filter(([,v])=>v[0]>cur[0]);
+    if(ups.length) $("#accountInfo").innerHTML+=`<p class="mini" style="margin-top:8px">Upgrade and pay only the difference: `+ups.map(([k,v])=>`<button class="btn" type="button" data-upgrade="${k}">${v[2]} (+$${v[1]-cur[1]} CAD)</button>`).join(" ")+`</p>`;
+    document.querySelectorAll("[data-upgrade]").forEach(b=>b.onclick=()=>startUpgrade(b.dataset.upgrade));
+  }
+}
+async function startUpgrade(plan){
+  const r=await api("checkout",{upgradeTo:plan});
+  if(!r.url){ alert(r.error||"Stripe checkout failed"); return; }
+  location.href=r.url;
 }
 async function loadCustomers(){
   const r=await api("auth",{action:"customers"}); const box=$("#adminList"); box.style.display="block";
@@ -495,8 +589,10 @@ $("#loginForm").onsubmit=async e=>{
 $("#liShow").onclick=()=>{const i=$("#liPass");i.type=i.type==="password"?"text":"password"};
 $("#payNow").onclick=()=>startCheckout((session.user&&session.user.plan)||chosenPlan);
 $("#openDesk").onclick=()=>openOs();
-$("#logout").onclick=async()=>{await api("auth",{action:"logout"});setSession("");session.user=null;session.role=null;session.workspaceCode=null;renderAccount();render();showDesk(false)};
-handleReturn().then(refreshAccount);
+$("#logout").onclick=async()=>{await api("auth",{action:"logout"});setSession("");session.user=null;session.role=null;session.workspaceCode=null;state.estates=[];state.estateId=null;state.ent=null;sessionStorage.removeItem("fc.estate");renderAccount();render();showDesk(false)};
+const shareTok=new URLSearchParams(location.search).get("share");
+if(shareTok){ api("estate",{action:"shared",token:shareTok}).then(r=>{state.shareView=r.ok?r.view:{error:r.error||"This link is not valid"}; render(); document.getElementById("os").scrollIntoView()}); }
+else handleReturn().then(refreshAccount);
 
 </script>
 

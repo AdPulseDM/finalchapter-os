@@ -2,9 +2,9 @@
   var steps = [
     { el: "#why-province", title: "Province logic", body: "Certificate of Appointment, the 180-day Estate Information Return, creditor notice, and current estate administration tax." },
     { el: "#why-forms", title: "Forms on the path", body: "74A, ISP1200, TX19, T1, and T3 are named on the step. This desk does not file them for you." },
-    { el: "#why-circle", title: "Circle, not chaos", body: "Family and counsel share a feed. Liability stays with the estate trustee." },
-    { el: "#pricing", title: "One-time unlock", body: "Create an account, pay once through Stripe, then log in. Timeline, vault, CRA, letters, costs, circle, and slides unlock for your account." },
-    { el: null, title: "What unlocks", body: "Timeline of 60 steps. Vault for proof. CRA deadlines and the TX19 letter. Letters you can copy. Costs. Circle. Slides. It does not file forms. Not legal, tax, or financial advice." }
+    { el: "#why-circle", title: "Circle, not chaos", body: "Keep a list of family and counsel, and share a read-only progress link with them (Family and Professional). Liability stays with the estate trustee." },
+    { el: "#pricing", title: "One-time unlock", body: "Create an account, pay once through Stripe, then log in. Every plan unlocks the timeline, vault, CRA deadlines, letters and slides. Family adds costs, the Circle and a share link. Professional adds up to five client estates." },
+    { el: null, title: "What unlocks", body: "Timeline of 60 steps. Vault for proof. CRA deadlines and the TX19 letter. Letters you can copy. Slides. Family and Professional add Costs and the Circle. It does not file forms. Not legal, tax, or financial advice." }
   ];
   var i = 0;
   var box;

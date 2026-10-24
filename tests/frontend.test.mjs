@@ -35,3 +35,20 @@ test("catalog step ids match the forms named on those steps", () => {
     }
   }
 });
+
+test("plan cards and policies match what each plan does; filled placeholders are gone", async () => {
+  const fs = await import("node:fs");
+  const html = fs.readFileSync(new URL("../public/index.html", import.meta.url), "utf8");
+  const terms = fs.readFileSync(new URL("../public/terms.html", import.meta.url), "utf8");
+  const privacy = fs.readFileSync(new URL("../public/privacy.html", import.meta.url), "utf8");
+  const refunds = fs.readFileSync(new URL("../public/refunds.html", import.meta.url), "utf8");
+  assert.ok(html.includes("<li>Up to five client estates</li>") && html.includes("<li>Client list and estate switcher</li>"));
+  assert.ok(html.includes("<li>Read-only progress link to share with family</li>"));
+  assert.ok(!html.includes("share a feed"), "no promise of a shared feed");
+  assert.ok(!html.includes("[TAX NOTE"));
+  for (const [name, s] of [["terms", terms], ["privacy", privacy], ["refunds", refunds]]) {
+    for (const ph of ["[ACCESS PERIOD", "[RETENTION PERIOD]", "[RECORDS RETENTION PERIOD]", "[STATE WHETHER", "[RESPONSE TIME]", "[AND DESCRIBE"]) assert.ok(!s.includes(ph), name + " " + ph);
+  }
+  assert.ok(terms.includes("[CONFIRM CAP WITH COUNSEL]") && terms.includes("[CONFIRM FORUM"), "counsel placeholders left for review");
+  assert.ok(privacy.includes("3 years after your last activity"));
+});
