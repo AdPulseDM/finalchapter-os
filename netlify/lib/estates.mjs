@@ -27,7 +27,11 @@ export function sanitizeDesk(desk, plan) {
   if (typeof d.tab === "string") out.tab = clean(d.tab, 20);
   if (d.letter && typeof d.letter === "object") {
     out.letter = {};
-    for (const k of ["recipient", "estate", "name", "date", "account", "note"]) if (k in d.letter) out.letter[k] = clean(d.letter[k], k === "note" ? 2000 : 200);
+    for (const k of ["recipient", "estate", "name", "trustee", "date", "account", "note"]) if (k in d.letter) out.letter[k] = clean(d.letter[k], k === "note" ? 2000 : 200);
+  }
+  if (d.vault && typeof d.vault === "object") {
+    out.vault = {};
+    for (const [k, v] of Object.entries(d.vault).slice(0, 40)) if (/^[a-z]{1,20}$/.test(k) && (v === "have" || v === "not")) out.vault[k] = v;
   }
   if (Array.isArray(d.tasks)) out.tasks = d.tasks.filter((t) => t && Number.isInteger(t.id) && STATUSES.includes(t.status)).slice(0, 200).map((t) => ({ id: t.id, status: t.status }));
   if (p?.costs && Array.isArray(d.costs)) out.costs = d.costs.slice(0, 100).map((c, i) => ({ id: Number.isInteger(c?.id) ? c.id : i + 1, name: clean(c?.name, 120), est: Number(c?.est) || 0, actual: Number(c?.actual) || 0, paid: !!c?.paid }));
@@ -49,7 +53,7 @@ export const summary = (e) => ({ id: e.id, name: e.name, archived: !!e.archived,
 
 export async function createEstate(store, user, name, { legacyDesk } = {}) {
   const lim = limitsFor(user);
-  if (!lim) return { error: "Pay to unlock the desk", status: 402 };
+  if (!lim) return { error: "Buy a plan to open your checklist", status: 402 };
   const existing = await listEstates(store, user.email);
   // Every estate counts toward the limit, archived or not.
   if (existing.length >= lim.maxEstates) {

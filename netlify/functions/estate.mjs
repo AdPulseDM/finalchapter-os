@@ -17,7 +17,7 @@ export async function handle(req, { store, estates }) {
   const sess = await getSession(store, bearer(req, body));
   if (!sess || sess.role !== "client") return json(401, { error: "Not signed in or session expired" });
   const user = await getUser(store, sess.email);
-  if (!user || !user.paid) return json(402, { error: "Pay to unlock the desk" });
+  if (!user || !user.paid) return json(402, { error: "Buy a plan to open your checklist" });
   if (!user.lastActiveAt || Date.now() - Date.parse(user.lastActiveAt) > DAY) {
     user.lastActiveAt = new Date().toISOString();
     await store.setJSON("user:" + user.email, user);

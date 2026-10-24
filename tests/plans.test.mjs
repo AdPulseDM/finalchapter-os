@@ -196,3 +196,14 @@ test("retention: deletes accounts and estates 3 years after last activity, keeps
   assert.ok((await store.list({ prefix: "stripe:" })).blobs.length >= 2, "payment receipts kept");
   assert.equal((await E(d, old.token, { action: "list" })).status, 401);
 });
+
+test("documents checklist and executor name are saved; junk vault values dropped", async () => {
+  const store = memStore(), estates = memStore(); const d = { store, estates };
+  const { token } = await paidUser(store, "executor");
+  const id = (await E(d, token, { action: "list" })).body.estates[0].id;
+  await E(d, token, { action: "save", estateId: id, desk: { vault: { will: "have", bank: "not", x: "<script>", "bad key": "have" }, letter: { trustee: "Ana Silva" } } });
+  const desk = (await E(d, token, { action: "load", estateId: id })).body.desk;
+  assert.deepEqual(desk.vault, { will: "have", bank: "not" });
+  assert.equal(desk.letter.trustee, "Ana Silva");
+  assert.equal(desk.dod, undefined, "no date of death until the user enters one");
+});
