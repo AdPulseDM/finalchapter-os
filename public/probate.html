@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Do I need probate in Ontario? Free check and Estate Administration Tax calculator — FinalChapter</title>
+<meta name="description" content="A free Ontario probate check: will, joint assets, real estate, what the bank is asking for, and estate value. Get the exact form list (Form 74A or the Small Estate Certificate, Form 74.1A), an Estate Administration Tax estimate and the 180-day Estate Information Return note." />
+<style>
+  :root { --bg:#08080c; --fg:#f4f4f5; --muted:#a3b1c6; --subtle:#8b98ab; --line:rgba(255,255,255,.1); --grad:linear-gradient(90deg,#9333ea,#c026d3); }
+  * { box-sizing:border-box; } body { margin:0; background:var(--bg); color:var(--fg); font-family:Inter,ui-sans-serif,system-ui,sans-serif; line-height:1.5; }
+  a { color:#d8b4fe; } h1,h2,h3 { font-family:"Space Grotesk",Inter,sans-serif; letter-spacing:-.02em; }
+  .wrap { max-width:1100px; margin:0 auto; padding:0 20px; }
+  header { border-bottom:1px solid var(--line); } .top { display:flex; justify-content:space-between; align-items:center; min-height:64px; gap:10px; flex-wrap:wrap; }
+  .brand { color:#fff; text-decoration:none; font-weight:700; } .btn { display:inline-flex; align-items:center; justify-content:center; min-height:44px; padding:0 16px; border-radius:10px; border:1px solid var(--line); color:#fff; text-decoration:none; font-weight:600; font-size:14px; background:transparent; }
+  .btn-grad { border:0; background-image:var(--grad); }
+  .notlegal { padding:12px 14px; border:1px solid rgba(251,191,36,.4); background:rgba(251,191,36,.08); border-radius:10px; color:#fde68a; font-size:14px; }
+  .grid { display:grid; grid-template-columns:1fr 1fr; gap:20px; align-items:start; }
+  .card { background:rgba(20,18,32,.66); border:1px solid rgba(168,85,247,.2); border-radius:14px; padding:18px; margin-bottom:16px; }
+  fieldset { border:0; margin:0 0 16px; padding:0; } legend { font-weight:600; margin-bottom:6px; }
+  .opts { display:flex; flex-wrap:wrap; gap:8px; } .opts label { display:flex; gap:8px; align-items:center; border:1px solid var(--line); border-radius:10px; padding:10px 12px; min-height:44px; cursor:pointer; font-size:14px; }
+  .opts input { width:18px; height:18px; margin:0; } .hint { color:var(--subtle); font-size:13px; margin:4px 0 0; }
+  input[type=number] { background:rgba(8,8,12,.7); border:1px solid rgba(255,255,255,.2); border-radius:10px; padding:10px 12px; font-size:16px; color:var(--fg); min-height:44px; width:100%; }
+  .check { display:flex; gap:8px; align-items:flex-start; margin:8px 0; font-size:14px; } .check input { width:18px; height:18px; margin-top:2px; flex-shrink:0; }
+  .verdict { font-size:22px; font-weight:700; margin:0 0 8px; } .v-likely { color:#fda4af; } .v-check { color:#fcd34d; } .v-maybe-not { color:#6ee7b7; }
+  ol.docs { padding-left:20px; } ol.docs li { margin:6px 0; } .when { font-size:11px; text-transform:uppercase; letter-spacing:.06em; border:1px solid var(--line); border-radius:99px; padding:1px 7px; color:var(--muted); margin-left:6px; }
+  .big { font-family:"Space Grotesk",sans-serif; font-size:34px; font-weight:800; margin:4px 0; }
+  .mini { color:var(--subtle); font-size:13px; } .flag { color:#fcd34d; font-weight:600; }
+  table { width:100%; border-collapse:collapse; font-size:14px; } td,th { text-align:left; padding:6px 4px; border-bottom:1px solid var(--line); }
+  :focus-visible { outline:2px solid #d8b4fe; outline-offset:2px; }
+  @media (max-width:820px) { .grid { grid-template-columns:1fr; } }
+</style>
+</head>
+<body>
+<header><div class="wrap top"><a class="brand" href="/">FinalChapter · Ontario executor checklist</a><div style="display:flex;gap:8px"><a class="btn" href="/#pricing">Plans</a><a class="btn btn-grad" href="/#account">Log in</a></div></div></header>
+<main class="wrap" style="padding:28px 20px 60px">
+  <h1 style="font-size:clamp(30px,4.4vw,46px);margin:0 0 10px">Do I need probate in Ontario?</h1>
+  <p style="color:var(--muted);max-width:720px;margin:0 0 14px">Answer six questions to see whether you will probably need an estate certificate from the Superior Court of Justice, which forms to prepare, the Estate Administration Tax, and the Estate Information Return deadline. Free; nothing you enter is saved or sent anywhere.</p>
+  <p class="notlegal" id="disclaimer"><strong>Not legal advice.</strong> FinalChapter is an organizer. This check gives general information from Ontario sources so you can ask better questions. It does not decide whether probate is required — the banks, the land registry and other institutions holding the assets decide what they need, and a lawyer can advise on your situation. FinalChapter does not file anything; you still file.</p>
+  <div class="grid">
+    <form class="card" id="q" aria-label="Probate questions">
+      <fieldset><legend>1. Is there a will?</legend><div class="opts">
+        <label><input type="radio" name="will" value="yes" checked> Yes</label><label><input type="radio" name="will" value="no"> No</label><label><input type="radio" name="will" value="unsure"> Not sure yet</label></div></fieldset>
+      <fieldset id="willMore"><legend>1a. About the will</legend><div class="opts">
+        <label><input type="radio" name="original" value="yes" checked> We have the original</label><label><input type="radio" name="original" value="no"> Only a copy</label></div>
+        <div class="opts" style="margin-top:8px"><label><input type="radio" name="executor" value="yes" checked> It names an estate trustee who can act</label><label><input type="radio" name="executor" value="no"> No one named can act</label></div></fieldset>
+      <fieldset><legend>2. Do assets pass outside the estate?</legend><p class="hint">Joint accounts or a home held as joint tenants usually pass to the survivor. RRSPs, RRIFs, TFSAs, pensions and life insurance with a named beneficiary go straight to that person.</p><div class="opts">
+        <label><input type="radio" name="passes" value="all"> Everything passes that way</label><label><input type="radio" name="passes" value="some" checked> Some does</label><label><input type="radio" name="passes" value="none"> None does</label></div></fieldset>
+      <fieldset><legend>3. Real estate in Ontario in their sole name?</legend><p class="hint">Include property held as a tenant in common. Not property held as joint tenants with someone who survived them.</p><div class="opts">
+        <label><input type="radio" name="realEstate" value="yes"> Yes</label><label><input type="radio" name="realEstate" value="no" checked> No</label></div></fieldset>
+      <fieldset><legend>4. Is a bank or other institution asking for a certificate?</legend><div class="opts">
+        <label><input type="radio" name="demand" value="yes"> Yes</label><label><input type="radio" name="demand" value="no"> No, they will release without one</label><label><input type="radio" name="demand" value="unsure" checked> Haven’t asked yet</label></div></fieldset>
+      <fieldset><legend><label for="value">5. Estate value for probate (CAD)</label></legend><input id="value" type="number" min="0" step="1" inputmode="numeric" value="0"><p class="hint">Only what passes through the estate: assets in their own name at death (Ontario real estate less its mortgage, bank and investment accounts without a beneficiary, vehicles, belongings). Do not subtract other debts, funeral costs or fees. <a href="https://www.ontario.ca/page/estate-administration-tax" target="_blank" rel="noopener">What to include</a>.</p></fieldset>
+      <fieldset><legend>6. Does any of this apply?</legend><div id="flags"></div></fieldset>
+    </form>
+    <div aria-live="polite">
+      <section class="card" id="result"></section>
+      <section class="card" id="eatCard"><h2 style="margin:0 0 6px;font-size:20px">Estate Administration Tax calculator</h2>
+        <label class="mini" for="eatValue">Estate value (CAD)</label><input id="eatValue" type="number" min="0" step="1" inputmode="numeric" value="0">
+        <div class="big" id="eatOut">$0</div><p class="mini" id="eatWhy"></p>
+        <table aria-label="Examples"><thead><tr><th>Value</th><th>Tax</th></tr></thead><tbody id="eatEx"></tbody></table>
+        <p class="mini">Rule: no tax if the estate is valued at $50,000 or less; otherwise $15 for each $1,000 or part of $1,000 above $50,000 (applications on or after January 1, 2020). Paid as a deposit when you apply; owed only if a certificate is issued. Sources: <a id="srcAct" target="_blank" rel="noopener">Estate Administration Tax Act, s. 2</a> · <a id="srcEat" target="_blank" rel="noopener">Ministry of Finance</a>. Checked <span class="checked"></span>.</p>
+      </section>
+      <section class="card"><h2 style="margin:0 0 6px;font-size:20px">Talk to a lawyer if…</h2><ul id="lawyerAll" style="padding-left:18px;margin:0"></ul>
+        <p class="mini" style="margin-top:8px">Find one through the <a id="srcLso" target="_blank" rel="noopener">Law Society Referral Service</a>. Court staff cannot give legal advice.</p></section>
+    </div>
+  </div>
+  <section class="card"><h2 style="margin:0 0 6px;font-size:20px">Sources</h2><ul id="sources" class="mini" style="padding-left:18px;margin:0"></ul><p class="mini">All checked <span class="checked"></span>. Rules and forms change; confirm on the official page before you file.</p></section>
+  <section class="card" style="text-align:center"><h2 style="margin:0 0 6px">Next: a step-by-step checklist for the whole estate</h2><p style="color:var(--muted);margin:0 0 12px">FinalChapter turns this into a 60-step Ontario checklist with your real deadlines (final T1, T3, Estate Information Return) and letter drafts as Word or PDF. One payment from $49 CAD.</p><a class="btn btn-grad" href="/#pricing">See plans</a></section>
+</main>
+<footer class="wrap mini" style="padding:20px;border-top:1px solid var(--line)">FinalChapter · Ontario executor organizer · Does not file forms · Not legal, tax, or financial advice · <a href="/terms.html">Terms</a> · <a href="/privacy.html">Privacy</a> · <a href="/refunds.html">Refunds</a> · <a href="mailto:elisa@adpulsenexus.com">Support</a></footer>
+<script type="module">
+import * as R from "/fc-rules.js";
+const $ = (s) => document.querySelector(s);
+const esc = (v) => String(v ?? "").replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+const money = (n) => n.toLocaleString("en-CA", { style: "currency", currency: "CAD", maximumFractionDigits: 0 });
+document.querySelectorAll(".checked").forEach((e) => (e.textContent = R.SOURCES_CHECKED));
+$("#srcAct").href = R.SRC.eatAct.url; $("#srcEat").href = R.SRC.eatPage.url; $("#srcLso").href = R.SRC.lso.url;
+$("#flags").innerHTML = R.LAWYER_FLAGS.map(([k, t]) => `<label class="check"><input type="checkbox" name="flag" value="${k}"> ${esc(t)}</label>`).join("");
+$("#lawyerAll").innerHTML = R.LAWYER_FLAGS.map(([k, t]) => `<li data-l="${k}">${esc(t)}</li>`).join("") + "<li>You are unsure whether an asset is in the estate, or how to value it</li>";
+$("#sources").innerHTML = ["probate", "smallEstate", "forms", "rules", "eatAct", "eatPage", "eirReg"].map((k) => `<li><a href="${R.SRC[k].url}" target="_blank" rel="noopener">${esc(R.SRC[k].name)}</a></li>`).join("");
+$("#eatEx").innerHTML = [50000, 50001, 150000, 239250, 500000].map((v) => `<tr><td>${money(v)}</td><td>${money(R.eat(v))}</td></tr>`).join("");
+function answers() {
+  const f = new FormData($("#q"));
+  return { will: f.get("will"), original: f.get("original"), executor: f.get("executor"), passes: f.get("passes"), realEstate: f.get("realEstate"), demand: f.get("demand"), value: Number($("#value").value) || 0, flags: f.getAll("flag") };
+}
+function eatBox(v) { $("#eatOut").textContent = money(R.eat(v)); $("#eatWhy").textContent = R.eatExplain(v); }
+function render() {
+  const a = answers(); $("#willMore").hidden = a.will !== "yes";
+  const r = R.probateCheck(a);
+  const flagged = new Set(a.flags); if (a.will === "yes" && a.original === "no") flagged.add("missingOriginal");
+  document.querySelectorAll("#lawyerAll [data-l]").forEach((li) => li.classList.toggle("flag", flagged.has(li.dataset.l)));
+  $("#result").innerHTML = `<p class="verdict v-${r.verdict}">${esc(r.headline)}</p><ul style="padding-left:18px;margin:0 0 10px">${r.reasons.map((x) => `<li>${esc(x)}</li>`).join("")}</ul>
+  ${r.paths.length ? r.paths.map((p) => `<h3 style="margin:14px 0 4px;font-size:17px">${esc(p.name)}</h3><p class="mini" style="margin:0">${esc(p.note)}</p><ol class="docs">${p.docs.map((d) => `<li><a href="${d.url}" target="_blank" rel="noopener"><strong>${esc(d.form)}</strong></a>${d.when ? `<span class="when">${esc(d.when)}</span>` : ""} — ${esc(d.title)}</li>`).join("")}</ol>`).join("") + `<p class="mini">${r.small ? "Small estates: send the signed application to the beneficiaries at least 30 days before you file. " : ""}File with the Superior Court of Justice where the person lived (by email, mail or in person). Check Rules 74 and 74.1 for your situation.</p>`
+    : `<h3 style="margin:14px 0 4px;font-size:17px">What to do instead</h3><ol class="docs"><li>Get written confirmation from each institution that it will transfer or release the asset without a certificate, and what it needs (usually the death certificate and the will).</li><li>Keep a list of every asset and how it passed, in case a certificate is needed later.</li><li>The other executor tasks still apply: final tax returns, notice to creditors and closing accounts.</li></ol>`}
+  <p><strong>Estate Administration Tax estimate:</strong> ${money(r.eat)}${r.verdict === "maybe-not" ? " (only payable if a certificate is issued)" : ""}. <span class="mini">${esc(r.eatText)}</span></p>
+  <p><strong>Estate Information Return:</strong> <span class="mini">${esc(r.eirNote)}</span></p>
+  ${r.lawyer.length ? `<p class="flag">Talk to a lawyer first: ${r.lawyer.map(esc).join("; ")}.</p>` : ""}
+  <p class="mini">General information only, checked ${R.SOURCES_CHECKED}. Not legal advice.</p>`;
+}
+$("#q").addEventListener("input", render); $("#q").addEventListener("change", render);
+$("#value").addEventListener("input", () => { $("#eatValue").value = $("#value").value; eatBox(Number($("#value").value) || 0); });
+$("#eatValue").addEventListener("input", () => eatBox(Number($("#eatValue").value) || 0));
+render(); eatBox(0);
+</script>
+</body>
+</html>
