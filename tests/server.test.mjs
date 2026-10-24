@@ -96,9 +96,9 @@ test("customers requires a real admin session, not just the admin email", async 
 
 test("admin login fails closed when ADMIN_EMAIL/ADMIN_PASSWORD are not set", async () => {
   const store = memStore();
-  const r = await call(auth, post("/api/auth", { action: "login", email: "elisa@adpulsenexus.com", password: "" }), { store, admin: null });
+  const r = await call(auth, post("/api/auth", { action: "login", email: "admin-login@example.com", password: "" }), { store, admin: null });
   assert.equal(r.status, 400);
-  const r2 = await call(auth, post("/api/auth", { action: "login", email: "elisa@adpulsenexus.com", password: "anything" }), { store, admin: null });
+  const r2 = await call(auth, post("/api/auth", { action: "login", email: "admin-login@example.com", password: "anything" }), { store, admin: null });
   assert.equal(r2.status, 401);
 });
 
