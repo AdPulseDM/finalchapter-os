@@ -25,10 +25,10 @@ nav,footer{max-width:780px;margin:0 auto;padding:16px 24px;font-size:14px} foote
 <ul>
 <li><strong>Account information:</strong> your name, email address, chosen plan, and a password. We store only a salted, one-way hash of your password, never the password itself.</li>
 <li><strong>Payment information:</strong> payments are processed by Stripe. We receive confirmation that a payment was made, the plan, the amount, the Stripe session identifier and your email. We do not receive or store your full card number.</li>
-<li><strong>Desk content you enter:</strong> for example a date of death, an estimated estate value, task status, and letter fields (names, account references, notes). This may include personal information about the deceased and about other people. Only enter what you need, and do not enter Social Insurance Numbers or full account numbers.</li>
+<li><strong>Desk content you enter:</strong> for example a date of death, an estimated estate value, task status, letter fields (names, account references, notes), estate or client names, cost entries, and Circle entries (names, relationships and roles of family members and counsel). This may include personal information about the deceased and about other people. Only enter what you need, and do not enter Social Insurance Numbers or full account numbers.</li>
 <li><strong>Technical information:</strong> our host may process IP addresses and request logs to operate and secure the site. We do not use analytics, advertising, or tracking scripts.</li>
 </ul>
-<p>We use your browser’s session storage to keep one item, a random sign-in token (<code>fc.token</code>), so you stay signed in during a visit; it is removed when you log out or close the tab. Our site code does not set cookies and does not use local storage. The site loads its fonts from Google Fonts (fonts.googleapis.com and fonts.gstatic.com), so your browser sends Google a request, including your IP address, when the page loads. When you pay, you are sent to Stripe’s hosted checkout page, which is governed by Stripe’s own privacy and cookie policies.</p>
+<p>We use your browser’s session storage to keep two items, a random sign-in token (<code>fc.token</code>) so you stay signed in during a visit, and the identifier of the estate you last opened (<code>fc.estate</code>); they are removed when you log out or close the tab. Our site code does not set cookies and does not use local storage. The site loads its fonts from Google Fonts (fonts.googleapis.com and fonts.gstatic.com), so your browser sends Google a request, including your IP address, when the page loads. When you pay, you are sent to Stripe’s hosted checkout page, which is governed by Stripe’s own privacy and cookie policies.</p>
 
 <h2>3. Why we use it</h2>
 <ul>
@@ -38,12 +38,13 @@ nav,footer{max-width:780px;margin:0 auto;padding:16px 24px;font-size:14px} foote
 <li>to respond to support requests and to send service messages about your account or purchase;</li>
 <li>to meet legal, tax and accounting obligations, and to prevent fraud and abuse.</li>
 </ul>
-<p>We do not sell personal information. [STATE WHETHER YOU SEND MARKETING EMAILS; IF SO, DESCRIBE OPT-IN AND UNSUBSCRIBE.]</p>
+<p>We do not sell personal information. We do not send marketing emails. We send only service and transaction messages, such as messages about your account, your purchase, or changes to these policies. If we ever offer marketing emails, they will be opt-in only, will include a way to unsubscribe, and will comply with Canada’s Anti-Spam Legislation (CASL).</p>
 
 <h2>4. Consent</h2>
 <p>By creating an account you consent to the collection, use and disclosure described here. You may withdraw consent at any time, subject to legal or contractual limits, by contacting us; withdrawing consent may mean we can no longer provide the service. If you enter information about other people, you confirm you are allowed to do so, for example as the estate trustee.</p>
 
-<h2>5. Service providers and storage outside Canada</h2>
+<h2>5. Sharing, service providers and storage outside Canada</h2>
+<p><strong>Share links you create.</strong> On the Family and Professional plans you can create a read-only progress link for an estate. Anyone who has that link can see the estate name, date of death, checklist progress and the names, relationships and roles in that estate’s Circle. They cannot see letters, estate values, costs or your account details. You can revoke the link at any time, and archiving an estate revokes it. Share the link only with people you trust.</p>
 <ul>
 <li><strong>Netlify</strong> hosts the website and runs the server functions and data storage (Netlify Blobs). See <a href="https://www.netlify.com/privacy/" target="_blank" rel="noopener">Netlify’s privacy policy</a>.</li>
 <li><strong>Stripe</strong> processes payments. See <a href="https://stripe.com/privacy" target="_blank" rel="noopener">Stripe’s privacy policy</a>.</li>
@@ -52,7 +53,7 @@ nav,footer{max-width:780px;margin:0 auto;padding:16px 24px;font-size:14px} foote
 <p>These providers may store or process information outside Canada, including in the United States. Account, sign-in and desk data are stored with Netlify, Inc. in Netlify Blobs. Our code uses Netlify’s default region for site-wide stores, which Netlify documents as <code>us-east-2</code>, US East (Ohio), with data encrypted at rest and in transit (<a href="https://docs.netlify.com/build/data-and-storage/netlify-blobs/" target="_blank" rel="noopener">Netlify Blobs documentation</a>). Netlify may cache data at edge locations and process requests in other locations. Payment data is processed by Stripe. Information stored outside Canada may be accessible to courts, law enforcement and national security authorities of that country.</p>
 
 <h2>6. Retention</h2>
-<p>We keep account and desk information while your account is active and for [RETENTION PERIOD] after it is closed, and payment records for as long as required by tax and accounting law ([RECORDS RETENTION PERIOD]). We then delete or anonymize it.</p>
+<p>We keep account and estate (desk) information for 3 years after your last activity (for example, your last sign-in or save), and then delete it automatically. You can ask us to delete it sooner by writing to <a href="mailto:elisa@adpulsenexus.com">elisa@adpulsenexus.com</a>. Payment and transaction records are kept for as long as required by law (Canadian tax law generally requires six years), and then deleted.</p>
 
 <h2>7. Safeguards</h2>
 <p>We use reasonable safeguards for the sensitivity of the information, including encrypted connections (HTTPS), hashed passwords, expiring sign-in sessions and restricted administrative access. No method of transmission or storage is completely secure.</p>
@@ -67,7 +68,7 @@ nav,footer{max-width:780px;margin:0 auto;padding:16px 24px;font-size:14px} foote
 <p>Contact Elisa Broomes at <a href="mailto:elisa@adpulsenexus.com">elisa@adpulsenexus.com</a> first. If you are not satisfied, you can complain to the <a href="https://www.priv.gc.ca/en/" target="_blank" rel="noopener">Office of the Privacy Commissioner of Canada</a>.</p>
 
 <h2>11. Changes</h2>
-<p>We may update this policy. We will post the new version here with a new “Last updated” date [AND DESCRIBE HOW YOU NOTIFY USERS OF MATERIAL CHANGES].</p>
+<p>We may update this policy. We will post the new version here with a new “Last updated” date. For material changes, we will also give notice by email to account holders where possible.</p>
 </main>
 <footer>FinalChapter · <a href="/terms.html">Terms of Service</a> · <a href="/privacy.html">Privacy Policy</a> · <a href="/refunds.html">Refund Policy</a> · <a href="/#what-you-get">What you get</a><br/>FinalChapter does not file forms and is not legal, tax, or financial advice.</footer>
 </body></html>
