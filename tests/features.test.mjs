@@ -52,7 +52,7 @@ test("print kit checkout: paid plans only, tagged app=finalchapter kind=addon ad
   const b = s.calls[0].body; const u = await p.user();
   assert.equal(b.get("metadata[app]"), "finalchapter"); assert.equal(b.get("payment_intent_data[metadata][app]"), "finalchapter");
   assert.equal(b.get("metadata[kind]"), "addon");
-  assert.equal(b.get("payment_intent_data[receipt_email]"), p.user.email); assert.equal(b.get("metadata[addon]"), "printkit");
+  assert.equal(b.get("payment_intent_data[receipt_email]"), u.email); assert.equal(b.get("metadata[addon]"), "printkit");
   assert.equal(b.get("line_items[0][price_data][unit_amount]"), "2900"); assert.equal(b.get("line_items[0][price_data][currency]"), "cad");
   assert.equal(b.get("client_reference_id"), u.id); assert.equal(b.get("metadata[userId]"), u.id);
   assert.match(b.get("cancel_url"), /checkout=cancel&addon=printkit/);
