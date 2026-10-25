@@ -57,8 +57,14 @@
 
 [[redirects]]
   from = "/firms"
-  to = "/firms.html"
-  status = 200
+  to = "/#firms"
+  status = 301
+
+[[redirects]]
+  from = "/firms.html"
+  to = "/#firms"
+  status = 301
+  force = true
 
 [[redirects]]
   from = "/refunds"

@@ -92,7 +92,7 @@ test("setup card names the estate and single-estate plans get a rename control",
 
 test("new feature pages: no demo wording, no feed claims, disclaimers, sources and checked dates", () => {
   const read = (f) => fs.readFileSync(new URL("../public/" + f, import.meta.url), "utf8");
-  const pages = ["index.html", "firms.html", "probate.html", "fc-rules.js", "terms.html", "refunds.html", "privacy.html", "tour.js"].map((f) => [f, read(f)]);
+  const pages = ["index.html", "probate.html", "fc-rules.js", "terms.html", "refunds.html", "privacy.html", "tour.js"].map((f) => [f, read(f)]);
   for (const [f, s] of pages) {
     assert.ok(!/demo/i.test(s), f + ": no demo wording");
     assert.ok(!/\bfeed\b/i.test(s), f + ": no shared feed claims (replaced by the view-only progress link)");
@@ -115,14 +115,15 @@ test("new feature pages: no demo wording, no feed claims, disclaimers, sources a
 });
 
 test("For firms path: sales-led tiers, mailto contact, no Stripe firm plan", () => {
-  const firms = fs.readFileSync(new URL("../public/firms.html", import.meta.url), "utf8");
+  assert.ok(!fs.existsSync(new URL("../public/firms.html", import.meta.url)), "no standalone firms page; prospects email info@");
   const terms = fs.readFileSync(new URL("../public/terms.html", import.meta.url), "utf8");
   const toml = fs.readFileSync(new URL("../netlify.toml", import.meta.url), "utf8");
   const pricing = html.slice(html.indexOf('id="pricing"'), html.indexOf('id="account"'));
   assert.ok(pricing.includes('id="firms"'), "#firms sits inside the pricing section");
   assert.ok(html.indexOf('id="printkit"') < html.indexOf('id="firms"'), "firms section after the retail cards and Print kit");
-  assert.ok(html.includes('<a href="#firms">For firms</a>') && html.includes('<a href="/firms.html">For firms</a>'), "nav and footer links");
-  for (const s of [pricing, firms]) {
+  assert.ok(html.includes('<a href="#firms">For firms</a>'), "nav/footer link to #firms");
+  assert.ok(!/href="\/firms(\.html)?"/.test(html), "no links to a standalone firms page");
+  for (const s of [pricing]) {
     for (const t of ["Firm Start", "Firm Desk", "Firm Practice", "from $1,500 / year", "from $3,000 / year", "from $5,000 / year"]) assert.ok(s.includes(t), t);
     assert.ok(s.includes(">Contact sales</a>") && s.includes("mailto:info@adpulsenexus.com?subject=FinalChapter%20for%20firms"), "Contact sales mailto");
     assert.ok(s.includes("Professional ($199 once) covers up to five client estates"));
@@ -130,7 +131,9 @@ test("For firms path: sales-led tiers, mailto contact, no Stripe firm plan", () 
   const firmBlock = html.slice(html.indexOf('id="firms"'), html.indexOf('class="mini legal-links"'));
   assert.ok(!/class="price[ "]/.test(firmBlock), "firm tiers are not .price cards, so they get no Stripe Choose button");
   assert.match(html, /PLAN_ORDER=\["executor","family","professional"\], PLAN_PRICE=\{executor:49,family:89,professional:199\}/);
-  assert.ok(firms.includes("doesn’t file anything") && firms.includes("isn’t legal or tax advice"));
   assert.ok(terms.includes("separate written agreement or quote") && terms.includes("Executor $49, Family $89, Professional $199 (CAD)"));
-  assert.match(toml, /from = "\/firms"\s+to = "\/firms\.html"\s+status = 200/);
+  assert.ok(!terms.includes('href="/firms.html"') && terms.includes('href="/#firms"') && terms.includes("mailto:info@adpulsenexus.com"), "terms points firms to the homepage section and info@");
+  assert.match(toml, /from = "\/firms"\s+to = "\/#firms"\s+status = 301/);
+  assert.match(toml, /from = "\/firms\.html"\s+to = "\/#firms"\s+status = 301/);
+  assert.ok(!/to = "\/firms\.html"/.test(toml), "no rewrite to a firms page");
 });
