@@ -95,7 +95,13 @@ body.preview-mode .pane .tab, body.preview-mode .tabs { pointer-events:auto; opa
 .sr { position:absolute; width:1px; height:1px; padding:0; margin:-1px; overflow:hidden; clip:rect(0,0,0,0); white-space:nowrap; border:0; }
 :focus-visible { outline:2px solid #d8b4fe; outline-offset:2px; }
 .filters input:focus-visible,.filters select:focus-visible,.field input:focus-visible,.field select:focus-visible,.field textarea:focus-visible,.inp:focus-visible { outline:2px solid #d8b4fe; outline-offset:1px; }
-#os,#account,#pricing,#what-you-get,#forms,#why,#noticeWrap { scroll-margin-top:84px; }
+#os,#account,#pricing,#firms,#what-you-get,#forms,#why,#noticeWrap { scroll-margin-top:84px; }
+.firms { margin-top:28px; text-align:left; padding:26px; border-radius:16px; background:rgba(20,18,32,.66); border:1px solid rgba(168,85,247,.32); }
+.firms h2 { margin:0 0 6px; } .firm-tiers { display:grid; grid-template-columns:repeat(3,1fr); gap:14px; margin-top:16px; }
+.firm-tier { padding:18px; border-radius:14px; background:rgba(8,8,12,.55); border:1px solid var(--line); display:flex; flex-direction:column; }
+.firm-tier .amt { font-family:"Space Grotesk",sans-serif; font-size:22px; font-weight:800; } .firm-tier ul { padding-left:18px; flex:1; } .firm-tier .btn { align-self:flex-start; min-height:44px; }
+@media (max-width:900px) { .firm-tiers { grid-template-columns:1fr; } }
+
 .nav-cta { display:flex; gap:8px; align-items:center; }
 .mobile-only { display:none !important; }
 [hidden] { display:none !important; }
@@ -165,7 +171,7 @@ mark.blank { background:#fde68a; color:#1c1402; font-weight:700; padding:0 2px; 
 <header class="nav"><div class="wrap nav-inner">
   <a class="brand" href="#top" aria-label="FinalChapter home"><div class="mark" aria-hidden="true">FC</div><div><div class="brand-name">FinalChapter</div><div class="brand-sub">Ontario executor checklist</div></div></a>
   <nav class="nav-links" id="navMenu" aria-label="Main">
-    <span class="nav-out"><a href="/probate.html">Probate check</a><a href="#how" data-tour-start>How it works</a><a href="#what-you-get">What you get</a><a href="#pricing">Plans</a><a href="#account" data-login>Log in</a></span>
+    <span class="nav-out"><a href="/probate.html">Probate check</a><a href="#how" data-tour-start>How it works</a><a href="#what-you-get">What you get</a><a href="#pricing">Plans</a><a href="#firms">For firms</a><a href="#account" data-login>Log in</a></span>
     <span class="nav-in" hidden><a href="#os" data-jump="timeline">My checklist</a><a href="#os" data-jump="cra">Deadlines</a><a href="#os" data-jump="letters">Letters</a><a href="/probate.html">Probate check</a><a href="#account">Account</a><a href="#top" data-logout>Log out</a></span>
   </nav>
   <div class="nav-cta">
@@ -228,6 +234,18 @@ mark.blank { background:#fde68a; color:#1c1402; font-weight:700; padding:0 2px; 
       <div class="price"><div class="label">Professional</div><div class="amt">$199 once</div><ul><li>Everything in Family</li><li>Up to five client estates</li><li>Client list and estate switcher</li></ul></div>
     </div>
     <div class="card addon" id="printkit" style="text-align:left;margin-top:14px"><div class="label">Optional add-on for any paid plan</div><h3 style="margin:4px 0 6px">Print kit · $29 once</h3><p class="mini" style="font-size:14px;margin:0 0 6px">A print-ready PDF of your estate: timeline, checklist with checkboxes, deadline sheet and the full letter pack, filled in from your details. Digital PDF only; nothing is mailed. Buy it once per account and download it again any time.</p><div id="printkitAction"></div></div>
+    <div class="firms" id="firms" aria-labelledby="firmsH">
+      <div class="label">Sales-led · annual · CAD</div>
+      <h2 class="display" id="firmsH" style="font-size:28px">For professional trustees &amp; consulting firms</h2>
+      <p style="color:var(--muted);margin:0 0 4px;max-width:760px">An Ontario estate runbook for staff who administer estates for a fee: the same step checklist, CRA and Ontario deadlines, letter drafts and cost tracking, across many client estates. It is an organizer, not a replacement for your lawyer’s filing software. It does not file forms and is not legal advice.</p>
+      <div class="firm-tiers">
+      <div class="firm-tier"><div class="label">Firm Start</div><div class="amt">from $1,500 / year</div><div class="mini">CAD, billed annually · starting price</div><ul><li>Up to 3 staff seats</li><li>Up to 25 open estates</li><li>Ontario checklist, deadlines and letter drafts</li><li>Cost tracker</li><li>Family &amp; advisers links</li></ul><a class="btn btn-grad" href="mailto:info@adpulsenexus.com?subject=FinalChapter%20for%20firms%20-%20Firm%20Start%20enquiry&amp;body=Hi%20FinalChapter%20team%2C%0A%0AWe%27d%20like%20a%20quote%20for%20FinalChapter%20for%20firms.%0A%0APlan%20of%20interest%3A%20Firm%20Start%0AFirm%20name%3A%0AYour%20name%20and%20role%3A%0AStaff%20seats%20needed%3A%0AEstates%20opened%20per%20year%20%28approx.%29%3A%0AOpen%20estates%20right%20now%20%28approx.%29%3A%0ABest%20phone%20or%20time%20to%20reach%20you%3A%0A%0AThanks%2C%0A">Contact sales</a></div>
+      <div class="firm-tier"><div class="label">Firm Desk</div><div class="amt">from $3,000 / year</div><div class="mini">CAD, billed annually · starting price</div><ul><li>Up to 10 staff seats</li><li>Up to 100 open estates</li><li>Everything in Firm Start</li><li>Shared templates</li><li>Priority support: we aim to reply within 1 business day (standard is 3–5)</li></ul><a class="btn btn-grad" href="mailto:info@adpulsenexus.com?subject=FinalChapter%20for%20firms%20-%20Firm%20Desk%20enquiry&amp;body=Hi%20FinalChapter%20team%2C%0A%0AWe%27d%20like%20a%20quote%20for%20FinalChapter%20for%20firms.%0A%0APlan%20of%20interest%3A%20Firm%20Desk%0AFirm%20name%3A%0AYour%20name%20and%20role%3A%0AStaff%20seats%20needed%3A%0AEstates%20opened%20per%20year%20%28approx.%29%3A%0AOpen%20estates%20right%20now%20%28approx.%29%3A%0ABest%20phone%20or%20time%20to%20reach%20you%3A%0A%0AThanks%2C%0A">Contact sales</a></div>
+      <div class="firm-tier"><div class="label">Firm Practice</div><div class="amt">Custom · from $5,000 / year</div><div class="mini">CAD, billed annually · starting price</div><ul><li>Unlimited estates (fair use)</li><li>Everything in Firm Desk</li><li>Single sign-on (SSO) on the roadmap</li><li>MSA and invoice billing</li><li>Onboarding call</li></ul><a class="btn btn-grad" href="mailto:info@adpulsenexus.com?subject=FinalChapter%20for%20firms%20-%20Firm%20Practice%20enquiry&amp;body=Hi%20FinalChapter%20team%2C%0A%0AWe%27d%20like%20a%20quote%20for%20FinalChapter%20for%20firms.%0A%0APlan%20of%20interest%3A%20Firm%20Practice%0AFirm%20name%3A%0AYour%20name%20and%20role%3A%0AStaff%20seats%20needed%3A%0AEstates%20opened%20per%20year%20%28approx.%29%3A%0AOpen%20estates%20right%20now%20%28approx.%29%3A%0ABest%20phone%20or%20time%20to%20reach%20you%3A%0A%0AThanks%2C%0A">Contact sales</a></div>
+      </div>
+      <p class="mini" style="font-size:14px;margin:14px 0 0">Prices are starting points; we confirm seats, estate limits and terms in a written quote. Firm plans are not sold through online checkout. <a href="/firms.html">More about FinalChapter for firms</a>.</p>
+      <p style="margin:8px 0 0;color:var(--muted)">Prefer to try the product first? Professional ($199 once) covers up to five client estates.</p>
+    </div>
     <p class="mini legal-links" style="margin-top:16px">By buying you agree to the <a href="/terms.html">Terms of Service</a> · <a href="/privacy.html">Privacy Policy</a> · <a href="/refunds.html">Refund Policy</a>. Prices in Canadian dollars. We are a small supplier and are not registered for GST/HST, so no GST/HST is charged at present. The price shown at checkout is what you pay.</p>
     <div class="card" id="after-you-buy" style="text-align:left;max-width:720px;margin:18px auto 0">
       <h3 style="margin:0 0 8px">What happens after you buy</h3>
@@ -299,7 +317,7 @@ mark.blank { background:#fde68a; color:#1c1402; font-weight:700; padding:0 2px; 
   </div>
 </section>
 </main>
-<footer><div class="wrap foot"><div>FinalChapter · Ontario executor organizer · Does not file forms · Not legal, tax, or financial advice</div><div class="foot-links"><a href="/terms.html">Terms of Service</a><a href="/privacy.html">Privacy Policy</a><a href="/refunds.html">Refund Policy</a><a href="#what-you-get">What you get</a><a href="/probate.html">Probate check</a><a href="mailto:info@adpulsenexus.com">Support</a></div><div>Verify with the Ontario Superior Court of Justice and the CRA</div><div style="flex-basis:100%;opacity:.8">Adpulse Nexus Digital Marketing Ltd.</div></div></footer>
+<footer><div class="wrap foot"><div>FinalChapter · Ontario executor organizer · Does not file forms · Not legal, tax, or financial advice</div><div class="foot-links"><a href="/terms.html">Terms of Service</a><a href="/privacy.html">Privacy Policy</a><a href="/refunds.html">Refund Policy</a><a href="#what-you-get">What you get</a><a href="/firms.html">For firms</a><a href="/probate.html">Probate check</a><a href="mailto:info@adpulsenexus.com">Support</a></div><div>Verify with the Ontario Superior Court of Justice and the CRA</div><div style="flex-basis:100%;opacity:.8">Adpulse Nexus Digital Marketing Ltd.</div></div></footer>
 <script type="module">
 import * as R from "/fc-rules.js";
 window.FCRules = R;
