@@ -123,13 +123,20 @@ test("For firms path: sales-led tiers, mailto contact, no Stripe firm plan", () 
   assert.ok(html.indexOf('id="printkit"') < html.indexOf('id="firms"'), "firms section after the retail cards and Print kit");
   assert.ok(html.includes('<a href="#firms">For firms</a>'), "nav/footer link to #firms");
   assert.ok(!/href="\/firms(\.html)?"/.test(html), "no links to a standalone firms page");
-  for (const s of [pricing]) {
-    for (const t of ["Firm Starter", "Firm Desk", "Firm OS", "$1,800 / year", "$3,600 / year", "$6,000 / year"]) assert.ok(s.includes(t), t);
-    assert.ok(s.includes(">Contact sales</a>") && s.includes("mailto:info@adpulsenexus.com?subject=FinalChapter%20for%20firms"), "Contact sales mailto");
-    assert.ok(s.includes("Professional ($199 once) covers up to five client estates"));
+  // Public homepage: soft firms CTA only — dollar tiers live on post-signup firm-offer.html
+  assert.ok(pricing.includes("Create account · see firm plans") && pricing.includes("data-firm-intent"), "soft CTA to account with firm intent");
+  assert.ok(pricing.includes(">Contact sales</a>") && pricing.includes("mailto:info@adpulsenexus.com?subject=FinalChapter%20for%20firms"), "Contact sales mailto");
+  assert.ok(pricing.includes("Professional ($199 once) covers up to five client estates"));
+  for (const t of ["$1,800", "$3,600", "$6,000", "Firm Starter", "Firm OS"]) {
+    assert.ok(!pricing.includes(t), "no public firm dollar tier on homepage: " + t);
   }
+  const offer = fs.readFileSync(new URL("../public/firm-offer.html", import.meta.url), "utf8");
+  assert.ok(offer.includes('name="robots" content="noindex,nofollow"'), "firm-offer is noindex");
+  for (const t of ["Firm Starter", "Firm Desk", "Firm OS", "$1,800 / year", "$3,600 / year", "$6,000 / year"]) assert.ok(offer.includes(t), "firm-offer has " + t);
+  assert.ok(offer.includes("mailto:info@adpulsenexus.com") && offer.includes("not sold through online Stripe checkout") && !/startCheckout|Choose plan/.test(offer), "firm-offer is sales-led mailto, no Stripe buy button");
+  assert.ok(html.includes("/firm-offer.html") && html.includes("goFirmOffer"), "signed-in path can open firm-offer");
   const firmBlock = html.slice(html.indexOf('id="firms"'), html.indexOf('class="mini legal-links"'));
-  assert.ok(!/class="price[ "]/.test(firmBlock), "firm tiers are not .price cards, so they get no Stripe Choose button");
+  assert.ok(!/class="price[ "]/.test(firmBlock), "firm block is not .price cards, so no Stripe Choose button");
   assert.match(html, /PLAN_ORDER=\["executor","family","professional"\], PLAN_PRICE=\{executor:49,family:89,professional:199\}/);
   assert.ok(terms.includes("separate written agreement or quote") && terms.includes("Executor $49, Family $89, Professional $199 (CAD)"));
   assert.ok(!terms.includes('href="/firms.html"') && terms.includes('href="/#firms"') && terms.includes("mailto:info@adpulsenexus.com"), "terms points firms to the homepage section and info@");
