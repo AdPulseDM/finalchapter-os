@@ -124,7 +124,7 @@ test("For firms path: sales-led tiers, mailto contact, no Stripe firm plan", () 
   assert.ok(html.includes('<a href="#firms">For firms</a>'), "nav/footer link to #firms");
   assert.ok(!/href="\/firms(\.html)?"/.test(html), "no links to a standalone firms page");
   for (const s of [pricing]) {
-    for (const t of ["Firm Start", "Firm Desk", "Firm Practice", "from $1,500 / year", "from $3,000 / year", "from $5,000 / year"]) assert.ok(s.includes(t), t);
+    for (const t of ["Firm Starter", "Firm Desk", "Firm OS", "$1,800 / year", "$3,600 / year", "$6,000 / year"]) assert.ok(s.includes(t), t);
     assert.ok(s.includes(">Contact sales</a>") && s.includes("mailto:info@adpulsenexus.com?subject=FinalChapter%20for%20firms"), "Contact sales mailto");
     assert.ok(s.includes("Professional ($199 once) covers up to five client estates"));
   }
