@@ -60,6 +60,11 @@
   to = "/refunds.html"
   status = 200
 
+[[redirects]]
+  from = "/refund"
+  to = "/refunds"
+  status = 301
+
 # Static responses only (function responses set their own headers in code).
 [[headers]]
   for = "/*"

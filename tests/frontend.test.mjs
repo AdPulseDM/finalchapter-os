@@ -51,7 +51,9 @@ test("plan cards and policies match what each plan does; filled placeholders are
   for (const [name, s] of [["terms", terms], ["privacy", privacy], ["refunds", refunds]]) {
     for (const ph of ["[ACCESS PERIOD", "[RETENTION PERIOD]", "[RECORDS RETENTION PERIOD]", "[STATE WHETHER", "[RESPONSE TIME]", "[AND DESCRIBE"]) assert.ok(!s.includes(ph), name + " " + ph);
   }
-  assert.ok(terms.includes("[CONFIRM CAP WITH COUNSEL]") && terms.includes("[CONFIRM FORUM"), "counsel placeholders left for review");
+  assert.ok(!terms.includes("[CONFIRM"), "counsel placeholders resolved");
+  assert.ok(terms.includes("exclusive jurisdiction of the courts of Ontario"), "Ontario forum stated");
+  for (const [name, s] of [["terms", terms], ["privacy", privacy], ["refunds", refunds]]) assert.ok(!s.includes("Draft for review"), name + " draft banner removed");
   assert.ok(privacy.includes("3 years after your last activity"));
 });
 
