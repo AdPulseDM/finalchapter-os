@@ -95,7 +95,11 @@ body.preview-mode .pane .tab, body.preview-mode .tabs { pointer-events:auto; opa
 .sr { position:absolute; width:1px; height:1px; padding:0; margin:-1px; overflow:hidden; clip:rect(0,0,0,0); white-space:nowrap; border:0; }
 :focus-visible { outline:2px solid #d8b4fe; outline-offset:2px; }
 .filters input:focus-visible,.filters select:focus-visible,.field input:focus-visible,.field select:focus-visible,.field textarea:focus-visible,.inp:focus-visible { outline:2px solid #d8b4fe; outline-offset:1px; }
-#os,#account,#pricing,#firms,#what-you-get,#forms,#why,#noticeWrap { scroll-margin-top:84px; }
+#os,#account,#pricing,#firms,#what-you-get,#forms,#why,#how,#noticeWrap { scroll-margin-top:84px; }
+.how-video { margin:0 auto; max-width:840px; }
+.how-video video { width:100%; border-radius:16px; border:1px solid var(--line); background:#0a0a10; display:block; aspect-ratio:16/9; }
+.how-sec { padding:48px 24px; text-align:center; }
+.how-sec .lede { margin:8px auto 20px; max-width:560px; }
 .firms { margin-top:28px; text-align:left; padding:26px; border-radius:16px; background:rgba(20,18,32,.66); border:1px solid rgba(168,85,247,.32); }
 .firms h2 { margin:0 0 6px; } .firm-tiers { display:grid; grid-template-columns:repeat(3,1fr); gap:14px; margin-top:16px; }
 .firm-tier { padding:18px; border-radius:14px; background:rgba(8,8,12,.55); border:1px solid var(--line); display:flex; flex-direction:column; }
@@ -171,11 +175,11 @@ mark.blank { background:#fde68a; color:#1c1402; font-weight:700; padding:0 2px; 
 <header class="nav"><div class="wrap nav-inner">
   <a class="brand" href="#top" aria-label="FinalChapter home"><div class="mark" aria-hidden="true">FC</div><div><div class="brand-name">FinalChapter</div><div class="brand-sub">Ontario executor checklist</div></div></a>
   <nav class="nav-links" id="navMenu" aria-label="Main">
-    <span class="nav-out"><a href="/probate.html">Probate check</a><a href="#how" data-tour-start>How it works</a><a href="#what-you-get">What you get</a><a href="#pricing">Plans</a><a href="#firms">For firms</a><a href="#account" data-login>Log in</a></span>
+    <span class="nav-out"><a href="/probate.html">Probate check</a><a href="#how">How it works</a><a href="#what-you-get">What you get</a><a href="#pricing">Plans</a><a href="#firms">For firms</a><a href="#account" data-login>Log in</a></span>
     <span class="nav-in" hidden><a href="#os" data-jump="timeline">My checklist</a><a href="#os" data-jump="cra">Deadlines</a><a href="#os" data-jump="letters">Letters</a><a href="/probate.html">Probate check</a><a href="#account">Account</a><a href="#top" data-logout>Log out</a></span>
   </nav>
   <div class="nav-cta">
-    <button class="btn btn-grad desk-only" id="startTour" type="button">How it works</button>
+    <button class="btn btn-grad desk-only" id="startTour" type="button">Interactive tour</button>
     <a class="btn btn-grad mobile-only nav-out" href="#account" data-login>Log in</a>
     <a class="btn mobile-only nav-out" href="#pricing">Plans</a>
     <a class="btn btn-grad mobile-only nav-in" href="#os" data-jump="timeline" hidden>My checklist</a>
@@ -188,7 +192,7 @@ mark.blank { background:#fde68a; color:#1c1402; font-weight:700; padding:0 2px; 
       <div class="pill"><span class="dot"></span> For Ontario executors (estate trustees)</div>
       <h1>A step-by-step checklist <span>for Ontario executors</span></h1>
       <p class="lede">If someone has died and you’re handling their estate in Ontario, FinalChapter gives you a <strong>60-step checklist</strong>, deadline dates for CRA and the courts, and letter drafts to copy. One payment, from $49 CAD.</p>
-      <div class="cta-row"><a class="btn btn-grad btn-lg" href="#pricing">See plans</a><a class="btn btn-lg" href="/probate.html">Do I need probate? Free check</a><button class="btn btn-lg" id="startTourHero" type="button">How it works</button></div>
+      <div class="cta-row"><a class="btn btn-grad btn-lg" href="#pricing">See plans</a><a class="btn btn-lg" href="/probate.html">Do I need probate? Free check</a><a class="btn btn-lg" href="#how">How it works</a></div>
       <p class="notlegal" id="notLegal">FinalChapter is an organizer. It does not file forms for you and is not legal, tax or financial advice.</p>
       <div class="stats"><div><b>60</b><span>Steps tracked</span></div><div><b>180 days</b><span>Estate Information Return</span></div><div><b>Up to $5,000</b><span>CPP death benefit</span></div></div>
       <p class="mini" style="max-width:440px;margin-top:10px">CPP death benefit: up to $2,500, plus a top-up of up to $2,500 for deaths on or after January 1, 2025 when the deceased never received a CPP/QPP benefit and had no spouse or partner eligible for the survivor’s pension (maximum $5,000). Source: <a href="https://www.canada.ca/en/services/benefits/publicpensions/cpp/cpp-death-benefit.html" target="_blank" rel="noopener">Service Canada, ISP1200</a>.</p>
@@ -199,6 +203,19 @@ mark.blank { background:#fde68a; color:#1c1402; font-weight:700; padding:0 2px; 
   </div></section>
   <div class="wrap" id="noticeWrap"><div id="notice" role="status" aria-live="polite" hidden></div></div>
   <section class="wrap" id="os" style="padding-bottom:64px;display:none"><div class="panel"><div id="estateBar" class="estate-bar"></div><div class="tabs" id="tabs"></div><div class="pane" id="pane"></div></div></section>
+
+  <section class="wrap how-sec" id="how" aria-labelledby="howH">
+    <div class="label">How it works · 30 seconds</div>
+    <h2 class="display" id="howH" style="font-size:32px;margin:6px 0 0">See FinalChapter in under a minute</h2>
+    <p class="lede">A short silent walkthrough: Ontario runbook, timeline, CRA windows, letters, vault, and firm path. Organizer only — you or your counsel file.</p>
+    <div class="how-video">
+      <video controls playsinline preload="metadata" poster="" title="FinalChapter how it works">
+        <source src="/how-it-works.mp4" type="video/mp4">
+        Your browser does not support the video tag. <a href="/how-it-works.mp4">Download the How it works video</a>.
+      </video>
+    </div>
+    <p class="mini" style="margin:14px auto 0;max-width:560px">Want the click-through tour of the sample estate? <button class="linkbtn" type="button" id="startTourFromHow" style="background:none;border:0;color:#d8b4fe;text-decoration:underline;cursor:pointer;font:inherit;padding:0">Start the interactive tour</button>.</p>
+  </section>
   <section class="wrap" id="why" style="padding:48px 24px"><div class="why">
     <article id="why-province"><div class="mark">01</div><h3>Ontario rules built in</h3><p class="lede">Probate check (regular or small-estate path), Estate Information Return 180 days after the certificate, notice to creditors, and an exact Estate Administration Tax estimate.</p></article>
     <article id="why-forms"><div class="mark">02</div><h3>Official forms, linked</h3><p class="lede"><a href="https://ontariocourtforms.on.ca/en/rules-of-civil-procedure-forms/pre-formatted-fillable-estates-forms/" target="_blank" rel="noopener">74A</a>, <a href="https://www.canada.ca/en/services/benefits/publicpensions/cpp/cpp-death-benefit.html" target="_blank" rel="noopener">ISP1200</a>, <a href="https://www.canada.ca/en/revenue-agency/services/forms-publications/forms/tx19.html" target="_blank" rel="noopener">TX19</a>, <a href="https://www.canada.ca/en/revenue-agency/services/tax/individuals/life-events/doing-taxes-someone-died.html" target="_blank" rel="noopener">T1</a>, and <a href="https://www.canada.ca/en/revenue-agency/services/forms-publications/forms/t3ret.html" target="_blank" rel="noopener">T3</a> are named on the step that needs them. FinalChapter does not file them for you.</p></article>
@@ -745,7 +762,7 @@ function openOs(){
   if (!isPaid()) { showDesk(false); return; }
   state.locked = false; state.tab="timeline"; render(); persistDesk(); document.getElementById("os").scrollIntoView({behavior:"smooth"});
 }
-const heroTour=$("#startTourHero"); if(heroTour) heroTour.onclick=()=>{ if(window.startFinalTour) window.startFinalTour(); };
+const howTour=$("#startTourFromHow"); if(howTour) howTour.onclick=()=>{ if(window.startFinalTour) window.startFinalTour(); };
 document.querySelectorAll("[data-jump]").forEach(a=>a.onclick=e=>{e.preventDefault();closeMenu&&closeMenu();state.tab=a.dataset.jump;showDesk(true);render();document.getElementById("os").scrollIntoView({behavior:"smooth"})});
 render();
 
