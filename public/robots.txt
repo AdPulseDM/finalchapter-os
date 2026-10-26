@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+Disallow: /firm-offer.html
+Sitemap: https://finalchapter-os.netlify.app/sitemap.xml

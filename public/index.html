@@ -1,9 +1,17 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en-CA">
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>FinalChapter — Ontario Executor OS</title>
+<meta name="description" content="A 60-step checklist for Ontario executors (estate trustees): CRA and court deadline dates, Estate Administration Tax estimate and letter drafts. One payment from $49 CAD. Organizer only, not legal advice." />
+<meta property="og:title" content="FinalChapter — Ontario Executor OS" />
+<meta property="og:description" content="A 60-step checklist for Ontario executors (estate trustees): CRA and court deadline dates, Estate Administration Tax estimate and letter drafts. One payment from $49 CAD. Organizer only, not legal advice." />
+<meta property="og:url" content="https://finalchapter-os.netlify.app/" />
+<link rel="canonical" href="https://finalchapter-os.netlify.app/" />
+<meta property="og:type" content="website" />
+<meta name="twitter:card" content="summary" />
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 32 32%27%3E%3Crect width=%2732%27 height=%2732%27 rx=%277%27 fill=%27%239333ea%27/%3E%3Ctext x=%2716%27 y=%2721%27 font-size=%2712%27 font-family=%27sans-serif%27 font-weight=%27800%27 fill=%27white%27 text-anchor=%27middle%27%3EFC%3C/text%3E%3C/svg%3E" />
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700;800&display=swap" rel="stylesheet" />
@@ -207,9 +215,9 @@ mark.blank { background:#fde68a; color:#1c1402; font-weight:700; padding:0 2px; 
   <section class="wrap how-sec" id="how" aria-labelledby="howH">
     <div class="label">How it works · 30 seconds</div>
     <h2 class="display" id="howH" style="font-size:32px;margin:6px 0 0">See FinalChapter in under a minute</h2>
-    <p class="lede">A short silent walkthrough: Ontario runbook, timeline, CRA windows, letters, vault, and firm path. Organizer only — you or your counsel file.</p>
+    <p class="lede">A short silent walkthrough: Ontario runbook, timeline, CRA windows, letters, documents checklist, and firm path. Organizer only — you or your counsel file.</p>
     <div class="how-video">
-      <video controls playsinline preload="metadata" poster="" title="FinalChapter how it works">
+      <video controls playsinline preload="metadata" poster="/how-it-works-poster.jpg" title="FinalChapter how it works">
         <source src="/how-it-works.mp4" type="video/mp4">
         Your browser does not support the video tag. <a href="/how-it-works.mp4">Download the How it works video</a>.
       </video>
@@ -221,12 +229,6 @@ mark.blank { background:#fde68a; color:#1c1402; font-weight:700; padding:0 2px; 
     <article id="why-forms"><div class="mark">02</div><h3>Official forms, linked</h3><p class="lede"><a href="https://ontariocourtforms.on.ca/en/rules-of-civil-procedure-forms/pre-formatted-fillable-estates-forms/" target="_blank" rel="noopener">74A</a>, <a href="https://www.canada.ca/en/services/benefits/publicpensions/cpp/cpp-death-benefit.html" target="_blank" rel="noopener">ISP1200</a>, <a href="https://www.canada.ca/en/revenue-agency/services/forms-publications/forms/tx19.html" target="_blank" rel="noopener">TX19</a>, <a href="https://www.canada.ca/en/revenue-agency/services/tax/individuals/life-events/doing-taxes-someone-died.html" target="_blank" rel="noopener">T1</a>, and <a href="https://www.canada.ca/en/revenue-agency/services/forms-publications/forms/t3ret.html" target="_blank" rel="noopener">T3</a> are named on the step that needs them. FinalChapter does not file them for you.</p></article>
     <article id="why-circle"><div class="mark">03</div><h3>Family &amp; advisers</h3><p class="lede">Keep a list of family and advisers, and share a view-only progress link with them (Family and Professional plans). Responsibility stays with the estate trustee (the executor).</p></article>
   </div></section>
-  
-
-
-
-
-
 <section class="wrap" id="what-you-get" style="padding:24px 24px 48px">
   <h2 class="display" style="font-size:28px">What you get</h2>
   <div class="why">
@@ -617,7 +619,6 @@ const firmIntent=()=>{ try{ return sessionStorage.getItem("fc.firmIntent")==="1"
 const setFirmIntent=(v)=>{ try{ if(v) sessionStorage.setItem("fc.firmIntent","1"); else sessionStorage.removeItem("fc.firmIntent"); }catch(e){} };
 const goFirmOffer=()=>{ if(firmIntent()){ setFirmIntent(false); location.href="/firm-offer.html"; return true; } return false; };
 document.addEventListener("click",(e)=>{ const a=e.target.closest("[data-firm-intent]"); if(!a) return; setFirmIntent(true); });
-if(new URLSearchParams(location.search).get("firm")==="1" || location.hash==="#firms"){ /* hash alone does not set intent */ }
 if(new URLSearchParams(location.search).get("firm")==="1") setFirmIntent(true);
 
 function setSession(t,remember){
