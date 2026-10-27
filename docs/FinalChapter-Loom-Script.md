@@ -24,11 +24,11 @@
 **Say:**
 "On the tax side, you'll see the CRA filing windows for this estate, plus an estate administration tax calculator. Enter the estate value and you get an estimate right away."
 
-## 0:50–1:05 — Letter draft + vault
-**On screen:** Open a letter draft (e.g., a bank notification letter), show the pre-filled details. Then click into the vault and show stored documents.
+## 0:50–1:05 — Letter draft + documents checklist
+**On screen:** Open a letter draft (e.g., a bank notification letter), show the pre-filled details. Then open the Documents checklist and mark a couple of items "Have it" / "Not yet" (nothing is uploaded).
 
 **Say:**
-"Next, letters. Pick one, like a bank notification, and it's drafted with the estate's details filled in. You review and send. Key documents live in the vault — the will, the death certificate, account details — in one secure spot."
+"Next, letters. Pick one, like a bank notification, and it's drafted with the estate's details filled in. You review and send. Then the documents checklist — the will, the death certificate, account details — mark each one have it or not yet, so you know what's still missing. FinalChapter doesn't store the files; originals stay with you."
 
 ## 1:05–1:20 — Multi-estate / Professional or firm path
 **On screen:** Show the estate switcher or dashboard with multiple estates. Then scroll to the pricing section and the firms section (#firms).

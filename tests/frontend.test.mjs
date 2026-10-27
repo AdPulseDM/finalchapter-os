@@ -135,6 +135,26 @@ test("For firms path: sales-led tiers, mailto contact, no Stripe firm plan", () 
   for (const t of ["Firm Starter", "Firm Desk", "Firm OS", "$1,800 / year", "$3,600 / year", "$6,000 / year"]) assert.ok(offer.includes(t), "firm-offer has " + t);
   assert.ok(offer.includes("mailto:info@adpulsenexus.com") && offer.includes("not sold through online Stripe checkout") && !/startCheckout|Choose plan/.test(offer), "firm-offer is sales-led mailto, no Stripe buy button");
   assert.ok(html.includes("/firm-offer.html") && html.includes("goFirmOffer"), "signed-in path can open firm-offer");
+  // Firm prospects who sign up but have not bought retail still see the firm-offer link
+  const ra = html.slice(html.indexOf("function renderAccount(){"), html.indexOf("async function startUpgrade("));
+  const paidStart = ra.indexOf("if(u.paid){");
+  const paidEnd = ra.indexOf("\n  }\n", paidStart);
+  const firmLinkAt = ra.indexOf('href="/firm-offer.html"');
+  assert.ok(firmLinkAt > paidEnd, "firm-offer link is rendered outside the if(u.paid) block");
+  assert.ok(/if\(u\.paid\|\|firmIntent\(\)\|\|firmProspect\(\)\)/.test(ra), "firm link shown for paid OR firm intent/prospect");
+  assert.ok(ra.lastIndexOf("if(goFirmOffer()) return;") > paidEnd, "post-login firm redirect runs for unpaid clients too");
+  const signup = html.slice(html.indexOf('$("#signupForm").onsubmit'), html.indexOf('$("#loginForm").onsubmit'));
+  assert.ok(signup.indexOf("goFirmOffer()") > -1 && signup.indexOf("goFirmOffer()") < signup.indexOf("startCheckout("), "signup with firm intent goes to firm-offer before Stripe");
+  const login = html.slice(html.indexOf('$("#loginForm").onsubmit'), html.indexOf('$("#liShow")'));
+  assert.ok(login.includes("if(goFirmOffer()) return;"), "login with firm intent goes to firm-offer");
+  assert.ok(html.includes('localStorage.setItem("fc.firmProspect","1")'), "firm CTA marks a sticky firm prospect");
+  // Sales docs match the product: documents checklist, no vault / file storage
+  const offerMd = fs.readFileSync(new URL("../docs/FinalChapter-Firm-Offer.md", import.meta.url), "utf8");
+  const loom = fs.readFileSync(new URL("../docs/FinalChapter-Loom-Script.md", import.meta.url), "utf8");
+  for (const [n, t] of [["firm offer md", offerMd], ["loom script", loom]]) {
+    assert.ok(!/vault|secure spot|stored documents/i.test(t), n + " has no vault/storage claim");
+    assert.ok(/documents checklist/i.test(t), n + " mentions the documents checklist");
+  }
   const firmBlock = html.slice(html.indexOf('id="firms"'), html.indexOf('class="mini legal-links"'));
   assert.ok(!/class="price[ "]/.test(firmBlock), "firm block is not .price cards, so no Stripe Choose button");
   assert.match(html, /PLAN_ORDER=\["executor","family","professional"\], PLAN_PRICE=\{executor:49,family:89,professional:199\}/);

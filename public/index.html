@@ -616,9 +616,12 @@ function showDesk(on){
 // Sign-in token: sessionStorage (this tab only) by default; localStorage only if the user ticks "Keep me signed in".
 const session={token:sessionStorage.getItem("fc.token")||localStorage.getItem("fc.token")||"",user:null,role:null,workspaceCode:null};
 const firmIntent=()=>{ try{ return sessionStorage.getItem("fc.firmIntent")==="1"; }catch(e){ return false; } };
-const setFirmIntent=(v)=>{ try{ if(v) sessionStorage.setItem("fc.firmIntent","1"); else sessionStorage.removeItem("fc.firmIntent"); }catch(e){} };
-const goFirmOffer=()=>{ if(firmIntent()){ setFirmIntent(false); location.href="/firm-offer.html"; return true; } return false; };
-document.addEventListener("click",(e)=>{ const a=e.target.closest("[data-firm-intent]"); if(!a) return; setFirmIntent(true); });
+// fc.firmProspect (localStorage) is sticky: once someone came in via a firms CTA, the signed-in account panel keeps showing the firm-offer link even after fc.firmIntent is consumed, paid or not.
+const firmProspect=()=>{ try{ return localStorage.getItem("fc.firmProspect")==="1"; }catch(e){ return false; } };
+const setFirmIntent=(v)=>{ try{ if(v){ sessionStorage.setItem("fc.firmIntent","1"); localStorage.setItem("fc.firmProspect","1"); } else sessionStorage.removeItem("fc.firmIntent"); }catch(e){} };
+let firmLeaving=false;
+const goFirmOffer=()=>{ if(firmLeaving) return true; if(firmIntent()){ setFirmIntent(false); firmLeaving=true; location.href="/firm-offer.html"; return true; } return false; };
+document.addEventListener("click",(e)=>{ const a=e.target.closest("[data-firm-intent]"); if(!a) return; setFirmIntent(true); if(session.token&&session.role==="client"){ e.preventDefault(); goFirmOffer(); } });
 if(new URLSearchParams(location.search).get("firm")==="1") setFirmIntent(true);
 
 function setSession(t,remember){
@@ -678,11 +681,14 @@ function renderAccount(){
     const ups=Object.entries(P).filter(([,v])=>v[0]>cur[0]);
     if(ups.length) $("#accountInfo").innerHTML+=`<p class="mini" style="margin-top:8px">Upgrade and pay only the difference: `+ups.map(([k,v])=>`<button class="btn" type="button" data-upgrade="${k}">${v[2]} (+$${v[1]-cur[1]} CAD)</button>`).join(" ")+`</p>`;
     $("#accountInfo").innerHTML+=u.addons&&u.addons.printkit?`<p class="mini">Print kit: included. Download it from the Letters tab.</p>`:`<p class="mini">Optional: <button class="btn" type="button" id="acctKit">Add the Print kit (+$29 CAD)</button></p>`;
-  $("#accountInfo").innerHTML+=`<p class="mini" style="margin-top:10px"><a class="btn btn-grad" href="/firm-offer.html">Firm plans for your practice</a> <span class="mini">Annual seats &amp; shared desk — preview after signup.</span></p>`;
-  if(goFirmOffer()) return;
     const ak=$("#acctKit"); if(ak) ak.onclick=()=>startAddon("printkit");
     document.querySelectorAll("[data-upgrade]").forEach(b=>b.onclick=()=>startUpgrade(b.dataset.upgrade));
   }
+  // Firm path: signed-in clients see the firm-offer link if paid OR they came via a firms CTA — no retail purchase needed.
+  if(u.paid||firmIntent()||firmProspect()){
+    $("#accountInfo").insertAdjacentHTML("beforeend",`<p class="mini" id="firmOfferLink" style="margin-top:10px"><a class="btn btn-grad" href="/firm-offer.html">Firm plans for your practice</a> <span class="mini">Annual seats &amp; shared desk${u.paid?"":" — no retail purchase needed"}.</span></p>`);
+  }
+  if(goFirmOffer()) return;
 }
 async function startUpgrade(plan){
   sessionStorage.setItem("fc.upgrade",plan);
@@ -812,7 +818,7 @@ $("#loginForm").onsubmit=async e=>{
 $("#liShow").onclick=()=>{const i=$("#liPass");i.type=i.type==="password"?"text":"password"};
 $("#payNow").onclick=()=>startCheckout((session.user&&session.user.plan)||chosenPlan);
 $("#openDesk").onclick=()=>goDesk("timeline");
-async function doLogout(){await api("auth",{action:"logout"});setSession("");localStorage.removeItem("fc.token");sessionStorage.removeItem("fc.upgrade");notice("");session.user=null;session.role=null;session.workspaceCode=null;state.estates=[];state.estateId=null;state.ent=null;sessionStorage.removeItem("fc.estate");renderAccount();render();showDesk(false)}
+async function doLogout(){await api("auth",{action:"logout"});setSession("");try{localStorage.removeItem("fc.firmProspect");sessionStorage.removeItem("fc.firmIntent")}catch(e){}localStorage.removeItem("fc.token");sessionStorage.removeItem("fc.upgrade");notice("");session.user=null;session.role=null;session.workspaceCode=null;state.estates=[];state.estateId=null;state.ent=null;sessionStorage.removeItem("fc.estate");renderAccount();render();showDesk(false)}
 $("#logout").onclick=doLogout;
 document.querySelectorAll("[data-logout]").forEach(a=>a.onclick=e=>{e.preventDefault();closeMenu();doLogout();window.scrollTo(0,0)});
 // mobile menu (issue 1)
